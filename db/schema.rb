@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_15_172040) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_15_182346) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "playing_cards", force: :cascade do |t|
+    t.bigint "session_id", null: false
+    t.string "suit", null: false
+    t.string "rank", null: false
+    t.string "zone_name", null: false
+    t.boolean "face_up", default: false
+    t.integer "orientation", default: 0
+    t.integer "position"
+    t.string "image_url"
+    t.string "back_image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id", "zone_name", "position"], name: "index_playing_cards_on_session_id_and_zone_name_and_position"
+    t.index ["session_id"], name: "index_playing_cards_on_session_id"
+  end
 
   create_table "projects", force: :cascade do |t|
     t.bigint "creator_id", null: false
@@ -209,6 +225,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_172040) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "playing_cards", "sessions"
   add_foreign_key "projects", "users", column: "creator_id"
   add_foreign_key "session_users", "sessions"
   add_foreign_key "session_users", "users"

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :playing_cards
   resources :session_users
   resources :sessions
   resources :projects

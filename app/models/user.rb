@@ -34,3 +34,4 @@ class User < ApplicationRecord
   has_many :session_users, dependent: :destroy
   has_many :sessions, through: :session_users
 end
+

@@ -1,0 +1,62 @@
+<%= form_with(model: playing_card) do |form| %>
+  <% if playing_card.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(playing_card.errors.count, "error") %> prohibited this playing_card from being saved:</h2>
+
+      <ul>
+        <% playing_card.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :session_id, style: "display: block" %>
+    <%= form.text_field :session_id %>
+  </div>
+
+  <div>
+    <%= form.label :suit, style: "display: block" %>
+    <%= form.text_field :suit %>
+  </div>
+
+  <div>
+    <%= form.label :rank, style: "display: block" %>
+    <%= form.text_field :rank %>
+  </div>
+
+  <div>
+    <%= form.label :zone_name, style: "display: block" %>
+    <%= form.text_field :zone_name %>
+  </div>
+
+  <div>
+    <%= form.label :face_up, style: "display: block" %>
+    <%= form.checkbox :face_up %>
+  </div>
+
+  <div>
+    <%= form.label :orientation, style: "display: block" %>
+    <%= form.number_field :orientation %>
+  </div>
+
+  <div>
+    <%= form.label :position, style: "display: block" %>
+    <%= form.number_field :position %>
+  </div>
+
+  <div>
+    <%= form.label :image_url, style: "display: block" %>
+    <%= form.text_field :image_url %>
+  </div>
+
+  <div>
+    <%= form.label :back_image_url, style: "display: block" %>
+    <%= form.text_field :back_image_url %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

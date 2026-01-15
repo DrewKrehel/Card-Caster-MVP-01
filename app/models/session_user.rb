@@ -24,5 +24,5 @@ class SessionUser < ApplicationRecord
   belongs_to :session
   belongs_to :user
 
-  enum role: { host: 0, player: 1, observer: 2 }
+  #enum role: { host: 0, player: 1, observer: 2 }
 end
