@@ -5,13 +5,13 @@
 #  id                     :bigint           not null, primary key
 #  avatar_image           :string(255)
 #  bio                    :text
-#  email                  :string           default(""), not null
+#  email                  :citext           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  private                :boolean          default(FALSE), not null
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
-#  username               :string(32)       not null
+#  username               :citext           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
