@@ -11,18 +11,18 @@
 #  summary      :text
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  owner_id     :bigint           not null
+#  creator_id   :bigint           not null
 #
 # Indexes
 #
-#  index_projects_on_owner_id  (owner_id)
+#  index_projects_on_creator_id  (creator_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (owner_id => users.id)
+#  fk_rails_...  (creator_id => users.id)
 #
 class Project < ApplicationRecord
-  belongs_to :owner, required: true, class_name: "User", foreign_key: "owner_id"
+  belongs_to :creator, required: true, class_name: "User", foreign_key: "creator_id"
 
   has_many  :sessions, class_name: "Session", foreign_key: "project_id", dependent: :destroy
 end

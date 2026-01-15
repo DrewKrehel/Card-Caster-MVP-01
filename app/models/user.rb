@@ -28,8 +28,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
 
-  has_many :projects, class_name: "Project", foreign_key: :owner_id, dependent: :destroy
+  has_many :projects, class_name: "Project", foreign_key: :creator_id, dependent: :destroy
   has_many :active_sessions, class_name: "SessionUser", foreign_key: "user_id", dependent: :nullify
   has_many :sessions, class_name: "Session", foreign_key: "creator_user_id", dependent: :destroy
-
 end

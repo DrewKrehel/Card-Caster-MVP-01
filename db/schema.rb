@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_15_154821) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_15_164340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
 
   create_table "projects", force: :cascade do |t|
-    t.bigint "owner_id", null: false
+    t.bigint "creator_id", null: false
     t.string "project_name"
     t.text "summary"
     t.text "how_to_play"
@@ -25,7 +25,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_154821) do
     t.boolean "private", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_id"], name: "index_projects_on_owner_id"
+    t.index ["creator_id"], name: "index_projects_on_creator_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "owner_id", null: false
+    t.string "name"
+    t.boolean "private"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_sessions_on_owner_id"
+    t.index ["project_id"], name: "index_sessions_on_project_id"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -187,7 +198,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_154821) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "projects", "users", column: "owner_id"
+  add_foreign_key "projects", "users", column: "creator_id"
+  add_foreign_key "sessions", "projects"
+  add_foreign_key "sessions", "users", column: "owner_id"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
