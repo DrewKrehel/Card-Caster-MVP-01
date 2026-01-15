@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_15_164340) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_15_172040) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -26,6 +26,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_164340) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_projects_on_creator_id"
+  end
+
+  create_table "session_users", force: :cascade do |t|
+    t.bigint "session_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id", "user_id"], name: "index_session_users_on_session_id_and_user_id", unique: true
+    t.index ["session_id"], name: "index_session_users_on_session_id"
+    t.index ["user_id"], name: "index_session_users_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -199,6 +210,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_164340) do
   end
 
   add_foreign_key "projects", "users", column: "creator_id"
+  add_foreign_key "session_users", "sessions"
+  add_foreign_key "session_users", "users"
   add_foreign_key "sessions", "projects"
   add_foreign_key "sessions", "users", column: "owner_id"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

@@ -1,0 +1,11 @@
+<% content_for :title, "New session user" %>
+
+<h1>New session user</h1>
+
+<%= render "form", session_user: @session_user %>
+
+<br>
+
+<div>
+  <%= link_to "Back to session users", session_users_path %>
+</div>

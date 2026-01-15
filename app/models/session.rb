@@ -24,6 +24,7 @@ class Session < ApplicationRecord
   belongs_to :project, required: true, class_name: "Project", foreign_key: "project_id"
   belongs_to :owner, required: true, class_name: "User", foreign_key: "owner_id"
 
-  has_many  :session_users, class_name: "SessionUser", foreign_key: "session_id", dependent: :destroy
-  has_many  :session_cards, class_name: "SessionCard", foreign_key: "session_id", dependent: :destroy
+  has_many :session_users, class_name: "SessionUser", foreign_key: "session_id", dependent: :destroy
+  has_many :users, through: :session_users
+  has_many :session_cards, class_name: "SessionCard", foreign_key: "session_id", dependent: :destroy
 end

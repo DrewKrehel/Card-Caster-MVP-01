@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @session_user %>
+
+<div>
+  <%= link_to "Edit this session user", edit_session_user_path(@session_user) %> |
+  <%= link_to "Back to session users", session_users_path %>
+
+  <%= button_to "Destroy this session user", @session_user, method: :delete %>
+</div>
