@@ -21,7 +21,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Session < ApplicationRecord
-  belongs_to :project, required: true, class_name: "Project", foreign_key: "project_id"
+  belongs_to :project, required: true
   belongs_to :owner, required: true, class_name: "User", foreign_key: "owner_id"
 
   has_many :session_users, dependent: :destroy
