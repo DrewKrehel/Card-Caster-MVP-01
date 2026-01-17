@@ -29,9 +29,10 @@ class PlayingCard < ApplicationRecord
 
   enum orientation: { normal: 0, rotated90: 1, rotated180: 2, rotated270: 3 }
 
-  validates :suit, presence: true, inclusion: { in: ["hearts", "diamonds", "clubs", "spades"] }
-  validates :rank, presence: true, inclusion: { in: ["A","2","3","4","5","6","7","8","9","10","J","Q","K"] }
-  validates :zone_name, inclusion: { in: ["Neutral", "Player 1", "Player 2", "Player 3", "Player 4"] }
+  validates :suit, presence: true, inclusion: { in: %w[hearts diamonds clubs spades] }
+  validates :rank, presence: true, inclusion: { in: %w[A 2 3 4 5 6 7 8 9 10 J Q K] }
+  validates :zone_name, presence: true, inclusion: { in: ["Neutral", "Player 1", "Player 2", "Player 3", "Player 4"] }
+  validates :session, presence: true
 
   def card_name
     "#{rank} of #{suit.capitalize}"

@@ -24,5 +24,10 @@
 class Project < ApplicationRecord
   belongs_to :creator, required: true, class_name: "User", foreign_key: "creator_id"
 
-  has_many  :sessions, class_name: "Session", foreign_key: "project_id", dependent: :destroy
+  has_many :owned_sessions, class_name: "Session", foreign_key: "project_id", dependent: :destroy
+
+  validates :project_name, presence: true, uniqueness: { scope: :creator_id }, length: { maximum: 100 }
+  validates :summary, length: { maximum: 500 }, allow_blank: true
+  validates :image, url: true, allow_blank: true
+  validates :creator, presence: true
 end

@@ -28,27 +28,7 @@ class Session < ApplicationRecord
   has_many :users, through: :session_users
   has_many :playing_cards, dependent: :destroy
 
-  after_create :populate_deck
-
-  private
-
-  def populate_deck
-    suits = %w[hearts diamonds clubs spades]
-    ranks = %w[A 2 3 4 5 6 7 8 9 10 J Q K]
-
-    suits.each do |suit|
-      ranks.each do |rank|
-        playing_cards.create!(
-          suit: suit,
-          rank: rank,
-          zone_name: "Neutral",
-          face_up: false,
-          orientation: 0,
-          position: nil,
-          image_url: nil,
-          back_image_url: nil
-        )
-      end
-    end
-  end
+  validates :session_name, presence: true, uniqueness: { scope: :project_id }, length: { maximum: 100 }
+  validates :project, presence: true
+  validates :owner, presence: true
 end

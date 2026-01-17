@@ -32,4 +32,8 @@ class User < ApplicationRecord
   has_many :owned_sessions, class_name: "Session", foreign_key: "owner_id", dependent: :destroy
   has_many :session_users, dependent: :destroy
   has_many :active_sessions, through: :session_users
+
+  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 30 }
+  validates :avatar_image, url: true, allow_blank: true
+  validates :bio, length: { maximum: 500 }, allow_blank: true
 end
