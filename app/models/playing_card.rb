@@ -34,6 +34,12 @@ class PlayingCard < ApplicationRecord
   validates :zone_name, presence: true, inclusion: { in: ["Neutral", "Player 1", "Player 2", "Player 3", "Player 4"] }
   validates :session, presence: true
 
+  scope :in_zone, ->(zone_name) { where(zone_name: zone_name) }
+  scope :face_up, -> { where(face_up: true) }
+  scope :ordered, -> { order(:position) }
+  scope :with_suit, ->(suit) { where(suit: suit) }
+  scope :with_rank, ->(rank) { where(rank: rank) }
+
   def card_name
     "#{rank} of #{suit.capitalize}"
   end

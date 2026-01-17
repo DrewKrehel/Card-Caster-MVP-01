@@ -28,4 +28,9 @@ class SessionUser < ApplicationRecord
 
   validates :role, presence: true
   validates :user_id, uniqueness: { scope: :session_id, message: "already joined this session" }
+
+  scope :hosts, -> { where(role: :host) }
+  scope :players, -> { where(role: :player) }
+  scope :observers, -> { where(role: :observer) }
+  scope :for_session, ->(session_id) { where(session_id: session_id) }
 end

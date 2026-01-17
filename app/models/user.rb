@@ -36,4 +36,7 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 30 }
   validates :avatar_image, url: true, allow_blank: true
   validates :bio, length: { maximum: 500 }, allow_blank: true
+
+  scope :public_users, -> { where(private: false) }
+  scope :with_username, ->(name) { where('LOWER(username) = ?', name.downcase) }
 end

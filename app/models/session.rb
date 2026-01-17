@@ -31,4 +31,7 @@ class Session < ApplicationRecord
   validates :session_name, presence: true, uniqueness: { scope: :project_id }, length: { maximum: 100 }
   validates :project, presence: true
   validates :owner, presence: true
+
+  scope :owned_by, ->(user_id) { where(owner_id: user_id) }
+  scope :for_project, ->(project_id) { where(project_id: project_id) }
 end
