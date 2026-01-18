@@ -36,6 +36,7 @@ class PlayingCard < ApplicationRecord
 
   scope :in_zone, ->(zone_name) { where(zone_name: zone_name) }
   scope :face_up, -> { where(face_up: true) }
+  scope :face_down, -> { where(face_up: false) }
   scope :ordered, -> { order(:position) }
   scope :with_suit, ->(suit) { where(suit: suit) }
   scope :with_rank, ->(rank) { where(rank: rank) }
