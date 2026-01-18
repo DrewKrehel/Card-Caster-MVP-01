@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :sessions
   resources :projects
 
-  get "/users" => "users#index", as: :user
+  get "/users" => "users#index", as: :users
   get "/users/:username" => "users#show", as: :user
  
 
