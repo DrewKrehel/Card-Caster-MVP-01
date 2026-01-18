@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # This is a blank app! Pick your first screen, build out the RCAV, and go from there. E.g.:
+  # get("/your_first_screen", { :controller => "pages", :action => "first" })
+  
   root "projects#index"
   
   devise_for :users
@@ -6,7 +9,9 @@ Rails.application.routes.draw do
   resources :session_users
   resources :sessions
   resources :projects
-  # This is a blank app! Pick your first screen, build out the RCAV, and go from there. E.g.:
-  # get("/your_first_screen", { :controller => "pages", :action => "first" })
+
+  get "/users" => "users#index", as: :user
+  get "/users/:username" => "users#show", as: :user
+ 
 
 end
