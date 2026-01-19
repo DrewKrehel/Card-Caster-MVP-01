@@ -1,5 +1,4 @@
 class ProjectsController < ApplicationController
-  before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_project, only: %i[ show edit update destroy ]
 
   # GET /projects or /projects.json
@@ -66,6 +65,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.expect(project: [ :owner_id, :project_name, :summary, :how_to_play, :max_players, :image, :private ])
+      params.expect(project: [ :creator_id, :name, :summary, :how_to_play, :max_players, :image, :private ])
     end
 end
