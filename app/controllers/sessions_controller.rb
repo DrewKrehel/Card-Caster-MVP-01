@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_session, only: %i[ show edit update destroy ]
 
   # GET /sessions or /sessions.json
@@ -8,6 +9,7 @@ class SessionsController < ApplicationController
 
   # GET /sessions/1 or /sessions/1.json
   def show
+    @session = Session.find(params[:id])
   end
 
   # GET /sessions/new
