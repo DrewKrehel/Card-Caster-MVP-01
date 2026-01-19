@@ -21,8 +21,8 @@ task sample_data: :environment do
 
     users << User.create!(
       email: "#{username}@example.com",
-      password: "password123",
-      password_confirmation: "password123",
+      password: DEFAULT_PASSWORD,
+      password_confirmation: DEFAULT_PASSWORD,
       username: username,
       bio: Faker::Lorem.paragraph(sentence_count: 3),
       private: false,
@@ -34,7 +34,7 @@ task sample_data: :environment do
   users.each do |user|
     3.times do
       user.projects.create!(
-        project_name: Faker::Game.unique.title,
+        name: Faker::Game.unique.title,
         summary: Faker::Lorem.paragraph(sentence_count: 2),
       )
     end

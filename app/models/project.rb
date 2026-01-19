@@ -26,7 +26,7 @@ class Project < ApplicationRecord
 
   has_many :game_sessions, dependent: :destroy
 
-  validates :project_name, presence: true, uniqueness: { scope: :creator_id }, length: { maximum: 100 }
+  validates :name, presence: true, uniqueness: { scope: :creator_id }, length: { maximum: 100 }
   validates :summary, length: { maximum: 500 }, allow_blank: true
   validates :image, url: true, allow_blank: true
   validates :creator, presence: true
