@@ -27,6 +27,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  mount_uploader :image, ImageUploader
+
   has_many :projects, class_name: "Project", foreign_key: "creator_id", dependent: :destroy
   has_many :owned_sessions, class_name: "GameSession", foreign_key: "owner_id", dependent: :destroy
   has_many :session_users, dependent: :destroy

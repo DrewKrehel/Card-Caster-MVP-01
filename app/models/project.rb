@@ -22,6 +22,8 @@
 #  fk_rails_...  (creator_id => users.id)
 #
 class Project < ApplicationRecord
+  mount_uploader :image, ImageUploader
+  
   belongs_to :creator, required: true, class_name: "User", foreign_key: "creator_id"
 
   has_many :game_sessions, dependent: :destroy
