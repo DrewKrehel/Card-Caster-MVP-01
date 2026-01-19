@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :session_users
-  resources :sessions
+  resources :game_sessions, controller: "sessions"
   resources :projects
 
   get "/users" => "users#index", as: :users
