@@ -23,4 +23,14 @@
 class SessionUser < ApplicationRecord
   belongs_to :game_session
   belongs_to :user
+
+  enum role: { host: 0, player: 1, observer: 2 }
+
+  validates :role, presence: true
+  validates :user_id, uniqueness: { scope: :game_session_id, message: "already joined this session" }
+
+  scope :hosts, -> { where(role: :host) }
+  scope :players, -> { where(role: :player) }
+  scope :observers, -> { where(role: :observer) }
+  scope :for_game_session, ->(game_session_id) { where(game_session_id: game_session_id) }
 end

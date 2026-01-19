@@ -21,6 +21,17 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class GameSession < ApplicationRecord
-  belongs_to :project
-  belongs_to :owner
+  belongs_to :project, required: true
+  belongs_to :owner, required: true, class_name: "User", foreign_key: "owner_id"
+
+  has_many :session_users, dependent: :destroy
+  has_many :users, through: :session_users
+  has_many :playing_cards, dependent: :destroy
+
+  validates :session_name, presence: true, uniqueness: { scope: :project_id }, length: { maximum: 100 }
+  validates :project, presence: true
+  validates :owner, presence: true
+
+  scope :owned_by, ->(user_id) { where(owner_id: user_id) }
+  scope :for_project, ->(project_id) { where(project_id: project_id) }
 end

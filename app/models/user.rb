@@ -26,4 +26,16 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  has_many :projects, class_name: "Project", foreign_key: "creator_id", dependent: :destroy
+  has_many :owned_sessions, class_name: "GameSession", foreign_key: "owner_id", dependent: :destroy
+  has_many :session_users, dependent: :destroy
+  has_many :active_sessions, through: :session_users
+
+  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 30 }
+  validates :avatar_image, url: true, allow_blank: true
+  validates :bio, length: { maximum: 500 }, allow_blank: true
+
+  scope :public_users, -> { where(private: false) }
+  scope :with_username, ->(name) { where('LOWER(username) = ?', name.downcase) }
 end
