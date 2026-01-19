@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_19_183213) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_19_185831) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -24,6 +24,22 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_19_183213) do
     t.datetime "updated_at", null: false
     t.index ["owner_id"], name: "index_game_sessions_on_owner_id"
     t.index ["project_id"], name: "index_game_sessions_on_project_id"
+  end
+
+  create_table "playing_cards", force: :cascade do |t|
+    t.bigint "game_session_id", null: false
+    t.string "suit", null: false
+    t.string "rank", null: false
+    t.string "zone_name", null: false
+    t.boolean "face_up", default: false
+    t.integer "orientation", default: 0
+    t.integer "position"
+    t.string "image_url"
+    t.string "back_image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_session_id", "zone_name", "position"], name: "idx_on_game_session_id_zone_name_position_682e3c4900"
+    t.index ["game_session_id"], name: "index_playing_cards_on_game_session_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -69,6 +85,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_19_183213) do
 
   add_foreign_key "game_sessions", "projects"
   add_foreign_key "game_sessions", "users", column: "owner_id"
+  add_foreign_key "playing_cards", "game_sessions"
   add_foreign_key "projects", "users", column: "creator_id"
   add_foreign_key "session_users", "game_sessions"
   add_foreign_key "session_users", "users"

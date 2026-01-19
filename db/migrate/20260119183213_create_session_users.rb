@@ -11,3 +11,5 @@ class CreateSessionUsers < ActiveRecord::Migration[8.0]
     add_index :session_users, [:game_session_id, :user_id], unique: true
   end
 end
+
+
