@@ -3,7 +3,7 @@
 # Table name: session_users
 #
 #  id              :bigint           not null, primary key
-#  role            :integer
+#  role            :integer          default(2), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  game_session_id :bigint           not null
@@ -24,7 +24,7 @@ class SessionUser < ApplicationRecord
   belongs_to :game_session
   belongs_to :user
 
-  enum role: { host: 0, player: 1, observer: 2 }
+  #enum role: { host: 0, player: 1, observer: 2 }
 
   validates :role, presence: true
   validates :user_id, uniqueness: { scope: :game_session_id, message: "already joined this session" }
