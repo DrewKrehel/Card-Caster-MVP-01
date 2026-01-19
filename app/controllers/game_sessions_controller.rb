@@ -1,4 +1,5 @@
 class GameSessionsController < ApplicationController
+  before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_game_session, only: %i[ show edit update destroy ]
 
   # GET /game_sessions or /game_sessions.json
