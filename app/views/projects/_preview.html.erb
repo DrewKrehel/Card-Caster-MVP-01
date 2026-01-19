@@ -1,0 +1,18 @@
+<div class="row mb-4">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <%= image_tag project.image_url, class: "card-img-top" %>
+      <div class="card-body">
+        <h5 class="card-title"><%= project.creator.username %></h5>
+        <p class="card-text"><%= project.summary %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Comment</li>
+      </ul>
+      <div class="card-body">
+        <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,40 +1,29 @@
-<h1>
-  <%= @user.username %>
-</h1>
+<div class="flex-shrink-0 w-25">
+  <%= image_tag @user.avatar_image_url, class: "me-3 rounded-circle img-cover img-medium" %>
+</div>
+
+<!--Username-->
+<div class="d-flex justify-content-between align-items-center">
+  <h1 class="mt-0 mb-3 display-4"><%= @user.username %></h1>
+
+  <div>
+    <span class="badge text-bg-secondary">
+      <%= @user.private? ? "Private" : "Public" %>
+    </span>
+  </div>
+</div>
+
+<!--Bio-->
+<div class="row mb-3">
+  <h2><%= @user.username %></h2>
+  <p><%= @user.bio %></p>
+  <!--<a href=""><%#= @user.website %></a>-->
+</div>
 
 <h2>Own projects</h2>
 
 <ul>
   <% @user.own_projects.each do |project| %>
-    <div class="row mb-4">
-      <div class="col-md-6 offset-md-3">
-        <div class="card">
-          <%= image_tag project.image_url, class: "card-img-top" %>
-          <div class="card-body">
-            <h5 class="card-title"><%= project.creator.username %></h5>
-            <p class="card-text"><%= project.summary %></p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <%# project.comments.each do |comment| %>
-<!--              <li class="list-group-item">
-                <div class="d-flex">
-                  <div class="flex-shrink-0">
-                    <img src="..." alt="...">
-                  </div>
-                  <div class="flex-grow-1 ms-3">
-                    <h5 class="mt-0"><%#= comment.author.username %></h5>
-                    <p><%#= comment.body %></p>
-                  </div>
-                </div>
-              </li>
-            <%# end %>-->
-          </ul>
-          <div class="card-body">
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render "projects/project", project: project %>
   <% end %>
 </ul>

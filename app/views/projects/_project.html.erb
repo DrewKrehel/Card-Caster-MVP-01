@@ -26,7 +26,9 @@
 
   <p>
     <strong>Image:</strong>
-    <%= image_tag project.image_url %>
+    <%= image_tag(
+      project.image? ? project.image_url : "placeholder.jpg"
+    ) %>
   </p>
 
   <p>
