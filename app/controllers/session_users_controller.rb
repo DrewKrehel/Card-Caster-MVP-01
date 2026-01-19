@@ -65,6 +65,6 @@ class SessionUsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def session_user_params
-      params.expect(session_user: [ :session_id, :user_id, :role ])
+      params.expect(session_user: [ :game_session_id, :user_id, :role ])
     end
 end

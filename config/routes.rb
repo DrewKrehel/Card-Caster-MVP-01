@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :session_users
+  resources :game_sessions
   # This is a blank app! Pick your first screen, build out the RCAV, and go from there. E.g.:
   # get("/your_first_screen", { :controller => "pages", :action => "first" })
   
@@ -6,7 +8,6 @@ Rails.application.routes.draw do
   
   devise_for :users
 
-  resources :session_users
   resources :game_sessions, controller: "sessions"
   resources :projects
 
@@ -15,3 +16,4 @@ Rails.application.routes.draw do
  
 
 end
+
