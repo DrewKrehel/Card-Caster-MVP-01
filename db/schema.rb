@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_19_181855) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_19_182627) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "game_sessions", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "owner_id", null: false
+    t.string "name"
+    t.boolean "private"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_game_sessions_on_owner_id"
+    t.index ["project_id"], name: "index_game_sessions_on_project_id"
+  end
 
   create_table "projects", force: :cascade do |t|
     t.bigint "creator_id", null: false
@@ -45,5 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_19_181855) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "game_sessions", "projects"
+  add_foreign_key "game_sessions", "users", column: "owner_id"
   add_foreign_key "projects", "users", column: "creator_id"
 end
