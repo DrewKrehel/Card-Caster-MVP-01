@@ -34,4 +34,13 @@ class GameSession < ApplicationRecord
 
   scope :owned_by, ->(user_id) { where(owner_id: user_id) }
   scope :for_project, ->(project_id) { where(project_id: project_id) }
+
+  after_create :populate_standard_deck
+
+  private
+
+  def populate_standard_deck
+    DeckService.new(self, template_source: StandardDeckTemplate.new).build_deck
+    DeckService.new(self, template_source: StandardDeckTemplate.new).shuffle!
+  end
 end
