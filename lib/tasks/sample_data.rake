@@ -1,6 +1,8 @@
 # lib/tasks/sample_data.rake
 require "faker"
 
+DEFAULT_PASSWORD = "password123"
+
 desc "Fill the database with sample Card Caster data"
 task sample_data: :environment do
   starting = Time.now
@@ -19,10 +21,11 @@ task sample_data: :environment do
 
     users << User.create!(
       email: "#{username}@example.com",
-      password: "password",
+      password: "password123",
+      password_confirmation: "password123",
       username: username,
       bio: Faker::Lorem.paragraph(sentence_count: 3),
-      private: [true, false].sample
+      private: false,
     )
   end
 
@@ -32,7 +35,7 @@ task sample_data: :environment do
     3.times do
       user.projects.create!(
         project_name: Faker::Game.unique.title,
-        summary: Faker::Lorem.paragraph(sentence_count: 2)
+        summary: Faker::Lorem.paragraph(sentence_count: 2),
       )
     end
   end
@@ -43,4 +46,3 @@ task sample_data: :environment do
   puts "Users: #{User.count}"
   puts "Projects: #{Project.count}"
 end
-
