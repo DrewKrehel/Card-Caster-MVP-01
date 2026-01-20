@@ -27,7 +27,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  mount_uploader :image, ImageUploader
+  mount_uploader :avatar_image, ImageUploader
 
   has_many :projects, class_name: "Project", foreign_key: "creator_id", dependent: :destroy
   has_many :owned_sessions, class_name: "GameSession", foreign_key: "owner_id", dependent: :destroy
@@ -35,7 +35,6 @@ class User < ApplicationRecord
   has_many :active_sessions, through: :session_users
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 30 }
-  validates :avatar_image, url: true, allow_blank: true
   validates :bio, length: { maximum: 500 }, allow_blank: true
 
   scope :public_users, -> { where(private: false) }

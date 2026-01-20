@@ -1,5 +1,8 @@
 <div class="flex-shrink-0 w-25">
-  <%= image_tag @user.avatar_image_url, class: "me-3 rounded-circle img-cover img-medium" %>
+  <%= image_tag(
+        @user.avatar_image? ? @user.avatar_image_url : "default-avatar.jpg",
+        class: "me-3 rounded-circle img-cover img-medium"
+      ) %>
 </div>
 
 <!--Username-->
@@ -23,7 +26,7 @@
 <h2>Own projects</h2>
 
 <ul>
-  <% @user.own_projects.each do |project| %>
+  <% @user.projects.each do |project| %>
     <%= render "projects/project", project: project %>
   <% end %>
 </ul>
