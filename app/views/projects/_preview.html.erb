@@ -1,7 +1,10 @@
 <div class="row mb-4">
   <div class="col-md-6 offset-md-3">
     <div class="card">
-      <%= image_tag project.image_url, class: "card-img-top" %>
+      <%= image_tag(
+      project.image? ? project.image_url : "placeholder.jpg", class: "card-img-top"
+    ) %>
+      <%#= image_tag project.image_url, class: "card-img-top" %>
       <div class="card-body">
         <h5 class="card-title"><%= project.creator.username %></h5>
         <p class="card-text"><%= project.summary %></p>

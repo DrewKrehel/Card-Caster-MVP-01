@@ -27,6 +27,6 @@
 
 <ul>
   <% @user.projects.each do |project| %>
-    <%= render "projects/project", project: project %>
+    <%= render "projects/preview", project: project %>
   <% end %>
 </ul>
