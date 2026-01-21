@@ -40,7 +40,8 @@ class GameSession < ApplicationRecord
   private
 
   def populate_standard_deck
-    DeckService.new(self, template_source: StandardDeckTemplate.new).build_deck
-    DeckService.new(self, template_source: StandardDeckTemplate.new).shuffle!
+    deck_service = DeckService.new(self, template_source: StandardDeckTemplate.new)
+    deck_service.build_deck
+    deck_service.shuffle!
   end
 end

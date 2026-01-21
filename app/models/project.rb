@@ -30,7 +30,6 @@ class Project < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { scope: :creator_id }, length: { maximum: 100 }
   validates :summary, length: { maximum: 500 }, allow_blank: true
-  validates :image, url: true, allow_blank: true
   validates :creator, presence: true
 
   scope :public_projects, -> { where(private: false) }

@@ -28,7 +28,7 @@ class PlayingCard < ApplicationRecord
   belongs_to :game_session
 
   attribute :face_up, :boolean, default: false
-  attribute :orientation, :integer, default: 0
+  # attribute :orientation, :integer, default: 0
 
   enum orientation: { normal: 0, rotated90: 1, rotated180: 2, rotated270: 3 }
 

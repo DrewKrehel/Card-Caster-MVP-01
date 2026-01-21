@@ -23,15 +23,19 @@ class GameSessionsController < ApplicationController
   # POST /game_sessions or /game_sessions.json
   def create
     @game_session = GameSession.new(game_session_params)
+    @game_session.owner = current_user
 
-    respond_to do |format|
-      if @game_session.save
-        format.html { redirect_to @game_session, notice: "Game session was successfully created." }
-        format.json { render :show, status: :created, location: @game_session }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @game_session.errors, status: :unprocessable_entity }
-      end
+    if @game_session.save
+      SessionUser.create!(
+        game_session: @game_session,
+        user: current_user,
+        role: :host,
+      )
+
+      redirect_to @game_session, notice: "Game session started."
+    else
+      redirect_back fallback_location: projects_path,
+                    alert: @game_session.errors.full_messages.to_sentence
     end
   end
 
@@ -59,13 +63,14 @@ class GameSessionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_game_session
-      @game_session = GameSession.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def game_session_params
-      params.expect(game_session: [ :project_id, :owner_id, :name, :private ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_game_session
+    @game_session = GameSession.find(params.expect(:id))
+  end
+
+  # Only allow a list of trusted parameters through.
+  def game_session_params
+    params.expect(game_session: [:project_id, :name, :private])
+  end
 end

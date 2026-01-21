@@ -9,6 +9,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1 or /projects/1.json
   def show
+    @game_sessions = @project.game_sessions.includes(:owner)
   end
 
   # GET /projects/new
