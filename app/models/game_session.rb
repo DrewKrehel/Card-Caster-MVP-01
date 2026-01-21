@@ -28,7 +28,7 @@ class GameSession < ApplicationRecord
   has_many :users, through: :session_users
   has_many :playing_cards, dependent: :destroy
 
-  validates :session_name, presence: true, uniqueness: { scope: :project_id }, length: { maximum: 100 }
+  validates :name, presence: true, uniqueness: { scope: :project_id }, length: { maximum: 100 }
   validates :project, presence: true
   validates :owner, presence: true
 
