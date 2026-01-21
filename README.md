@@ -54,6 +54,14 @@ Open an issue to discuss bugs, improvements, or new features before starting lar
             │           ├─ position
             │           └─ orientation
 
+            User
+            ├── Projects
+            │   └── GameSessions
+            │       ├── SessionUsers
+            │       │   └── User
+            │       └── PlayingCards
+
+
 ## API Documentation (for projects providing their own API endpoints): 
 Is there clear and detailed documentation for the project's API? This should include descriptions of all endpoints, request/response formats, and authentication methods.
 
