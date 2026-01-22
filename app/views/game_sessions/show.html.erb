@@ -1,10 +1,19 @@
-<p style="color: green"><%= notice %></p>
-
 <%= render @game_session %>
 
-<div>
-  <%= link_to "Edit this game session", edit_game_session_path(@game_session) %> |
-  <%= link_to "Back to game sessions", game_sessions_path %>
+<div class="mt-3">
+  <%= link_to "Back to #{@game_session.project.name}",
+              project_path(@game_session.project),
+              class: "btn btn-secondary" %>
 
-  <%= button_to "Destroy this game session", @game_session, method: :delete %>
+  <% if @game_session.owner == current_user %>
+    <%= link_to "Edit Session",
+                edit_game_session_path(@game_session),
+                class: "btn btn-outline-primary" %>
+
+    <%= button_to "Destroy Session",
+                  @game_session,
+                  method: :delete,
+                  data: { confirm: "Are you sure?" },
+                  class: "btn btn-danger" %>
+  <% end %>
 </div>

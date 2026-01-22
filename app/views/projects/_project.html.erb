@@ -68,19 +68,29 @@
           </div>
 
           <div class="d-flex gap-2">
-            <% joined = session.session_users.exists?(user_id: current_user.id) %>
+            <% session_user = session.session_users.find_by(user: current_user) %>
 
-            <% if joined %>
-              <!-- Return to existing session -->
+            <% if session_user.present? %>
+              <!-- Already joined (any role) -->
               <%= link_to "Enter Session",
                         game_session_path(session),
                         class: "btn btn-sm btn-success" %>
+
+              <span class="badge bg-secondary text-uppercase">
+                <%= session_user.role %>
+              </span>
             <% else %>
-              <!-- Join session -->
-              <%= button_to "Join Session",
-                          join_game_session_path(session),
+              <!-- Join as player -->
+              <%= button_to "Join as Player",
+                          join_game_session_path(session, role: :player),
                           method: :post,
                           class: "btn btn-sm btn-primary" %>
+
+              <!-- Join as observer -->
+              <%= button_to "Join as Observer",
+                          join_game_session_path(session, role: :observer),
+                          method: :post,
+                          class: "btn btn-sm btn-outline-secondary" %>
             <% end %>
 
             <!-- Delete button (owner only) -->

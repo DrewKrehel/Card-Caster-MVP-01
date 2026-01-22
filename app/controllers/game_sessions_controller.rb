@@ -5,17 +5,16 @@ class GameSessionsController < ApplicationController
   def join
     @game_session = GameSession.find(params[:id])
 
-    SessionUser.find_or_create_by!(
+    SessionUser.create!(
       game_session: @game_session,
       user: current_user,
-    ) do |session_user|
-      session_user.role = :player
-    end
+      role: params[:role] || :player,
+    )
 
-    redirect_to @game_session, notice: "You joined the session."
+    redirect_to @game_session, notice: "Joined session as #{params[:role] || "player"}."
   rescue ActiveRecord::RecordInvalid => e
-    redirect_back fallback_location: project_path(@game_session.project),
-                  alert: e.message
+    redirect_back fallback_location: projects_path,
+                  alert: e.record.errors.full_messages.to_sentence
   end
 
   # GET /game_sessions or /game_sessions.json
