@@ -54,4 +54,49 @@
         class: "btn btn-outline-secondary" %>
   <% end %>
 
+  <h2 class="mt-4">Active Game Sessions</h2>
+
+  <% if @game_sessions.any? %>
+    <ul class="list-group">
+      <% @game_sessions.each do |session| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong><%= session.name %></strong>
+            <small class="text-muted">
+              — Host: <%= session.owner.username %>
+            </small>
+          </div>
+
+          <div class="d-flex gap-2">
+            <% joined = session.session_users.exists?(user_id: current_user.id) %>
+
+            <% if joined %>
+              <!-- Return to existing session -->
+              <%= link_to "Enter Session",
+                        game_session_path(session),
+                        class: "btn btn-sm btn-success" %>
+            <% else %>
+              <!-- Join session -->
+              <%= button_to "Join Session",
+                          join_game_session_path(session),
+                          method: :post,
+                          class: "btn btn-sm btn-primary" %>
+            <% end %>
+
+            <!-- Delete button (owner only) -->
+            <% if session.owner == current_user %>
+              <%= button_to "Delete",
+                          game_session_path(session),
+                          method: :delete,
+                          data: { confirm: "Delete this session?" },
+                          class: "btn btn-sm btn-danger" %>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-muted">No active sessions yet.</p>
+  <% end %>
+
 </div>

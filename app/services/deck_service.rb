@@ -31,7 +31,7 @@ class DeckService
       back_image_url: template.back_image_url,
       zone_name: zone_name,
       face_up: false,
-      # orientation: 0,
+      orientation: 0,
       position: nil
     )
   end

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   resources :game_sessions do
     resources :session_users, only: [:create, :update, :destroy]
+    post :join, on: :member
   end
   resources :projects
 

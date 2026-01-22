@@ -2,6 +2,22 @@ class GameSessionsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_game_session, only: %i[ show edit update destroy ]
 
+  def join
+    @game_session = GameSession.find(params[:id])
+
+    SessionUser.find_or_create_by!(
+      game_session: @game_session,
+      user: current_user,
+    ) do |session_user|
+      session_user.role = :player
+    end
+
+    redirect_to @game_session, notice: "You joined the session."
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_back fallback_location: project_path(@game_session.project),
+                  alert: e.message
+  end
+
   # GET /game_sessions or /game_sessions.json
   def index
     @game_sessions = GameSession.all
@@ -9,6 +25,10 @@ class GameSessionsController < ApplicationController
 
   # GET /game_sessions/1 or /game_sessions/1.json
   def show
+    unless @game_session.users.exists?(current_user.id) ||
+           @game_session.owner == current_user
+      redirect_to projects_path, alert: "You are not part of this session."
+    end
   end
 
   # GET /game_sessions/new
