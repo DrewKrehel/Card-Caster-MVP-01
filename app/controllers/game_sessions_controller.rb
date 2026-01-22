@@ -2,53 +2,41 @@ class GameSessionsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_game_session, only: %i[ show edit update destroy ]
 
-  def join
-    @game_session = GameSession.find(params[:id])
-
-    SessionUser.create!(
-      game_session: @game_session,
-      user: current_user,
-      role: params[:role] || :player,
-    )
-
-    redirect_to @game_session, notice: "Joined session as #{params[:role] || "player"}."
-  rescue ActiveRecord::RecordInvalid => e
-    redirect_back fallback_location: projects_path,
-                  alert: e.record.errors.full_messages.to_sentence
+  # POST /game_sessions/:id/join_as_player
+  def join_as_player
+    session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
+    session_user.role = :player
+    session_user.save!
+    redirect_back(fallback_location: project_path(@game_session.project), notice: "Joined as player.")
   end
 
+  # POST /game_sessions/:id/join_as_observer
+  def join_as_observer
+    session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
+    session_user.role = :observer
+    session_user.save!
+    redirect_back(fallback_location: project_path(@game_session.project), notice: "Joined as observer.")
+  end
+
+  # PATCH /game_sessions/:id/toggle_role
   def toggle_role
     session_user = @game_session.session_users.find_by(user: current_user)
-
     return redirect_back(fallback_location: project_path(@game_session.project), alert: "Not part of this session.") unless session_user
 
-    if session_user.host?
-      redirect_to @game_session, alert: "Hosts cannot change roles."
-      return
-    end
-
-    new_role = session_user.player? ? :observer : :player
-    session_user.update!(role: new_role)
-
-    redirect_back(fallback_location: project_path(@game_session.project), notice: "You are now a #{new_role}.")
+    session_user.update!(role: session_user.player? ? :observer : :player)
+    notice = session_user.player? ? "You are now a player." : "You are now an observer."
+    redirect_back(fallback_location: project_path(@game_session.project), notice: notice)
   end
 
+  # DELETE /game_sessions/:id/leave
   def leave
     session_user = @game_session.session_users.find_by(user: current_user)
-
-    unless session_user
-      redirect_to @game_session, alert: "You are not part of this session."
-      return
+    if session_user && session_user.user != @game_session.owner
+      session_user.destroy!
+      redirect_back(fallback_location: project_path(@game_session.project), notice: "You left the session.")
+    else
+      redirect_back(fallback_location: project_path(@game_session.project), alert: "You cannot leave this session.")
     end
-
-    if session_user.host?
-      # Hosts cannot "leave" — they must destroy
-      redirect_to @game_session, alert: "Hosts cannot leave the session. Use 'Destroy Session' instead."
-      return
-    end
-
-    session_user.destroy!
-    redirect_to project_path(@game_session.project), notice: "You have left the session."
   end
 
   # GET /game_sessions or /game_sessions.json
@@ -107,7 +95,7 @@ class GameSessionsController < ApplicationController
 
   # DELETE /game_sessions/1 or /game_sessions/1.json
   def destroy
-    project = @game_session.project 
+    project = @game_session.project
     @game_session.destroy!
 
     respond_to do |format|

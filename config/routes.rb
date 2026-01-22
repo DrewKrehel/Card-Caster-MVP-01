@@ -9,9 +9,12 @@ Rails.application.routes.draw do
 
   resources :game_sessions do
     resources :session_users, only: [:create, :update, :destroy]
-    post :join, on: :member
-    patch :toggle_role
-    delete :leave
+    member do
+      post :join_as_player
+      post :join_as_observer
+      patch :toggle_role   # <--- This creates toggle_role_game_session_path
+      delete :leave        # optional: leaving a session
+    end
   end
   resources :projects
 
