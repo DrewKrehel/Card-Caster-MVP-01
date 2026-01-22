@@ -17,6 +17,40 @@ class GameSessionsController < ApplicationController
                   alert: e.record.errors.full_messages.to_sentence
   end
 
+  def toggle_role
+    session_user = @game_session.session_users.find_by(user: current_user)
+
+    return redirect_back(fallback_location: project_path(@game_session.project), alert: "Not part of this session.") unless session_user
+
+    if session_user.host?
+      redirect_to @game_session, alert: "Hosts cannot change roles."
+      return
+    end
+
+    new_role = session_user.player? ? :observer : :player
+    session_user.update!(role: new_role)
+
+    redirect_back(fallback_location: project_path(@game_session.project), notice: "You are now a #{new_role}.")
+  end
+
+  def leave
+    session_user = @game_session.session_users.find_by(user: current_user)
+
+    unless session_user
+      redirect_to @game_session, alert: "You are not part of this session."
+      return
+    end
+
+    if session_user.host?
+      # Hosts cannot "leave" — they must destroy
+      redirect_to @game_session, alert: "Hosts cannot leave the session. Use 'Destroy Session' instead."
+      return
+    end
+
+    session_user.destroy!
+    redirect_to project_path(@game_session.project), notice: "You have left the session."
+  end
+
   # GET /game_sessions or /game_sessions.json
   def index
     @game_sessions = GameSession.all
@@ -73,10 +107,11 @@ class GameSessionsController < ApplicationController
 
   # DELETE /game_sessions/1 or /game_sessions/1.json
   def destroy
+    project = @game_session.project 
     @game_session.destroy!
 
     respond_to do |format|
-      format.html { redirect_to game_sessions_path, status: :see_other, notice: "Game session was successfully destroyed." }
+      format.html { redirect_to project_path(project), status: :see_other, notice: "Game session was successfully destroyed." }
       format.json { head :no_content }
     end
   end
