@@ -1,13 +1,15 @@
 class GameSessionsController < ApplicationController
-  before_action :authenticate_user!, only: %i[new create edit update destroy]
-  before_action :set_game_session, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, only: %i[ new create edit update destroy ]
+  before_action :set_game_session, only: %i[ show edit update destroy 
+    join_as_player join_as_observer toggle_role leave ]
 
   # POST /game_sessions/:id/join_as_player
   def join_as_player
     session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
     session_user.role = :player
     session_user.save!
-    redirect_back(fallback_location: project_path(@game_session.project), notice: "Joined as player.")
+    redirect_to @game_session, notice: "You joined the session."
+    # redirect_back(fallback_location: project_path(@game_session.project), notice: "Joined as player.")
   end
 
   # POST /game_sessions/:id/join_as_observer
@@ -15,7 +17,8 @@ class GameSessionsController < ApplicationController
     session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
     session_user.role = :observer
     session_user.save!
-    redirect_back(fallback_location: project_path(@game_session.project), notice: "Joined as observer.")
+    redirect_to @game_session, notice: "You joined the session."
+    # redirect_back(fallback_location: project_path(@game_session.project), notice: "Joined as observer.")
   end
 
   # PATCH /game_sessions/:id/toggle_role
@@ -108,7 +111,7 @@ class GameSessionsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_game_session
-    @game_session = GameSession.find(params.expect(:id))
+    @game_session = GameSession.find(params.require(:id))
   end
 
   # Only allow a list of trusted parameters through.
