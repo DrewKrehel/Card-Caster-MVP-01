@@ -13,7 +13,7 @@
 .zone-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 0.75rem;
+  gap: 1.75rem;
 }
 
 /* Grid item — NEVER clips */
