@@ -21,6 +21,7 @@
   position: relative;
   width: 120px;
   height: 180px;
+  overflow: visible; /* important! */
 }
 
 /* Visual card — allowed to overflow */
@@ -45,15 +46,15 @@
   bottom: -2.2rem;
   left: 50%;
   transform: translateX(-50%);
-
   display: flex;
   gap: 0.25rem;
-
   opacity: 0;
   transition: opacity 0.15s ease;
+  z-index: 10;
 }
 
-.card-surface:hover .card-controls {
+/* Hover Over */
+.playing-card:hover .card-controls {
   opacity: 1;
 }
 

@@ -27,10 +27,10 @@
         <% PlayingCard::ZONES.each do |zone| %>
           <% next if zone == current_zone %>
           <li>
-            <%= link_to zone,
+            <%= button_to zone,
                         move_playing_card_path(card, zone_name: zone),
-                        data: { turbo_method: :patch },
-                        class: "dropdown-item" %>
+                        method: :patch,
+                        class: "dropdown-item" %>>
           </li>
         <% end %>
       </ul>
