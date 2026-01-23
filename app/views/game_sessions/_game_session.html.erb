@@ -19,4 +19,36 @@
     <%= game_session.private %>
   </p>
 
+  <hr>
+
+  <h5>Deck:</h5>
+  <div class="row row-cols-6 g-2">
+    <% game_session.playing_cards.ordered.each do |card| %>
+      <div class="col">
+        <div class="card text-center" style="width: 8rem;">
+          <%= image_tag card.display_image, class: "card-img-top" %>
+          <div class="card-body p-1">
+            <p class="card-text mb-1"><%= card.card_name %></p>
+
+            <!-- MVP action buttons -->
+            <div class="d-grid gap-1">
+              <% if card.face_up? %>
+                <%= button_to "Flip Down", flip_card_path(card, face_up: false),
+                              method: :patch,
+                              class: "btn btn-sm btn-outline-secondary" %>
+              <% else %>
+                <%= button_to "Flip Up", flip_card_path(card, face_up: true),
+                              method: :patch,
+                              class: "btn btn-sm btn-outline-primary" %>
+              <% end %>
+
+              <%= button_to "Move to Neutral", move_card_path(card, zone_name: "Neutral"),
+                            method: :patch,
+                            class: "btn btn-sm btn-outline-warning" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

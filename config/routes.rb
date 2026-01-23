@@ -12,11 +12,15 @@ Rails.application.routes.draw do
     member do
       post :join_as_player
       post :join_as_observer
-      patch :toggle_role   # <--- This creates toggle_role_game_session_path
-      delete :leave        # optional: leaving a session
+      patch :toggle_role
+      delete :leave        
     end
   end
   resources :projects
+  resources :playing_cards, only: [] do
+    patch :flip, on: :member
+    patch :move, on: :member
+  end
 
   get "/users" => "users#index", as: :users
   get "/users/:username" => "users#show", as: :user
