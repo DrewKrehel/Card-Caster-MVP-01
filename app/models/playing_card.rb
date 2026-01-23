@@ -49,6 +49,7 @@ class PlayingCard < ApplicationRecord
   end
 
   def display_image
-    ActionController::Base.helpers.asset_path(face_up? ? image_url : back_image_url)
+    face_up? ? image_url : back_image_url
+    # ActionController::Base.helpers.asset_path(face_up? ? image_url : back_image_url)
   end
 end
