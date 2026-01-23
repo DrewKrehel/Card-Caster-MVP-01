@@ -21,10 +21,10 @@ class StandardDeckTemplate
   private
 
   def front_image(suit, rank)
-    "app/assets/images/standard_deck_cards/#{rank}_of_#{suit}.png"
+    "standard_deck_cards/#{rank}_of_#{suit}.png"
   end
 
   def back_image
-    "app/assets/images/standard_deck_cards/card_back.png"    
+    "standard_deck_cards/card_back.png"    
   end
 end

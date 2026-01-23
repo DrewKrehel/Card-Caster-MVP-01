@@ -11,7 +11,11 @@
     <% game_session.playing_cards.ordered.each do |card| %>
       <div class="col">
         <div class="card text-center" style="width: 8rem;">
-          <%= image_tag card.display_image, class: "card-img-top" %>
+          <!-- Card image -->
+          <%#= image_tag asset_path(card.display_image), class: "card-img-top img-fluid" %>
+          <%= image_tag card.display_image, class: "card-img-top img-fluid" %>
+          
+          <!-- Card body -->
           <div class="card-body p-1">
             <p class="card-text mb-1"><%= card.card_name %></p>
 
@@ -20,21 +24,21 @@
               <!-- Flip button -->
               <% if card.face_up? %>
                 <%= button_to "Flip Down",
-                flip_playing_card_path(card, face_up: false),
-                method: :patch,
-                class: "btn btn-sm btn-outline-secondary" %>
+                            flip_playing_card_path(card, face_up: false),
+                            method: :patch,
+                            class: "btn btn-sm btn-outline-secondary" %>
               <% else %>
                 <%= button_to "Flip Up",
-                flip_playing_card_path(card, face_up: true),
-                method: :patch,
-                class: "btn btn-sm btn-outline-primary" %>
+                              flip_playing_card_path(card, face_up: true),
+                              method: :patch,
+                              class: "btn btn-sm btn-outline-primary" %>
               <% end %>
 
               <!-- Move button -->
               <%= button_to "Move to Neutral",
-              move_playing_card_path(card, zone_name: "Neutral"),
-              method: :patch,
-              class: "btn btn-sm btn-outline-warning" %>
+                            move_playing_card_path(card, zone_name: "Neutral"),
+                            method: :patch,
+                            class: "btn btn-sm btn-outline-warning" %>
             </div>
           </div>
         </div>

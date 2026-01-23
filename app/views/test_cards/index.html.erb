@@ -1,0 +1,25 @@
+<h3>Dynamic Card Deck Test</h3>
+
+<div class="row row-cols-6 g-2">
+  <% # Get all PNG images in the standard_deck_cards folder %>
+  <% Dir.glob(Rails.root.join("app/assets/images/standard_deck_cards/*.png")).each do |file_path| %>
+    <% filename = File.basename(file_path) %>
+    <% card_name = filename.gsub(".png", "").humanize %>
+
+    <div class="col">
+      <div class="card text-center" style="width: 8rem;">
+        <%= image_tag "standard_deck_cards/#{filename}", class: "card-img-top img-fluid" %>
+        <div class="card-body p-1">
+          <p class="card-text mb-1"><%= card_name %></p>
+
+          <!-- Dummy buttons for MVP simulation -->
+          <div class="d-grid gap-1">
+            <%= button_to "Flip Up", "#", method: :get, class: "btn btn-sm btn-outline-primary" %>
+            <%= button_to "Move to Neutral", "#", method: :get, class: "btn btn-sm btn-outline-warning" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+

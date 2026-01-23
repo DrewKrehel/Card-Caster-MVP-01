@@ -24,4 +24,7 @@ Rails.application.routes.draw do
 
   get "/users" => "users#index", as: :users
   get "/users/:username" => "users#show", as: :user
+
+  get "test_cards", to: "test_cards#index"
+
 end
