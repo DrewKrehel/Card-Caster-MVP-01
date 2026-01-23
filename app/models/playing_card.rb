@@ -53,4 +53,20 @@ class PlayingCard < ApplicationRecord
   def display_image
     face_up? ? image_url : back_image_url
   end
+
+  def orientation_degrees
+    orientation.delete("rotated").to_i
+  end
+
+  def orientation_cw
+    self.class.orientations.keys[
+      (self.class.orientations[orientation] + 1) % 4
+    ]
+  end
+
+  def orientation_ccw
+    self.class.orientations.keys[
+      (self.class.orientations[orientation] - 1) % 4
+    ]
+  end
 end

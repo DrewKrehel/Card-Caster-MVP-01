@@ -6,54 +6,17 @@
 
   <hr>
 
-  <h5>Deck:</h5>
+  <h5><%= game_session.name %></h5>
 
   <% PlayingCard::ZONES.each do |zone| %>
     <h6 class="mt-4"><%= zone %></h6>
 
-    <div class="row row-cols-6 g-2">
+    <div class="zone-grid">
       <% game_session.playing_cards.in_zone(zone).ordered.each do |card| %>
-        <div class="col">
-          <div class="card text-center" style="width: 8rem;">
-            <%= image_tag card.display_image,
-                        class: "card-img-top img-fluid",
-                        style: "transform: rotate(#{card.orientation.delete('rotated')}deg);" %>
-
-            <div class="card-body p-1">
-              <p class="card-text mb-1 small">
-                <%= card.card_name %>
-              </p>
-
-              <div class="d-grid gap-1">
-                <!-- Flip -->
-                <%= button_to(card.face_up? ? "Flip Down" : "Flip Up",
-                            flip_playing_card_path(card, face_up: !card.face_up),
-                            method: :patch,
-                            class: "btn btn-sm btn-outline-primary") %>
-
-                <!-- Move -->
-                <div class="btn-group">
-                  <% PlayingCard::ZONES.each do |target_zone| %>
-                    <% next if target_zone == zone %>
-                    <%= button_to target_zone,
-                                move_playing_card_path(card, zone_name: target_zone),
-                                method: :patch,
-                                class: "btn btn-sm btn-outline-secondary" %>
-                  <% end %>
-                </div>
-
-                <!-- Orientation -->
-                <div class="btn-group">
-                  <% PlayingCard.orientations.keys.each do |dir| %>
-                    <%= button_to dir,
-                                rotate_playing_card_path(card, orientation: dir),
-                                method: :patch,
-                                class: "btn btn-sm btn-outline-dark #{'active' if card.orientation == dir}" %>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="card-slot">
+          <%= render "playing_cards/playing_card",
+                   card: card,
+                   current_zone: zone %>
         </div>
       <% end %>
     </div>

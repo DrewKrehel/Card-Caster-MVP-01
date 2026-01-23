@@ -9,17 +9,64 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
- /* .card-img-top.rotate-rotated90 {
-  transform: rotate(90deg);
+/* Grid layout */
+.zone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
 }
 
-.card-img-top.rotate-rotated180 {
-  transform: rotate(180deg);
+/* Grid item — NEVER clips */
+.card-slot {
+  position: relative;
+  width: 120px;
+  height: 180px;
 }
 
-.card-img-top.rotate-rotated270 {
-  transform: rotate(270deg);
-} */
+/* Visual card — allowed to overflow */
+.card-surface {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+/* Image rotates freely */
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+/* Controls float OUTSIDE the card */
+.card-controls {
+  position: absolute;
+  bottom: -2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 0.25rem;
+
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.card-surface:hover .card-controls {
+  opacity: 1;
+}
+
+/* Button styling */
+.card-btn {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.35rem;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+}
+
 
 
 @import "custom-image.css";

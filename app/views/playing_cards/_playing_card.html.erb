@@ -1,0 +1,45 @@
+<div class="playing-card">
+  <div class="card-frame">
+    <%= image_tag card.display_image,
+                  class: "card-image",
+                  style: "transform: rotate(#{card.orientation_degrees}deg);" %>
+  </div>
+    <!--Rotate-->
+  <div class="card-controls">
+    <%= button_to "↺",
+                  rotate_playing_card_path(card, direction: :ccw),
+                  method: :patch,
+                  class: "btn btn-sm btn-dark" %>
+
+    <%= button_to "↻",
+                  rotate_playing_card_path(card, direction: :cw),
+                  method: :patch,
+                  class: "btn btn-sm btn-dark" %>
+
+      <!--Move-->
+    <div class="dropdown">
+      <button class="btn btn-sm btn-dark dropdown-toggle"
+              data-bs-toggle="dropdown">
+        Move
+      </button>
+
+      <ul class="dropdown-menu">
+        <% PlayingCard::ZONES.each do |zone| %>
+          <% next if zone == current_zone %>
+          <li>
+            <%= link_to zone,
+                        move_playing_card_path(card, zone_name: zone),
+                        data: { turbo_method: :patch },
+                        class: "dropdown-item" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    
+      <!--Flip-->
+    <%= button_to(card.face_up? ? "↓" : "↑",
+                  flip_playing_card_path(card, face_up: !card.face_up),
+                  method: :patch,
+                  class: "btn btn-sm btn-dark") %>
+  </div>
+</div>
