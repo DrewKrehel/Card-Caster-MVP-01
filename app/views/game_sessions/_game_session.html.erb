@@ -1,23 +1,8 @@
 <div id="<%= dom_id game_session %>">
-  <p>
-    <strong>Project:</strong>
-    <%= game_session.project_id %>
-  </p>
-
-  <p>
-    <strong>Owner:</strong>
-    <%= game_session.owner_id %>
-  </p>
-
-  <p>
-    <strong>Name:</strong>
-    <%= game_session.name %>
-  </p>
-
-  <p>
-    <strong>Private:</strong>
-    <%= game_session.private %>
-  </p>
+  <p><strong>Project:</strong> <%= game_session.project.name %></p>
+  <p><strong>Owner:</strong> <%= game_session.owner.username %></p>
+  <p><strong>Name:</strong> <%= game_session.name %></p>
+  <p><strong>Private:</strong> <%= game_session.private %></p>
 
   <hr>
 
@@ -32,19 +17,24 @@
 
             <!-- MVP action buttons -->
             <div class="d-grid gap-1">
+              <!-- Flip button -->
               <% if card.face_up? %>
-                <%= button_to "Flip Down", flip_card_path(card, face_up: false),
-                              method: :patch,
-                              class: "btn btn-sm btn-outline-secondary" %>
+                <%= button_to "Flip Down",
+                flip_playing_card_path(card, face_up: false),
+                method: :patch,
+                class: "btn btn-sm btn-outline-secondary" %>
               <% else %>
-                <%= button_to "Flip Up", flip_card_path(card, face_up: true),
-                              method: :patch,
-                              class: "btn btn-sm btn-outline-primary" %>
+                <%= button_to "Flip Up",
+                flip_playing_card_path(card, face_up: true),
+                method: :patch,
+                class: "btn btn-sm btn-outline-primary" %>
               <% end %>
 
-              <%= button_to "Move to Neutral", move_card_path(card, zone_name: "Neutral"),
-                            method: :patch,
-                            class: "btn btn-sm btn-outline-warning" %>
+              <!-- Move button -->
+              <%= button_to "Move to Neutral",
+              move_playing_card_path(card, zone_name: "Neutral"),
+              method: :patch,
+              class: "btn btn-sm btn-outline-warning" %>
             </div>
           </div>
         </div>

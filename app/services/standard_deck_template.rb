@@ -11,8 +11,8 @@ class StandardDeckTemplate
         Template.new(
           suit,
           rank,
-          default_front_image(suit, rank),
-          default_back_image
+          front_image(suit, rank),
+          back_image
         )
       end
     end
@@ -20,11 +20,11 @@ class StandardDeckTemplate
 
   private
 
-  def default_front_image(suit, rank)
-    "/images/cards/#{rank}_of_#{suit}.png"
+  def front_image(suit, rank)
+    "app/assets/images/standard_deck_cards/#{rank}_of_#{suit}.png"
   end
 
-  def default_back_image
-    "/images/cards/card_back.png"
+  def back_image
+    "app/assets/images/standard_deck_cards/card_back.png"    
   end
 end

@@ -49,6 +49,6 @@ class PlayingCard < ApplicationRecord
   end
 
   def display_image
-    face_up? ? image_url : back_image_url
+    face_up? ? front_image_url : back_image_url
   end
 end
