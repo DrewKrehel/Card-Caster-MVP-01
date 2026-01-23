@@ -25,6 +25,6 @@ class StandardDeckTemplate
   end
 
   def default_back_image
-    "/images/cards/back.png"
+    "/images/cards/card_back.png"
   end
 end
