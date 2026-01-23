@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :playing_cards, only: [] do
     patch :flip, on: :member
     patch :move, on: :member
+    patch :rotate, on: :member
   end
 
   get "/users" => "users#index", as: :users

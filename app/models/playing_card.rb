@@ -44,12 +44,13 @@ class PlayingCard < ApplicationRecord
   scope :with_suit, ->(suit) { where(suit: suit) }
   scope :with_rank, ->(rank) { where(rank: rank) }
 
+  ZONES = ["Neutral", "Player 1", "Player 2", "Player 3", "Player 4"].freeze
+
   def card_name
     "#{rank} of #{suit.capitalize}"
   end
 
   def display_image
     face_up? ? image_url : back_image_url
-    # ActionController::Base.helpers.asset_path(face_up? ? image_url : back_image_url)
   end
 end
