@@ -1,7 +1,7 @@
 class GameSessionsController < ApplicationController
   before_action :authenticate_user!, only: %i[ new create edit update destroy ]
-  before_action :set_game_session, only: %i[ show edit update destroy 
-    join_as_player join_as_observer toggle_role leave ]
+  before_action :set_game_session, only: %i[ show edit update destroy
+                                             join_as_player join_as_observer toggle_role leave ]
 
   # POST /game_sessions/:id/join_as_player
   def join_as_player
@@ -34,12 +34,19 @@ class GameSessionsController < ApplicationController
   # DELETE /game_sessions/:id/leave
   def leave
     session_user = @game_session.session_users.find_by(user: current_user)
-    if session_user && session_user.user != @game_session.owner
-      session_user.destroy!
-      redirect_back(fallback_location: project_path(@game_session.project), notice: "You left the session.")
-    else
-      redirect_back(fallback_location: project_path(@game_session.project), alert: "You cannot leave this session.")
+
+    if session_user.nil? || session_user.user == @game_session.owner
+      redirect_to project_path(@game_session.project),
+                  alert: session_user.nil? ?
+                    "You are not part of this session." :
+                    "Hosts cannot leave their own session."
+      return
     end
+
+    session_user.destroy!
+
+    redirect_to project_path(@game_session.project),
+                notice: "You left the session."
   end
 
   # GET /game_sessions or /game_sessions.json
