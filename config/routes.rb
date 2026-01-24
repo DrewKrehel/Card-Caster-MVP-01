@@ -16,7 +16,12 @@ Rails.application.routes.draw do
       delete :leave        
     end
   end
+  patch "/game_sessions/:game_session_id/playing_cards/shuffle",
+      to: "playing_cards#shuffle",
+      as: :shuffle_game_session_zone
+
   resources :projects
+  
   resources :playing_cards, only: [] do
     patch :flip, on: :member
     patch :move, on: :member
