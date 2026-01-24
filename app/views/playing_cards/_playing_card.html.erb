@@ -41,5 +41,15 @@
                   flip_playing_card_path(card, face_up: !card.face_up),
                   method: :patch,
                   class: "btn btn-sm btn-dark") %>
+
+    <!-- Peek (only if face-down) -->
+    <% unless card.face_up? %>
+      <div class="peek-wrapper">
+        <button class="btn btn-sm btn-outline-warning peek-btn">👁 Peek</button>
+        <div class="peek-popup">
+          <%= image_tag card.image_url, class: "peek-image" %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
