@@ -23,8 +23,9 @@
       <% game_session.playing_cards.in_zone(zone).ordered.each do |card| %>
         <div class="card-slot">
           <%= render "playing_cards/playing_card",
-                 card: card,
-                 current_zone: zone %>
+                     card: card,
+                     current_zone: zone,
+                     can_interact: (zone == "Neutral" || current_user.session_users.find_by(game_session: game_session)&.zone_name == zone) %>
         </div>
       <% end %>
     </div>

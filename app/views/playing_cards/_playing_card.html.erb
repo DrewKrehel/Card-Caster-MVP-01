@@ -1,55 +1,68 @@
-<div class="playing-card">
+<div class="playing-card <%= 'disabled-card' unless can_interact %>">
+
+  <% session_user =
+     card.game_session.session_users.find_by(user: current_user) %>
+
+  <% can_control =
+     session_user&.host? ||
+     (session_user&.player? && session_user.zone_name == card.zone_name) %>
+
   <div class="card-frame">
     <%= image_tag card.display_image,
                   class: "card-image",
                   style: "transform: rotate(#{card.orientation_degrees}deg);" %>
   </div>
-    <!--Rotate-->
+
   <div class="card-controls">
-    <%#= button_to "↺",
+    <% if can_interact %>
+      <!--Rotate-->
+      <div class="card-controls">
+        <%#= button_to "↺",
                   rotate_playing_card_path(card, direction: :ccw),
                   method: :patch,
                   class: "btn btn-sm btn-dark" %>
 
-    <%= button_to "↻",
+        <%= button_to "↻",
                   rotate_playing_card_path(card, direction: :cw),
                   method: :patch,
                   class: "btn btn-sm btn-dark" %>
 
-      <!--Move-->
-    <div class="dropdown">
-      <button class="btn btn-sm btn-dark dropdown-toggle"
+        <!--Move-->
+        <div class="dropdown">
+          <button class="btn btn-sm btn-dark dropdown-toggle"
               data-bs-toggle="dropdown">
-        Move
-      </button>
+            Move
+          </button>
 
-      <ul class="dropdown-menu">
-        <% PlayingCard::ZONES.each do |zone| %>
-          <% next if zone == current_zone %>
-          <li>
-            <%= button_to zone,
+          <ul class="dropdown-menu">
+            <% PlayingCard::ZONES.each do |zone| %>
+              <% next if zone == current_zone %>
+              <li>
+                <%= button_to zone,
                         move_playing_card_path(card, zone_name: zone),
                         method: :patch,
                         class: "dropdown-item" %>>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-    
-      <!--Flip-->
-    <%= button_to(card.face_up? ? "↓" : "↑",
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <!--Flip-->
+        <%= button_to(card.face_up? ? "↓" : "↑",
                   flip_playing_card_path(card, face_up: !card.face_up),
                   method: :patch,
                   class: "btn btn-sm btn-dark") %>
 
-    <!-- Peek (only if face-down) -->
-    <% unless card.face_up? %>
-      <div class="peek-wrapper">
-        <button class="btn btn-sm btn-outline-warning peek-btn">👁 Peek</button>
-        <div class="peek-popup">
-          <%= image_tag card.image_url, class: "peek-image" %>
-        </div>
-      </div>
-    <% end %>
+        <!-- Peek (only if face-down) -->
+        <% unless card.face_up? %>
+          <div class="peek-wrapper">
+            <button class="btn btn-sm btn-outline-warning peek-btn">👁 Peek</button>
+            <div class="peek-popup">
+              <%= image_tag card.image_url, class: "peek-image" %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 </div>

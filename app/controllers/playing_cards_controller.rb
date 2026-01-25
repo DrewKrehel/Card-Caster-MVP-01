@@ -1,5 +1,6 @@
 class PlayingCardsController < ApplicationController
   before_action :set_card, only: [:flip, :move, :rotate]
+  before_action :authorize_zone_action!, only: [:flip, :move, :rotate]
 
   def flip
     @card.update!(face_up: params[:face_up])
@@ -12,17 +13,14 @@ class PlayingCardsController < ApplicationController
   end
 
   def rotate
-    card = PlayingCard.find(params[:id])
-
-    card.orientation = case params[:direction]
-      when "cw" then card.orientation_cw
-      when "ccw" then card.orientation_ccw
-      else card.orientation
+    @card.orientation = case params[:direction]
+      when "cw" then @card.orientation_cw
+      when "ccw" then @card.orientation_ccw
+      else @card.orientation
       end
 
-    card.save!
-
-    redirect_back fallback_location: project_path(card.game_session.project)
+    @card.save!
+    redirect_back fallback_location: game_session_path(@card.game_session)
   end
 
   # PATCH /game_sessions/:game_session_id/playing_cards/shuffle
@@ -30,16 +28,28 @@ class PlayingCardsController < ApplicationController
     game_session = GameSession.find(params[:game_session_id])
     zone_name = params[:zone_name]
 
-    deck_service = DeckService.new(game_session, template_source: StandardDeckTemplate.new)
-    deck_service.shuffle!(zone_name: zone_name)
+    session_user = game_session.session_users.find_by(user: current_user)
+
+    unless session_user&.host? ||
+           (session_user.player? && session_user.zone_name == zone_name)
+      return redirect_back fallback_location: game_session_path(game_session),
+                           alert: "You cannot shuffle this zone."
+    end
+
+    DeckService.new(game_session, template_source: StandardDeckTemplate.new)
+               .shuffle!(zone_name: zone_name)
 
     redirect_back fallback_location: game_session_path(game_session),
-                  notice: "Shuffled #{zone_name} zone."
+                  notice: "Shuffled #{zone_name}."
   end
 
   private
 
   def set_card
     @card = PlayingCard.find(params[:id])
+  end
+
+  def authorize_zone_action!
+    authorize_card_zone!(@card)
   end
 end

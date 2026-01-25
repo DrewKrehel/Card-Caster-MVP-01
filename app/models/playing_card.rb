@@ -6,7 +6,7 @@
 #  back_image_url  :string
 #  face_up         :boolean          default(FALSE)
 #  image_url       :string
-#  orientation     :integer          default(0)
+#  orientation     :integer          default("normal")
 #  position        :integer
 #  rank            :string           not null
 #  suit            :string           not null

@@ -7,15 +7,23 @@ class GameSessionsController < ApplicationController
   def join_as_player
     session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
     session_user.role = :player
+
+    # Assign first unassigned player zone if not set
+    if session_user.zone_name.blank?
+      assigned_zones = @game_session.session_users.where.not(zone_name: nil).pluck(:zone_name)
+      available_zones = PlayingCard::ZONES - ["Neutral"] - assigned_zones
+      session_user.zone_name = available_zones.first
+    end
+
     session_user.save!
     redirect_to @game_session, notice: "You joined the session."
-    # redirect_back(fallback_location: project_path(@game_session.project), notice: "Joined as player.")
   end
 
   # POST /game_sessions/:id/join_as_observer
   def join_as_observer
     session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
     session_user.role = :observer
+    session_user.zone_name = nil
     session_user.save!
     redirect_to @game_session, notice: "You joined the session."
     # redirect_back(fallback_location: project_path(@game_session.project), notice: "Joined as observer.")

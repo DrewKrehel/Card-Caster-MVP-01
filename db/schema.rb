@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_19_200309) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_25_011606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -61,6 +61,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_19_200309) do
     t.integer "role", default: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "zone_name"
     t.index ["game_session_id", "user_id"], name: "index_session_users_on_game_session_id_and_user_id", unique: true
     t.index ["game_session_id"], name: "index_session_users_on_game_session_id"
     t.index ["user_id"], name: "index_session_users_on_user_id"

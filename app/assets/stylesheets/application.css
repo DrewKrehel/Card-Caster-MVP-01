@@ -53,6 +53,27 @@
   z-index: 10;
 }
 
+/* Ensure grid wraps properly even with absolute card controls */
+.zone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1.5rem; /* adjust spacing as needed */
+}
+
+.card-slot {
+  position: relative;
+  width: 120px;
+  height: 180px;
+  overflow: visible; /* allows peek and controls to float outside */
+}
+
+/* Optional: visually indicate disabled cards */
+.disabled-card {
+  opacity: 0.5;
+  pointer-events: none; /* prevents clicks */
+}
+
+
 /* Hover Over */
 .playing-card:hover .card-controls {
   opacity: 1;

@@ -3,7 +3,8 @@
 # Table name: session_users
 #
 #  id              :bigint           not null, primary key
-#  role            :integer          default(2), not null
+#  role            :integer          default("observer"), not null
+#  zone_name       :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  game_session_id :bigint           not null
@@ -33,4 +34,11 @@ class SessionUser < ApplicationRecord
   scope :players, -> { where(role: :player) }
   scope :observers, -> { where(role: :observer) }
   scope :for_game_session, ->(game_session_id) { where(game_session_id: game_session_id) }
+
+  def can_interact_with_zone?(zone_name)
+    return true if host?
+    return false unless player?
+
+    zone_name == "Neutral" || zone_name == self.zone_name
+  end
 end
