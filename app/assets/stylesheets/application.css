@@ -57,7 +57,7 @@
 .zone-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1.5rem; /* adjust spacing as needed */
+  gap: 3.5rem; /* adjust spacing as needed */
 }
 
 .card-slot {
