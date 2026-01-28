@@ -7,6 +7,7 @@
   <hr>
 
   <h5><%= game_session.name %></h5>
+  <% session_user = game_session.session_users.find_by(user: current_user) %>
 
   <% PlayingCard::ZONES.each do |zone| %>
     <h6 class="mt-4 d-flex align-items-center justify-content-between">
@@ -20,15 +21,26 @@
     </h6>
 
     <div class="zone-grid">
-      <% game_session.playing_cards.in_zone(zone).ordered.each do |card| %>
-        <div class="card-slot">
-          <% session_user = game_session.session_users.find_by(user: current_user) %>
+      <% if zone == "Deck" %>
+        <% deck_cards = game_session.playing_cards.in_zone("Deck").ordered %>
 
-          <%= render "playing_cards/playing_card",
-                    card: card,
-                    current_zone: zone,
-                    can_interact: session_user&.can_interact_with_zone?(zone) %>
-        </div>
+        <% if deck_cards.any? %>
+          <div class="card-slot">
+            <%= render "playing_cards/deck",
+                     game_session: game_session,
+                     top_card: deck_cards.first %>
+          </div>
+        <% end %>
+
+      <% else %>
+        <% game_session.playing_cards.in_zone(zone).ordered.each do |card| %>
+          <div class="card-slot">
+            <%= render "playing_cards/playing_card",
+                     card: card,
+                     current_zone: zone,
+                     can_interact: session_user&.can_interact_with_zone?(zone) %>
+          </div>
+        <% end %>
       <% end %>
     </div>
   <% end %>

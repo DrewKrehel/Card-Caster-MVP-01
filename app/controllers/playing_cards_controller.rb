@@ -8,7 +8,17 @@ class PlayingCardsController < ApplicationController
   end
 
   def move
-    @card.update!(zone_name: params[:zone_name])
+    if @card.zone_name == "Deck"
+      card_to_move =
+        @card.game_session.playing_cards
+             .in_zone("Deck")
+             .ordered
+             .first
+    else
+      card_to_move = @card
+    end
+
+    card_to_move.update!(zone_name: params[:zone_name])
     redirect_back fallback_location: game_session_path(@card.game_session)
   end
 

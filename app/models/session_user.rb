@@ -39,6 +39,6 @@ class SessionUser < ApplicationRecord
     return true if host?
     return false unless player?
 
-    zone_name == "Neutral" || zone_name == self.zone_name
+    zone_name == "Neutral" || zone_name == "Deck" || zone_name == self.zone_name
   end
 end

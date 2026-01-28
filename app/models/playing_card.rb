@@ -32,7 +32,7 @@ class PlayingCard < ApplicationRecord
 
   validates :suit, presence: true, inclusion: { in: %w[hearts diamonds clubs spades] }
   validates :rank, presence: true, inclusion: { in: %w[A 2 3 4 5 6 7 8 9 10 J Q K] }
-  validates :zone_name, presence: true, inclusion: { in: ["Neutral", "Player 1", "Player 2", "Player 3", "Player 4"] }
+  validates :zone_name, presence: true, inclusion: { in: ZONES }
   validates :game_session, presence: true
 
   enum :orientation, { normal: 0, rotated90: 1, rotated180: 2, rotated270: 3 }
@@ -44,7 +44,7 @@ class PlayingCard < ApplicationRecord
   scope :with_suit, ->(suit) { where(suit: suit) }
   scope :with_rank, ->(rank) { where(rank: rank) }
 
-  ZONES = ["Neutral", "Player 1", "Player 2", "Player 3", "Player 4"].freeze
+  ZONES = ["Deck", "Neutral", "Player 1", "Player 2", "Player 3", "Player 4"].freeze
 
   def card_name
     "#{rank} of #{suit.capitalize}"
