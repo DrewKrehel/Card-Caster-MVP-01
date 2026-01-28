@@ -31,10 +31,10 @@
     ) %>
   </p>
 
-  <p>
+  <!--<p>
     <strong>Private:</strong>
-    <%= project.private %>
-  </p>
+    <%#= project.private %>-->
+<!--  </p>-->
 
   <% if user_signed_in? %>
     <%= form_with(model: GameSession.new, url: game_sessions_path, local: true) do |f| %>

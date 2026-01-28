@@ -30,3 +30,7 @@
     <%= render "projects/preview", project: project %>
   <% end %>
 </ul>
+
+<li class="nav-item">
+  <%= link_to "Edit #{current_user.username}", edit_user_registration_path, class: "nav-link" %>
+</li>
