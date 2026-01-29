@@ -23,14 +23,55 @@
   <!--<a href=""><%#= @user.website %></a>-->
 </div>
 
-<h2>Own projects</h2>
 
-<ul>
-  <% @user.projects.each do |project| %>
-    <%= render "projects/preview", project: project %>
-  <% end %>
+<ul class="nav nav-tabs mb-4" id="userTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active"
+            id="projects-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#projects"
+            type="button"
+            role="tab">
+      Projects
+    </button>
+  </li>
+
+  <li class="nav-item" role="presentation">
+    <button class="nav-link"
+            id="sessions-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#sessions"
+            type="button"
+            role="tab">
+      Active Game Sessions
+    </button>
+  </li>
 </ul>
 
-<li class="nav-item">
-  <%= link_to "Edit #{current_user.username}", edit_user_registration_path, class: "nav-link" %>
-</li>
+<div class="tab-content">
+  <!-- Projects tab -->
+  <div class="tab-pane fade show active"
+       id="projects"
+       role="tabpanel">
+
+    <% if @owned_projects.any? %>
+      <ul class="list-unstyled">
+        <% @owned_projects.each do |project| %>
+          <%= render "projects/preview", project: project %>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted">This user hasn’t created any projects yet.</p>
+    <% end %>
+  </div>
+
+  <!-- Sessions tab -->
+  <div class="tab-pane fade"
+       id="sessions"
+       role="tabpanel">
+
+    <%= render "game_sessions/list",
+          game_sessions: @active_game_sessions %>
+  </div>
+</div>
+

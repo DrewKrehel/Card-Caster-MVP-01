@@ -29,6 +29,8 @@ class User < ApplicationRecord
 
   mount_uploader :avatar_image, ImageUploader
 
+  DEFAULT_AVATAR = "default-avatar.jpg"
+
   has_many :projects, class_name: "Project", foreign_key: "creator_id", dependent: :destroy
   has_many :owned_sessions, class_name: "GameSession", foreign_key: "owner_id", dependent: :destroy
   has_many :session_users, dependent: :destroy
@@ -39,4 +41,8 @@ class User < ApplicationRecord
 
   scope :public_users, -> { where(private: false) }
   scope :with_username, ->(name) { where('LOWER(username) = ?', name.downcase) }
+
+  def avatar_image
+    avatar_image? ? avatar_image_url : DEFAULT_AVATAR
+  end
 end

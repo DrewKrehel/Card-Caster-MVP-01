@@ -6,6 +6,9 @@
     ) %>
       <%#= image_tag project.image_url, class: "card-img-top" %>
       <div class="card-body">
+        <div class="flex-shrink-0">
+          <%= image_tag project.creator.avatar_image, class: "rounded-circle me-2", width: "36px", alt: "#{project.creator.username}'s avatar" %>
+        </div>
         <h5 class="card-title"><%= project.creator.username %></h5>
         <p class="card-text"><%= project.summary %></p>
       </div>

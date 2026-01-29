@@ -25,6 +25,8 @@
 #  fk_rails_...  (game_session_id => game_sessions.id)
 #
 class PlayingCard < ApplicationRecord
+  ZONES = ["Deck", "Neutral", "Player 1", "Player 2", "Player 3", "Player 4"].freeze
+
   belongs_to :game_session
 
   attribute :face_up, :boolean, default: false
@@ -43,8 +45,6 @@ class PlayingCard < ApplicationRecord
   scope :ordered, -> { order(:position) }
   scope :with_suit, ->(suit) { where(suit: suit) }
   scope :with_rank, ->(rank) { where(rank: rank) }
-
-  ZONES = ["Deck", "Neutral", "Player 1", "Player 2", "Player 3", "Player 4"].freeze
 
   def card_name
     "#{rank} of #{suit.capitalize}"
