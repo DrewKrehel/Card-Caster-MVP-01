@@ -13,6 +13,7 @@
     <span class="badge text-bg-secondary">
       <%= @user.private? ? "Private" : "Public" %>
     </span>
+      <%= link_to "Edit #{current_user.username}", edit_user_registration_path, class: "btn btn-primary me-3" %>
   </div>
 </div>
 
@@ -21,7 +22,6 @@
   <h2><%= @user.username %></h2>
   <p><%= @user.bio %></p>
 </div>
-
 
 <ul class="nav nav-tabs mb-4" id="userTabs" role="tablist">
   <li class="nav-item" role="presentation">
