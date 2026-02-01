@@ -14,34 +14,43 @@
             <a class="dropdown-item" href="/projects">Projects</a>
             <a class="dropdown-item" href="/users">Users</a>
             <a class="dropdown-item" href="/game_sessions">Game Sessions</a>
-            <!--<a class="dropdown-item" href="/likes">Likes</a>-->
           </div>
         </li>
       </ul>
-      <ul class="navbar-nav">
+      <!-- Right-aligned links -->
+      <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
-          <li class="nav-link btn btn-outline-success me-3">
-            <%= link_to "Create Project", new_project_path, class: "btn btn-primary me-3" %>
+          <li class="nav-item me-3">
+            <%= link_to "Create Project", new_project_path, class: "btn btn-primary" %>
           </li>
-          <li class="nav-item">
-            <%= link_to "#{current_user.username}'s Profile ", user_path(current_user.username), class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link" %>
+
+          <!-- User dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <%= current_user.username %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <%= link_to "Profile", user_path(current_user.username), class: "dropdown-item" %>
+              </li>
+              <li>
+                <%= link_to "Edit Profile", edit_user_registration_path, class: "dropdown-item" %>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
+              </li>
+            </ul>
           </li>
         <% else %>
           <li class="nav-item">
-            <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>
+            <%= link_to "Sign In", new_user_session_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
-            <%= link_to "Sign up", new_user_registration_path, class: "nav-link" %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "nav-link" %>
           </li>
         <% end %>
       </ul>
-      <!--<form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>-->
     </div>
   </div>
 </nav>
