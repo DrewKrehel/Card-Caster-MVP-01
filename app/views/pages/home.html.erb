@@ -1,0 +1,19 @@
+<div class="landing-page text-center py-5">
+  <h1 class="display-4 mb-4">Welcome to Card Caster</h1>
+  <p class="lead mb-5">
+    Card Caster is a multiplayer, web-based card game platform.
+    Create projects, start game sessions, and play with friends online.
+  </p>
+
+  <% if user_signed_in? %>
+    <%= link_to "View Projects", projects_path, class: "btn btn-primary btn-lg me-3" %>
+    <%= link_to "Start a Game", new_project_path, class: "btn btn-outline-primary btn-lg" %>
+  <% else %>
+    <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary btn-lg me-3" %>
+    <%= link_to "Sign In", new_user_session_path, class: "btn btn-outline-primary btn-lg" %>
+  <% end %>
+
+  <div class="mt-5">
+    <img src="<%= asset_path('a_of_spades.png') %>" alt="Card Caster Demo" class="img-fluid shadow rounded">
+  </div>
+</div>

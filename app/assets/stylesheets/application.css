@@ -13,6 +13,22 @@ textarea {
   resize: both;
 }
 
+.landing-page {
+  background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+  min-height: 80vh;
+
+  h1 {
+    font-weight: 700;
+  }
+
+  p.lead {
+    font-size: 1.25rem;
+  }
+
+  img {
+    max-width: 600px;
+  }
+}
 
 /* Grid layout */
 .zone-grid {
