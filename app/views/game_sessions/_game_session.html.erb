@@ -11,7 +11,19 @@
 
   <% PlayingCard::ZONES.each do |zone| %>
     <h6 class="mt-4 d-flex align-items-center justify-content-between">
-      <%= zone %>
+      <span>
+        <%= zone %>
+
+        <% if (zone_user = game_session.user_for_zone(zone)) %>
+          <span class="badge bg-secondary ms-2">
+            <%= zone_user.username %>
+          </span>
+        <% end %>
+
+        <% if zone_user == current_user %>
+          <span class="badge bg-success ms-1">You</span>
+        <% end %>
+      </span>
 
       <!-- Shuffle button -->
       <%= button_to "Shuffle",

@@ -51,4 +51,20 @@ class GameSession < ApplicationRecord
     deck_service.build_deck(zone_name: "Deck")
     deck_service.shuffle!(zone_name: "Deck")
   end
+
+  def active_player_count
+    session_users.players.count
+  end
+
+  def player_slots_remaining?
+    active_player_count < project.max_players
+  end
+
+  def player_slots_remaining?
+    available_player_slots.positive?
+  end
+
+  def user_for_zone(zone)
+    session_users.find_by(zone_name: zone)&.user
+  end
 end

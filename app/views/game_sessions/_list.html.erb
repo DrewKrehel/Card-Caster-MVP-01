@@ -6,6 +6,9 @@
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <div>
           <strong><%= session.name %></strong>
+          <span class="badge bg-info ms-2">
+            <%= session.available_player_slots %> slots available
+          </span>
           <small class="text-muted">
             — Host: <%= session.owner.username %>
             — Project: <%= link_to session.project.name, project_path(session.project) %>
@@ -16,7 +19,7 @@
           <% session_user = session.session_users.find_by(user: current_user) %>
 
           <% if session_user.present? %>
-          <!-- Already joined (any role) -->
+            <!-- Already joined (any role) -->
             <%= link_to "Enter Session",
                   game_session_path(session),
                   class: "btn btn-sm btn-success" %>
@@ -26,10 +29,16 @@
             </span>
           <% else %>
             <!-- Join as player -->
-            <%= button_to "Join as Player",
-                  join_as_player_game_session_path(session),
-                  method: :post,
-                  class: "btn btn-sm btn-primary" %>
+            <% if session.player_slots_remaining? %>
+              <%= button_to "Join as Player",
+                    join_as_player_game_session_path(session),
+                    method: :post,
+                    class: "btn btn-sm btn-primary" %>
+            <% else %>
+              <button class="btn btn-sm btn-secondary" disabled>
+                Players Full
+              </button>
+            <% end %>
 
             <!-- Join as observer -->
             <%= button_to "Join as Observer",

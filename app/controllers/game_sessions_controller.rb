@@ -6,6 +6,13 @@ class GameSessionsController < ApplicationController
   # POST /game_sessions/:id/join_as_player
   def join_as_player
     session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
+
+    unless @game_session.player_slots_remaining?
+      redirect_back fallback_location: project_path(@game_session.project),
+                    alert: "This session already has the maximum number of players."
+      return
+    end
+
     session_user.role = :player
 
     # Assign first unassigned player zone if not set
@@ -34,8 +41,23 @@ class GameSessionsController < ApplicationController
     session_user = @game_session.session_users.find_by(user: current_user)
     return redirect_back(fallback_location: project_path(@game_session.project), alert: "Not part of this session.") unless session_user
 
-    session_user.update!(role: session_user.player? ? :observer : :player)
-    notice = session_user.player? ? "You are now a player." : "You are now an observer."
+    if session_user.observer?
+      unless @game_session.player_slots_remaining?
+        redirect_back fallback_location: project_path(@game_session.project),
+                      alert: "No player slots available."
+        return
+      end
+
+      assigned_zones = @game_session.session_users.where.not(zone_name: nil).pluck(:zone_name)
+      available_zones = PlayingCard::ZONES - ["Neutral"] - assigned_zones
+
+      session_user.update!( role: :player, zone_name: available_zones.first )
+      notice = "You are now a player."
+    else
+      session_user.update!( role: :observer, zone_name: nil )
+      notice = "You are now an observer."
+    end
+    
     redirect_back(fallback_location: project_path(@game_session.project), notice: notice)
   end
 
