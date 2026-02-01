@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get "pages/home"
-
   # This is a blank app! Pick your first screen, build out the RCAV, and go from there. E.g.:
   # get("/your_first_screen", { :controller => "pages", :action => "first" })
 
@@ -29,9 +27,11 @@ Rails.application.routes.draw do
     patch :rotate, on: :member
   end
 
+  get "pages/home"
   get "/users" => "users#index", as: :users
   get "/users/:username" => "users#show", as: :user
 
   get "test_cards", to: "test_cards#index"
+  
 
 end

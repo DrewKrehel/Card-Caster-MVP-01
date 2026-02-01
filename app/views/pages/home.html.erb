@@ -1,19 +1,51 @@
 <div class="landing-page text-center py-5">
-  <h1 class="display-4 mb-4">Welcome to Card Caster</h1>
-  <p class="lead mb-5">
-    Card Caster is a multiplayer, web-based card game platform.
-    Create projects, start game sessions, and play with friends online.
-  </p>
 
-  <% if user_signed_in? %>
-    <%= link_to "View Projects", projects_path, class: "btn btn-primary btn-lg me-3" %>
-    <%= link_to "Start a Game", new_project_path, class: "btn btn-outline-primary btn-lg" %>
-  <% else %>
-    <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary btn-lg me-3" %>
-    <%= link_to "Sign In", new_user_session_path, class: "btn btn-outline-primary btn-lg" %>
-  <% end %>
+  <!-- Hero Section -->
+  <section class="hero py-5">
+    <h1 class="display-3 mb-4">Card Caster</h1>
+    <p class="lead mb-4">
+      Multiplayer, web-based card game engine. 
+      Create projects, start game sessions, and play custom card games with friends.
+    </p>
 
-  <div class="mt-5">
-    <img src="<%= asset_path('a_of_spades.png') %>" alt="Card Caster Demo" class="img-fluid shadow rounded">
-  </div>
+    <div class="btn-group mb-5">
+      <%= link_to "Enter as Guest", projects_path(guest: true), class: "btn btn-primary btn-lg me-3" %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-outline-primary btn-lg me-3" %>
+      <%= link_to "Sign In", new_user_session_path, class: "btn btn-outline-secondary btn-lg" %>
+    </div>
+
+    <!-- Animated deck preview -->
+    <div class="deck-preview d-flex justify-content-center align-items-center mt-5">
+      <%# Simple animated stack of cards using CSS %>
+      <% 5.times do |i| %>
+        <div class="card-preview" style="--i: <%= i %>">
+          <%= image_tag "standard_deck_cards/card_back.png", alt: "Card Back" %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <!-- Feature Section: How it works -->
+  <section class="features py-5 mt-5">
+    <div class="container">
+      <div class="row text-start">
+        <div class="col-md-4 mb-4">
+          <h3>Create Projects</h3>
+          <p>Organize your card games into projects to manage game sessions, decks, and players.</p>
+          <%= image_tag "landing_create_project.png", class: "img-fluid shadow rounded" %>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h3>Join Game Sessions</h3>
+          <p>Play multiplayer card games with friends or observers. No installation required.</p>
+          <%= image_tag "landing_join_session.png", class: "img-fluid shadow rounded" %>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h3>Interactive Cards</h3>
+          <p>Flip, move, rotate, and shuffle cards. All actions reflect the database state in real-time.</p>
+          <%= image_tag "landing_card_preview.png", class: "img-fluid shadow rounded" %>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>
