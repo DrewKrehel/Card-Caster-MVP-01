@@ -14,13 +14,7 @@ class GameSessionsController < ApplicationController
     end
 
     session_user.role = :player
-
-    # Assign first unassigned player zone if not set
-    if session_user.zone_name.blank?
-      assigned_zones = @game_session.session_users.where.not(zone_name: nil).pluck(:zone_name)
-      available_zones = PlayingCard::ZONES - ["Neutral"] - assigned_zones
-      session_user.zone_name = available_zones.first
-    end
+    session_user.zone_name ||= @game_session.next_available_player_zone
 
     session_user.save!
     redirect_to @game_session, notice: "You joined the session."
@@ -33,7 +27,6 @@ class GameSessionsController < ApplicationController
     session_user.zone_name = nil
     session_user.save!
     redirect_to @game_session, notice: "You joined the session."
-    # redirect_back(fallback_location: project_path(@game_session.project), notice: "Joined as observer.")
   end
 
   # PATCH /game_sessions/:id/toggle_role
@@ -48,16 +41,15 @@ class GameSessionsController < ApplicationController
         return
       end
 
-      assigned_zones = @game_session.session_users.where.not(zone_name: nil).pluck(:zone_name)
-      available_zones = PlayingCard::ZONES - ["Neutral"] - assigned_zones
+      zone = @game_session.next_available_player_zone
 
-      session_user.update!( role: :player, zone_name: available_zones.first )
+      session_user.update!(role: :player, zone_name: zone)
       notice = "You are now a player."
     else
-      session_user.update!( role: :observer, zone_name: nil )
+      session_user.update!(role: :observer, zone_name: nil)
       notice = "You are now an observer."
     end
-    
+
     redirect_back(fallback_location: project_path(@game_session.project), notice: notice)
   end
 
@@ -107,10 +99,13 @@ class GameSessionsController < ApplicationController
     @game_session.owner = current_user
 
     if @game_session.save
+      zone = @game_session.next_available_player_zone
+
       SessionUser.create!(
         game_session: @game_session,
         user: current_user,
         role: :host,
+        zone_name: zone,
       )
 
       redirect_to @game_session, notice: "Game session started."

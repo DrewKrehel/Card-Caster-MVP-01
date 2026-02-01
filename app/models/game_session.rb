@@ -53,7 +53,7 @@ class GameSession < ApplicationRecord
   end
 
   def active_player_count
-    session_users.players.count
+    session_users.player_like.count
   end
 
   def available_player_slots

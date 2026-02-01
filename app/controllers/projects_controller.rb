@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create edit update destroy]
+  before_action :authorize_creator!, only: %i[ edit update destroy ]
   before_action :set_project, only: %i[ show edit update destroy ]
 
   # GET /projects or /projects.json
@@ -60,13 +61,20 @@ class ProjectsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_project
-      @project = Project.find(params.require(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def project_params
-      params.expect(project: [ :name, :summary, :how_to_play, :max_players, :image, :private ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_project
+    @project = Project.find(params.require(:id))
+  end
+
+  # Only allow a list of trusted parameters through.
+  def project_params
+    params.expect(project: [:name, :summary, :how_to_play, :max_players, :image, :private])
+  end
+
+  def authorize_creator!
+    return if @project.creator == current_user
+
+    redirect_to @project, alert: "You are not authorized to modify this project."
+  end
 end

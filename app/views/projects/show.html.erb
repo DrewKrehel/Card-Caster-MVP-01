@@ -1,8 +1,11 @@
 <%= render @project %>
 
 <div>
-  <%= link_to "Edit this project", edit_project_path(@project) %> |
   <%= link_to "Back to projects", projects_path %>
 
-  <%= button_to "Destroy this project", @project, method: :delete %>
+  <% if user_signed_in? && current_user == @project.creator %>
+    | <%= link_to "Edit this project", edit_project_path(@project) %>
+
+    <%= button_to "Destroy this project", @project, method: :delete, data: { confirm: "Are you sure?" } %>
+  <% end %>
 </div>
