@@ -44,7 +44,7 @@ class GameSession < ApplicationRecord
     MAX_PLAYER_ZONES.find { |zone| !taken.include?(zone) }
   end
 
-  private
+  # private
 
   def populate_standard_deck
     deck_service = DeckService.new(self, template_source: StandardDeckTemplate.new)
@@ -56,8 +56,8 @@ class GameSession < ApplicationRecord
     session_users.players.count
   end
 
-  def player_slots_remaining?
-    active_player_count < project.max_players
+  def available_player_slots
+    project.max_players - active_player_count
   end
 
   def player_slots_remaining?
