@@ -42,7 +42,7 @@ class User < ApplicationRecord
   scope :public_users, -> { where(private: false) }
   scope :with_username, ->(name) { where('LOWER(username) = ?', name.downcase) }
 
-  def avatar_image
+  def profile_image
     avatar_image? ? avatar_image_url : DEFAULT_AVATAR
   end
 end

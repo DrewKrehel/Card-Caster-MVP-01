@@ -1,6 +1,22 @@
 class ApplicationController < ActionController::Base
   skip_forgery_protection
 
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(
+      :sign_up,
+      keys: [:username, :avatar_image],
+    )
+
+    devise_parameter_sanitizer.permit(
+      :account_update,
+      keys: [:username, :avatar_image],
+    )
+  end
+
   def authorize_card_zone!(card)
     session_user = card.game_session.session_users.find_by(user: current_user)
     raise ActiveRecord::RecordNotFound unless session_user

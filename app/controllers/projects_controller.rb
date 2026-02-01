@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
 
   # POST /projects or /projects.json
   def create
-    @project = Project.new(project_params)
+    @project = current_user.projects.build(project_params)
 
     respond_to do |format|
       if @project.save
@@ -67,6 +67,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.expect(project: [ :creator_id, :name, :summary, :how_to_play, :max_players, :image, :private ])
+      params.expect(project: [ :name, :summary, :how_to_play, :max_players, :image, :private ])
     end
 end
