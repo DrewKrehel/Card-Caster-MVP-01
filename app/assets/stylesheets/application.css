@@ -9,6 +9,11 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
+textarea {
+  resize: both;
+}
+
+
 /* Grid layout */
 .zone-grid {
   display: grid;

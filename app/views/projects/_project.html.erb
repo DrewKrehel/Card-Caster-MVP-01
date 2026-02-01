@@ -31,28 +31,30 @@
     ) %>
   </p>
 
-  <!--<p>
-    <strong>Private:</strong>
-    <%#= project.private %>-->
-<!--  </p>-->
-
   <% if user_signed_in? %>
-    <%= form_with(model: GameSession.new, url: game_sessions_path, local: true) do |f| %>
-      <%= f.hidden_field :project_id, value: project.id %>
-      <%= f.hidden_field :owner_id, value: current_user.id %>
+    <div class="row">
+      <div class="col-12 col-md-8 col-lg-6">
+        <%= form_with(model: GameSession.new, url: game_sessions_path, local: true) do |f| %>
+          <%= f.hidden_field :project_id, value: project.id %>
+          <%= f.hidden_field :owner_id, value: current_user.id %>
 
-      <div class="mb-2">
-        <%= f.label :name, "Session Name" %>
-        <%= f.text_field :name, required: true, class: "form-control", placeholder: "Enter session name" %>
-      </div>
+          <div class="mb-2">
+            <%= f.label :name, "Session Name" %>
+            <%= f.text_area :name,
+                    rows: 2,
+                    class: "form-control w-100",
+                    placeholder: "Enter session name" %>
+          </div>
 
-      <%= f.submit "Start Game Session", class: "btn btn-primary" %>
-    <% end %>
-  <% else %>
-    <%= link_to "Sign in to start a session",
+          <%= f.submit "Start Game Session", class: "btn btn-primary" %>
+        <% end %>
+      <% else %>
+        <%= link_to "Sign in to start a session",
         new_user_session_path,
         class: "btn btn-outline-secondary" %>
-  <% end %>
+      <% end %>
+    </div>
+  </div>
 
   <%= render "game_sessions/list",
       game_sessions: project.game_sessions.includes(:owner, :session_users) %>
