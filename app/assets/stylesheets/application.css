@@ -19,6 +19,22 @@ textarea {
   resize: both;
 }
 
+/* Center navbar content and constrain width */
+.navbar .container-fluid {
+  max-width: 960px;       /* same width as CTA and hero */
+  margin: 0 auto;         /* center the navbar container */
+  justify-content: center; /* center contents */
+}
+
+.navbar-nav {
+  justify-content: center;  /* center nav links */
+  width: 100%;              /* full width for spacing */
+}
+
+.navbar-nav .nav-item {
+  margin: 0 0.5rem;        /* spacing between items */
+}
+
 .navbar-brand {
   font-weight: 600;
 }
