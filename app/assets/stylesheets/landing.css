@@ -71,3 +71,38 @@
 .landing-final-cta p {
   margin-bottom: 2rem;
 }
+
+.landing-hero-teaser {
+  background: linear-gradient(
+    180deg,
+    var(--cc-bg-soft),
+    #ffffff
+  );
+  padding: 5rem 1rem 4rem;
+}
+
+.landing-hero-text {
+  max-width: 540px; /* limits width of text */
+}
+
+.landing-teaser {
+  text-align: center;
+  /* optional: push image up slightly */
+  margin-top: -2rem;
+}
+
+@media (max-width: 992px) {
+  /* Collapse to vertical on tablets and phones */
+  .landing-hero-teaser {
+    flex-direction: column;
+    align-items: center;
+  }
+  .landing-hero-text {
+    max-width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .landing-teaser {
+    margin-top: 0;
+  }
+}

@@ -1,21 +1,30 @@
-<div class="landing-hero">
-  <div class="container text-center">
-    <h1 class="landing-title">Card Caster</h1>
-
-    <p class="landing-subtitle">
-      A shared tabletop for playing, creating, and experimenting with card games online.
-    </p>
-
-    <p class="landing-supporting">
-      Move, flip, shuffle, and deal cards together in a live, interactive space —
-      no rules locked in, no setup required.
-    </p>
-
-    <div class="landing-ctas">
-      <%= link_to "Explore as Guest", projects_path, class: "btn btn-primary btn-lg me-2" %>
-      <%= link_to "Join to play", new_user_registration_path, class: "btn btn-outline-primary btn-lg me-2" %>
-      <a href="#how-it-works" class="btn btn-link btn-lg">How it works</a>
+<div class="landing-hero-teaser">
+  <div class="container d-flex flex-wrap align-items-center justify-content-between">
+    
+    <!-- Hero Text -->
+    <div class="landing-hero-text flex-fill me-4">
+      <h1 class="landing-title">Card Caster</h1>
+      <p class="landing-subtitle">
+        A shared tabletop for playing, creating, and experimenting with card games online.
+      </p>
+      <p class="landing-supporting">
+        Move, flip, shuffle, and deal cards together in a live, interactive space —
+        no rules locked in, no setup required.
+      </p>
+      <div class="landing-ctas mt-3">
+        <%= link_to "Explore as Guest", projects_path, class: "btn btn-primary btn-lg me-2" %>
+        <%= link_to "Join to play", new_user_registration_path, class: "btn btn-outline-primary btn-lg me-2" %>
+        <a href="#how-it-works" class="btn btn-link btn-lg">How it works</a>
+      </div>
     </div>
+
+    <!-- Teaser Image -->
+    <div class="landing-teaser flex-fill text-center">
+      <%= image_tag "landing_card_preview.png",
+        alt: "Interactive card table preview",
+        class: "img-fluid landing-teaser-image" %>
+    </div>
+
   </div>
 </div>
 
