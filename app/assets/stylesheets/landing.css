@@ -1,0 +1,73 @@
+/* Base palette: teal / indigo */
+:root {
+  --cc-primary: #1f6f78;
+  --cc-primary-dark: #174f55;
+  --cc-accent: #4f46e5;
+  --cc-bg-soft: #f4fafa;
+}
+
+.landing-hero {
+  background: linear-gradient(
+    180deg,
+    var(--cc-bg-soft),
+    #ffffff
+  );
+  padding: 5rem 1rem 4rem;
+}
+
+.landing-title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.landing-subtitle {
+  font-size: 1.25rem;
+  margin-top: 1rem;
+}
+
+.landing-supporting {
+  color: #555;
+  max-width: 720px;
+  margin: 1rem auto 2rem;
+}
+
+.landing-ctas {
+  margin-top: 2rem;
+}
+
+.landing-teaser {
+  padding: 3rem 1rem;
+}
+
+.landing-teaser-image {
+  max-width: 900px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.landing-how {
+  background: #ffffff;
+  padding: 5rem 1rem;
+}
+
+.landing-how-subtitle {
+  color: #666;
+}
+
+.landing-feature-image {
+  max-height: 180px;
+}
+
+.landing-final-cta {
+  background: var(--cc-primary);
+  color: white;
+  padding: 4rem 1rem;
+}
+
+.landing-final-cta h2 {
+  font-weight: 700;
+}
+
+.landing-final-cta p {
+  margin-bottom: 2rem;
+}

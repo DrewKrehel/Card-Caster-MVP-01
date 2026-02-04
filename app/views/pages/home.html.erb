@@ -1,88 +1,93 @@
-<div class="landing-page text-center py-5">
+<div class="landing-hero">
+  <div class="container text-center">
+    <h1 class="landing-title">Card Caster</h1>
 
-  <!-- Hero Section -->
-  <section class="hero py-5">
-    <h1 class="display-3 mb-4">Card Caster</h1>
-    <p class="lead mb-4">
-      Multiplayer, web-based card game engine. 
-      Create projects, start game sessions, and play custom card games with friends.
-    </p>
-    <p class="lead mb-4">
-      Multiplayer, web-based card game engine. 
-      Share your card-game ideas with the world! Fast and easy to get started. Free and fun for everyone! Try it now!
-    </p>
-    <p class="lead mb-4">
-      Try the lastest in card-concepts before they even reach market! Your feedback can help build the next great gameing classic!
-    </p>
-    <p class="lead mb-4">
-      Import your own card-game collections and play your favorite games with new or old friends online, any time you want! Distance be damned!
+    <p class="landing-subtitle">
+      A shared tabletop for playing, creating, and experimenting with card games online.
     </p>
 
-    <div class="btn-group mb-5">
-      <%= link_to "Enter as Guest", projects_path(guest: true), class: "btn btn-primary btn-lg me-3" %>
-      <%= link_to "Free to Join", new_user_registration_path, class: "btn btn-outline-primary btn-lg me-3" %>
-      <%#= link_to "Sign In", new_user_session_path, class: "btn btn-outline-secondary btn-lg" %>
+    <p class="landing-supporting">
+      Move, flip, shuffle, and deal cards together in a live, interactive space —
+      no rules locked in, no setup required.
+    </p>
+
+    <div class="landing-ctas">
+      <%= link_to "Explore as Guest", projects_path, class: "btn btn-primary btn-lg me-2" %>
+      <%= link_to "Join to play", new_user_registration_path, class: "btn btn-outline-primary btn-lg me-2" %>
+      <a href="#how-it-works" class="btn btn-link btn-lg">How it works</a>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- Interactive Card Demo -->
-  <section class="card-demo mt-5">
-    <h2 class="mb-3">Live Card Demo</h2>
-    <p class="text-muted mb-4">
-      These cards behave exactly like real Card Caster cards.
-    </p>
+<div class="landing-teaser">
+  <div class="container text-center">
+    <%= image_tag "landing_card_preview.png",
+      alt: "Interactive card table preview",
+      class: "img-fluid landing-teaser-image" %>
+  </div>
+</div>
 
-    <div class="demo-table">
-      <div class="demo-deck" id="demoDeck">
-        <% 5.times do |i| %>
-          <div class="demo-card" data-index="<%= i %>">
-            <div class="card-inner">
-              <div class="card-face card-back">
-                <%= image_tag "standard_deck_cards/card_back.png" %>
-              </div>
-              <div class="card-face card-front">
-                <%= image_tag "standard_deck_cards/a_of_spades.png" %>
-              </div>
-            </div>
-          </div>
-        <% end %>
+<a id="how-it-works"></a>
+
+<div class="landing-how">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2>How to use Card Caster</h2>
+      <p class="landing-how-subtitle">
+        Not a card game. A card game platform.
+      </p>
+    </div>
+
+    <div class="row g-5">
+      <div class="col-md-4 text-center">
+        <%= image_tag "landing_join_session.png",
+          alt: "Play together",
+          class: "img-fluid mb-3 landing-feature-image" %>
+
+        <h5>Play together</h5>
+        <p>
+          Sit down at the same table with friends and interact with cards naturally —
+          deal, draw, discard, and rearrange just like you would in person.
+        </p>
       </div>
 
-      <div class="demo-controls mt-4">
-        <button class="btn btn-outline-primary me-2" id="demoShuffle">
-          Shuffle
-        </button>
-        <button class="btn btn-outline-secondary me-2" id="demoRotate">
-          Rotate
-        </button>
-        <button class="btn btn-outline-success" id="demoFlip">
-          Flip Top Card
-        </button>
+      <div class="col-md-4 text-center">
+        <%= image_tag "landing_create_project.png",
+          alt: "Test and iterate",
+          class: "img-fluid mb-3 landing-feature-image" %>
+
+        <h5>Test and iterate</h5>
+        <p>
+          Try new game concepts, swap card designs on the fly, and see what works quickly.
+          Explore ideas freely before committing time or money to physical prototypes.
+        </p>
+      </div>
+
+      <div class="col-md-4 text-center">
+        <%= image_tag "landing_card_preview.png",
+          alt: "Discover and share",
+          class: "img-fluid mb-3 landing-feature-image" %>
+
+        <h5>Discover and share</h5>
+        <p>
+          Invite others to watch, join in, or give feedback on new card ideas before they
+          ever reach production. Get inspired by what other creators are building —
+          and let your ideas spark new ones.
+        </p>
       </div>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- Feature Section: How it works -->
-  <section class="features py-5 mt-5">
-    <div class="container">
-      <div class="row text-start">
-        <div class="col-md-4 mb-4">
-          <h3>Create Projects</h3>
-          <p>Organize your card games into projects to manage game sessions, decks, and players.</p>
-          <%= image_tag "landing_create_project.png", class: "img-fluid shadow rounded" %>
-        </div>
-        <div class="col-md-4 mb-4">
-          <h3>Join Game Sessions</h3>
-          <p>Play multiplayer card games with friends or observers. No installation required.</p>
-          <%= image_tag "landing_join_session.png", class: "img-fluid shadow rounded" %>
-        </div>
-        <div class="col-md-4 mb-4">
-          <h3>Interactive Cards</h3>
-          <p>Flip, move, rotate, and shuffle cards. All actions reflect the database state in real-time.</p>
-          <%= image_tag "landing_card_preview.png", class: "img-fluid shadow rounded" %>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="landing-final-cta">
+  <div class="container text-center">
+    <h2>Ready to make the next card-game classic?</h2>
+    <p>
+      Join the Card Caster Community and start playtesting today!
+    </p>
 
+    <%= link_to "Start playing now!",
+      new_user_registration_path,
+      class: "btn btn-light btn-lg" %>
+  </div>
 </div>

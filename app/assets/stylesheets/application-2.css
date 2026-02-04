@@ -9,19 +9,159 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
- /*
- *= require landing
- */
-
-
 /* Basic Styling */
 textarea {
   resize: both;
 }
 
-.navbar-brand {
+/* Root theme */
+:root {
+  --indigo: #1e1f3a;
+  --paper: #f7f6f3;
+  --card-red: #c84a4a;
+  --teal: #2fb7b0;
+  --text-dark: #2a2a2a;
+  --text-light: #dcdcec;
+}
+
+/* Page wrapper */
+.cc-page {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text-dark);
+  background: var(--paper);
+}
+
+/* HERO */
+.cc-hero {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 3rem;
+  padding: 6rem 8vw;
+  background: linear-gradient(160deg, #1e1f3a, #2a2b55);
+  color: var(--text-light);
+}
+
+.cc-hero h1 {
+  font-size: 3.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.cc-hero h2 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  max-width: 38rem;
+}
+
+.cc-hero-supporting {
+  margin-top: 1.5rem;
+  max-width: 36rem;
+  opacity: 0.9;
+}
+
+.cc-hero-cta {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Placeholder visual */
+.cc-hero-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-stack {
+  position: relative;
+  width: 160px;
+  height: 220px;
+}
+
+.card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.card:nth-child(1) { transform: rotate(-6deg); }
+.card:nth-child(2) { transform: rotate(2deg); }
+.card:nth-child(3) { transform: rotate(10deg); }
+
+/* TEASER */
+.cc-teaser {
+  padding: 4rem;
+  text-align: center;
+  opacity: 0.5;
+}
+
+/* USAGE SECTION */
+.cc-usage {
+  padding: 6rem 8vw;
+}
+
+.cc-usage header {
+  max-width: 40rem;
+  margin-bottom: 3rem;
+}
+
+.cc-subheadline {
+  opacity: 0.7;
+}
+
+.cc-usage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2.5rem;
+}
+
+.cc-usage-item {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* FINAL CTA */
+.cc-final-cta {
+  padding: 5rem 8vw;
+  text-align: center;
+  background: var(--indigo);
+  color: var(--text-light);
+}
+
+/* Buttons */
+.btn {
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  text-decoration: none;
   font-weight: 600;
 }
+
+.btn-primary {
+  background: var(--card-red);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: var(--teal);
+  color: #fff;
+}
+
+.btn-tertiary {
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+}
+
+.btn-large {
+  font-size: 1.1rem;
+  padding: 1rem 2.2rem;
+}
+
+
 
 /* Grid layout */
 .zone-grid {
