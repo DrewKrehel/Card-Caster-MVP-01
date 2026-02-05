@@ -30,9 +30,22 @@
 
 <div class="landing-teaser">
   <div class="container text-center">
-    <%= image_tag "landing_card_preview.png",
-      alt: "Interactive card table preview",
-      class: "img-fluid landing-teaser-image" %>
+    <div class="teaser-cards">
+      <% ["Easy to use", "Free to join", "Custom creations", "Play prototypes", "Give feedback"].each_with_index do |label, i| %>
+        <div class="teaser-card js-rotatable-card" data-rotation="0" >
+          <div class="card-inner">
+            <div class="card-face card-back"></div>
+            <div class="card-face card-front">
+              <span><%= label %></span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <button class="btn btn-outline-secondary mt-4">
+      Shuffle cards
+    </button>
   </div>
 </div>
 
