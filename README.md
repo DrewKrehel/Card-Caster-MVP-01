@@ -28,11 +28,15 @@ Use short, descriptive branch names:
 - Include a short description of what the change does and why.
 - Ensure the app runs and migrations succeed before submitting.
 
-## Questions or Ideas?
-Open an issue to discuss bugs, improvements, or new features before starting large changes.
+## Questions or Ideas for Contribution?
+Thanks for your interest in contributing! Card Caster is intentionally simple and beginner-friendly. Please keep the following guidelines in mind when working on the project. 
+- Open an issue to discuss bugs, improvements, or new features. One feature or fix per pull request. Avoid bundling refactors with new behavior and client-only state or hidden UI logic.
+- Avoid adding game-specific rules (poker, blackjack, etc.) Favor flexible systems over hard-coded logic. If a feature only makes sense for one game, it probably doesn’t belong here.
+- Please create a new branch for each contribution. Keep branch names short, lowercase, and hyphen-separated. Make sure the app boots and basic gameplay still works before submitting the new PR. 
  
-## ERD: Does the documentation include an entity relationship diagram?
- 
+## ERD:
+ <img width="1368" height="804" alt="Screenshot 2026-02-09 164308" src="https://github.com/user-attachments/assets/d90b4257-da7f-4db1-b692-f79f5b511688" />
+
 ## Troubleshooting: Is there an FAQs or Troubleshooting section that addresses common issues, questions, or obstacles users or new contributors might face?
 
 ## Visual Aids:
