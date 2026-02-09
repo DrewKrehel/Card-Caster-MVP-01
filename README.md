@@ -65,6 +65,29 @@ Thanks for your interest in contributing! Card Caster is intentionally simple an
             │       ├── SessionUsers
             │       │   └── User
             │       └── PlayingCards
+
+### Zone Layout Diagram
+┌──────────────────────────────┐
+│            Deck              │
+│     (single visible card)    │
+└──────────────────────────────┘
+              │
+              ▼
+┌──────────────────────────────┐
+│           Neutral            │
+│   Shared zone for all users  │
+└──────────────────────────────┘
+
+┌──────────────┐  ┌──────────────┐
+│   Player 1   │  │   Player 2   │
+│   Zone       │  │   Zone       │
+└──────────────┘  └──────────────┘
+
+┌──────────────┐  ┌──────────────┐
+│   Player 3   │  │   Player 4   │
+│   Zone       │  │   Zone       │
+└──────────────┘  └──────────────┘
+
 ### Permission Model Cheat Sheet: 
 <img width="775" height="154" alt="Screenshot 2026-02-09 171131" src="https://github.com/user-attachments/assets/f41a2c70-bbd4-4573-b90a-4d28e9753c45" />
 
