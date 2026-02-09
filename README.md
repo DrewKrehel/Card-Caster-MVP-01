@@ -40,6 +40,7 @@ Thanks for your interest in contributing! Card Caster is intentionally simple an
 ## Troubleshooting: Is there an FAQs or Troubleshooting section that addresses common issues, questions, or obstacles users or new contributors might face?
 
 ## Visual Aids:
+### System Overview Diagram
             User
             │
             ├── Projects
@@ -64,7 +65,8 @@ Thanks for your interest in contributing! Card Caster is intentionally simple an
             │       ├── SessionUsers
             │       │   └── User
             │       └── PlayingCards
-
+### Permission Model Cheat Sheet: 
+<img width="775" height="154" alt="Screenshot 2026-02-09 171131" src="https://github.com/user-attachments/assets/f41a2c70-bbd4-4573-b90a-4d28e9753c45" />
 
 ## API Documentation (for projects providing their own API endpoints): 
 Is there clear and detailed documentation for the project's API? This should include descriptions of all endpoints, request/response formats, and authentication methods.
