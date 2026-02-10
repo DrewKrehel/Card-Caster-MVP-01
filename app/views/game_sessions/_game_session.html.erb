@@ -7,13 +7,17 @@
   <hr>
 
   <h5><%= game_session.name %></h5>
+
+  <!-- SessionUser represents the current user's role + zone inside this session -->
   <% session_user = game_session.session_users.find_by(user: current_user) %>
 
+  <!-- Iterate through all defined zones (Deck, Neutral, Player 1, etc.) -->
   <% PlayingCard::ZONES.each do |zone| %>
     <h6 class="mt-4 d-flex align-items-center justify-content-between">
       <span>
         <%= zone %>
 
+        <!-- Show which user owns this zone, if any -->
         <% if (zone_user = game_session.user_for_zone(zone)) %>
           <span class="badge bg-secondary ms-2">
             <%= zone_user.username %>
@@ -25,13 +29,14 @@
         <% end %>
       </span>
 
-      <!-- Shuffle button -->
+        <!--Shuffle affects all cards in this zone-->
       <%= button_to "Shuffle",
                   shuffle_game_session_zone_path(game_session, zone_name: zone),
                   method: :patch,
                   class: "btn btn-sm btn-outline-primary" %>
     </h6>
 
+    <!-- Layouts for cards within a single zone -->
     <div class="zone-grid">
       <% if zone == "Deck" %>
         <% deck_cards = game_session.playing_cards.in_zone("Deck").ordered %>

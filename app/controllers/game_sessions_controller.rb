@@ -12,7 +12,7 @@ class GameSessionsController < ApplicationController
                     alert: "This session already has the maximum number of players."
       return
     end
-
+    # Assigning player role & zone  
     session_user.role = :player
     session_user.zone_name ||= @game_session.next_available_player_zone
 

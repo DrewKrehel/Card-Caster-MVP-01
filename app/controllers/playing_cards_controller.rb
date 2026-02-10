@@ -2,11 +2,13 @@ class PlayingCardsController < ApplicationController
   before_action :set_card, only: [:flip, :move, :rotate]
   before_action :authorize_zone_action!, only: [:flip, :move, :rotate]
 
+  # PATCH /playing_cards/:id/flip
   def flip
     @card.update!(face_up: params[:face_up])
     redirect_back fallback_location: game_session_path(@card.game_session)
   end
 
+  # PATCH /playing_cards/:id/move
   def move
     if @card.zone_name == "Deck"
       card_to_move =
@@ -22,6 +24,7 @@ class PlayingCardsController < ApplicationController
     redirect_back fallback_location: game_session_path(@card.game_session)
   end
 
+  # PATCH /playing_cards/:id/rotate
   def rotate
     @card.orientation = case params[:direction]
       when "cw" then @card.orientation_cw

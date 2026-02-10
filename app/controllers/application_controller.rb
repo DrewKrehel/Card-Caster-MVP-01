@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
     )
   end
 
+  # Ensures the current user is allowed to interact with a card based on its zone.
   def authorize_card_zone!(card)
     session_user = card.game_session.session_users.find_by(user: current_user)
     raise ActiveRecord::RecordNotFound unless session_user
