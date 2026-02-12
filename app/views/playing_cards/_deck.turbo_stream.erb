@@ -1,0 +1,5 @@
+<%= turbo_stream.replace dom_id(@top_card) do %>
+  <%= render "playing_cards/deck",
+             top_card: @top_card,
+             game_session: @game_session %>
+<% end %>

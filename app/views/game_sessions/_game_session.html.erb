@@ -13,52 +13,19 @@
 
   <!-- Iterate through all defined zones (Deck, Neutral, Player 1, etc.) -->
   <% PlayingCard::ZONES.each do |zone| %>
-    <h6 class="mt-4 d-flex align-items-center justify-content-between">
-      <span>
-        <%= zone %>
+    <h6 class="mt-4 d-flex justify-content-between align-items-center">
+      <span><%= zone %></span>
 
-        <!-- Show which user owns this zone, if any -->
-        <% if (zone_user = game_session.user_for_zone(zone)) %>
-          <span class="badge bg-secondary ms-2">
-            <%= zone_user.username %>
-          </span>
-        <% end %>
-
-        <% if zone_user == current_user %>
-          <span class="badge bg-success ms-1">You</span>
-        <% end %>
-      </span>
-
-        <!--Shuffle affects all cards in this zone-->
       <%= button_to "Shuffle",
-                  shuffle_game_session_zone_path(game_session, zone_name: zone),
-                  method: :patch,
-                  class: "btn btn-sm btn-outline-primary" %>
+            shuffle_game_session_zone_path(game_session, zone_name: zone),
+            method: :patch,
+            form: { data: { turbo_stream: true } },
+            class: "btn btn-sm btn-outline-primary" %>
     </h6>
 
-    <!-- Layouts for cards within a single zone -->
-    <div class="zone-grid">
-      <% if zone == "Deck" %>
-        <% deck_cards = game_session.playing_cards.in_zone("Deck").ordered %>
-
-        <% if deck_cards.any? %>
-          <div class="card-slot">
-            <%= render "playing_cards/deck",
-                     game_session: game_session,
-                     top_card: deck_cards.first %>
-          </div>
-        <% end %>
-
-      <% else %>
-        <% game_session.playing_cards.in_zone(zone).ordered.each do |card| %>
-          <div class="card-slot">
-            <%= render "playing_cards/playing_card",
-                     card: card,
-                     current_zone: zone,
-                     can_interact: session_user&.can_interact_with_zone?(zone) %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
+    <%= render "playing_cards/zone_grid",
+               game_session: game_session,
+               zone_name: zone,
+               session_user: session_user %>
   <% end %>
 </div>

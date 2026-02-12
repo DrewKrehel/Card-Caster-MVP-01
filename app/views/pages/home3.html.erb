@@ -33,10 +33,7 @@
   <div class="container text-center">
     <div class="teaser-cards">
       <% ["Easy to use", "Free to join", "Custom creations", "Play prototypes", "Give feedback"].each_with_index do |label, i| %>
-        <div class="teaser-card"
-             data-controller="card"
-             data-card-rotation-value="0"
-             data-action="click->card#rotate">
+        <div class="teaser-card js-rotatable-card" data-rotation="0" >
           <div class="card-inner">
             <div class="card-face card-back"></div>
             <div class="card-face card-front">
@@ -51,7 +48,7 @@
       Shuffle cards
     </button>
   </div>
-</div
+</div>
 
 <a id="how-it-works"></a>
 

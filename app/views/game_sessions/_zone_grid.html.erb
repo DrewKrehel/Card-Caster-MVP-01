@@ -1,0 +1,22 @@
+<div id="<%= dom_id(game_session, zone_name.parameterize) %>"
+     class="zone-grid">
+
+  <% if zone_name == "Deck" %>
+    <% deck_cards = game_session.playing_cards.in_zone("Deck").ordered %>
+    <% if deck_cards.any? %>
+      <div class="card-slot">
+        <%= render "playing_cards/deck",
+                   top_card: deck_cards.first %>
+      </div>
+    <% end %>
+  <% else %>
+    <% game_session.playing_cards.in_zone(zone_name).ordered.each do |card| %>
+      <div class="card-slot">
+        <%= render "playing_cards/playing_card",
+                   card: card,
+                   current_zone: zone_name,
+                   can_interact: session_user&.can_interact_with_zone?(zone_name) %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

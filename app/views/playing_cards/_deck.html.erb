@@ -1,13 +1,16 @@
-<div class="playing-card">
+<div id="<%= dom_id(top_card) %>"
+     class="playing-card"
+     data-controller="card"
+     data-card-rotation-value="0"
+     data-action="click->card#rotate">
 
-  <div class="card-frame">
-    <%#= image_tag top_card.back_image_url,
-                  class: "card-image" %>
-    <%= image_tag "ai-deck-01.png", class: "card-image" %>
+  <div class="card-inner">
+    <div class="card-face card-back">
+      <%= image_tag top_card.back_image_url, class: "card-image" %>
+    </div>
   </div>
 
   <div class="card-controls">
-    <!-- Draw -->
     <div class="dropdown">
       <button class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown">
         Draw
@@ -15,23 +18,16 @@
 
       <ul class="dropdown-menu">
         <% PlayingCard::ZONES.each do |zone| %>
-          <% next if zone.in?(["Deck"]) %>
+          <% next if zone == "Deck" %>
           <li>
             <%= button_to zone,
-                          move_playing_card_path(top_card, zone_name: zone),
-                          method: :patch,
-                          class: "dropdown-item" %>
+                  move_playing_card_path(top_card, zone_name: zone),
+                  method: :patch,
+                  form: { data: { turbo_stream: true } },
+                  class: "dropdown-item" %>
           </li>
         <% end %>
       </ul>
-    </div>
-
-    <!-- Peek -->
-    <div class="peek-wrapper">
-      <button class="btn btn-sm btn-outline-warning">👁 Peek</button>
-      <div class="peek-popup">
-        <%= image_tag top_card.image_url, class: "peek-image" %>
-      </div>
     </div>
   </div>
 </div>

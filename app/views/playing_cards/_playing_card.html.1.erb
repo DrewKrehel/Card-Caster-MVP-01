@@ -1,0 +1,72 @@
+<div class="playing-card <%= 'disabled-card' unless can_interact %>">
+
+  <% session_user =
+     card.game_session.session_users.find_by(user: current_user) %>
+
+  <% can_control =
+     session_user&.host? ||
+     (session_user&.player? && session_user.zone_name == card.zone_name) %>
+
+  <div class="card-frame">
+    <%= image_tag card.display_image,
+                  class: "card-image",
+                  style: "transform: rotate(#{card.orientation_degrees}deg);" %>
+  </div>
+
+  <div class="card-controls">
+    <% if can_interact %>
+      <!--Rotate-->
+      <div class="card-controls">
+        <%#= button_to "↺",
+                  rotate_playing_card_path(card, direction: :ccw),
+                  method: :patch,
+                  class: "btn btn-sm btn-dark" %>
+
+        <%= button_to "↻",
+                  rotate_playing_card_path(card, direction: :cw),
+                  method: :patch,
+                  class: "btn btn-sm btn-dark" %>
+
+        <!--Move-->
+        <div class="dropdown">
+          <button class="btn btn-sm btn-dark dropdown-toggle"
+              data-bs-toggle="dropdown">
+            Move
+          </button>
+
+          <ul class="dropdown-menu">
+            <% PlayingCard::ZONES.each do |zone| %>
+              <% next if zone == current_zone %>
+              <li>
+                <%= button_to zone,
+                        move_playing_card_path(card, zone_name: zone),
+                        method: :patch,
+                        class: "dropdown-item" %>>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <!-- Flip -->
+        <%= button_tag(card.face_up? ? "↓" : "↑",
+              type: "button",
+              class: "btn btn-sm btn-dark",
+              data: {
+                action: "click->card#flip",
+                card_id_value: card.id,
+                card_face_up_value: !card.face_up?
+              }) %>
+
+        <!-- Peek (only if face-down) -->
+        <% unless card.face_up? %>
+          <div class="peek-wrapper">
+            <button class="btn btn-sm btn-outline-warning peek-btn">👁 Peek</button>
+            <div class="peek-popup">
+              <%= image_tag card.image_url, class: "peek-image" %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -3,6 +3,27 @@ class GameSessionsController < ApplicationController
   before_action :set_game_session, only: %i[ show edit update destroy
                                              join_as_player join_as_observer toggle_role leave ]
 
+  # PATCH /game_sessions/:game_session_id/playing_cards/shuffle
+  def shuffle
+    game_session = GameSession.find(params[:game_session_id])
+    zone_name = params[:zone_name]
+
+    session_user = game_session.session_users.find_by(user: current_user)
+    authorize_zone!(session_user, zone_name)
+
+    DeckService.new(game_session, template_source: StandardDeckTemplate.new)
+               .shuffle!(zone_name: zone_name)
+
+    @game_session = game_session
+    @zone_name = zone_name
+    @session_user = session_user
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_back fallback_location: game_session_path(game_session) }
+    end
+  end
+
   # POST /game_sessions/:id/join_as_player
   def join_as_player
     session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
@@ -12,7 +33,7 @@ class GameSessionsController < ApplicationController
                     alert: "This session already has the maximum number of players."
       return
     end
-    # Assigning player role & zone  
+    # Assigning player role & zone
     session_user.role = :player
     session_user.zone_name ||= @game_session.next_available_player_zone
 

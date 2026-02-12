@@ -1,0 +1,156 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+ /*
+ *= require landing
+ */
+
+
+/* Basic Styling */
+textarea {
+  resize: both;
+}
+
+/* Center navbar content and constrain width */
+.navbar .container-fluid {
+  max-width: 960px;       /* same width as CTA and hero */
+  margin: 0 auto;         /* center the navbar container */
+  justify-content: center; /* center contents */
+}
+
+.navbar-nav {
+  justify-content: center;  /* center nav links */
+  width: 100%;              /* full width for spacing */
+}
+
+.navbar-nav .nav-item {
+  margin: 0 0.5rem;        /* spacing between items */
+}
+
+.navbar-brand {
+  font-weight: 600;
+}
+
+/* Grid layout */
+.zone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1.75rem;
+}
+
+/* Grid item — NEVER clips */
+.card-slot {
+  position: relative;
+  width: 120px;
+  height: 180px;
+  overflow: visible;
+  /* important! */
+}
+
+/* Visual card — allowed to overflow */
+.card-surface {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+/* Image rotates freely */
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+/* Controls float OUTSIDE the card */
+.card-controls {
+  position: absolute;
+  bottom: -2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+/* Ensure grid wraps properly even with absolute card controls */
+.zone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 3.5rem;
+  /* adjust spacing as needed */
+}
+
+.card-slot {
+  position: relative;
+  width: 120px;
+  height: 180px;
+  overflow: visible;
+  /* allows peek and controls to float outside */
+}
+
+/* Optional: visually indicate disabled cards */
+.disabled-card {
+  opacity: 0.5;
+  pointer-events: none;
+  /* prevents clicks */
+}
+
+
+/* Hover Over */
+.playing-card:hover .card-controls {
+  opacity: 1;
+}
+
+/* Button styling */
+.card-btn {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.35rem;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+}
+
+.peek-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.peek-popup {
+  display: none;
+  position: absolute;
+  top: -10px;
+  left: 110%;
+  z-index: 999;
+  width: 120px;
+  /* adjust as needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.peek-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+}
+
+/* Show on hover or click-and-hold */
+.peek-wrapper:hover .peek-popup,
+.peek-wrapper:active .peek-popup {
+  display: block;
+}
+
+@import "custom-image.css";

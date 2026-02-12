@@ -1,0 +1,6 @@
+<%= turbo_stream.replace dom_id(@game_session, @zone_name.parameterize) do %>
+  <%= render "playing_cards/zone_grid",
+             game_session: @game_session,
+             zone_name: @zone_name,
+             session_user: @session_user %>
+<% end %>

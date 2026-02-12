@@ -1,0 +1,9 @@
+<turbo-stream target="<%= dom_id(@card) %>" action="replace">
+  <template>
+    <%= render "playing_cards/playing_card",
+               card: @card,
+               current_zone: @card.zone_name,
+               can_interact: current_user.can_interact_with_card?(@card) %>
+  </template>
+</turbo-stream>
+

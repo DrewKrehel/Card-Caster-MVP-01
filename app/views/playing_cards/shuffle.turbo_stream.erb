@@ -1,0 +1,12 @@
+<%= turbo_stream.replace "zone-grid-#{params[:zone_name]}" do %>
+  <div class="zone-grid" id="zone-grid-<%= params[:zone_name] %>">
+    <% @card.game_session.playing_cards.in_zone(params[:zone_name]).ordered.each do |card| %>
+      <div class="card-slot">
+        <%= render "playing_cards/playing_card",
+                   card: card,
+                   current_zone: params[:zone_name],
+                   can_interact: true %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

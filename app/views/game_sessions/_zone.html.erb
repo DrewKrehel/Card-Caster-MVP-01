@@ -1,0 +1,11 @@
+<turbo-frame id="<%= "#{dom_id(game_session)}_#{zone.parameterize}" %>" class="zone-grid">
+  <% cards.each do |card| %>
+    <div class="card-slot">
+      <%= render "playing_cards/playing_card",
+                 card: card,
+                 current_zone: zone,
+                 can_interact: game_session.session_users.find_by(user: current_user)&.can_interact_with_zone?(zone) %>
+    </div>
+  <% end %>
+</turbo-frame>
+

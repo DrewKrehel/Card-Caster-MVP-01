@@ -2,58 +2,33 @@ class PlayingCardsController < ApplicationController
   before_action :set_card, only: [:flip, :move, :rotate]
   before_action :authorize_zone_action!, only: [:flip, :move, :rotate]
 
-  # PATCH /playing_cards/:id/flip
+  def rotate
+    @card.rotate!(:cw)
+    render_card
+  end
+
   def flip
     @card.update!(face_up: params[:face_up])
-    redirect_back fallback_location: game_session_path(@card.game_session)
+    render_card
   end
 
-  # PATCH /playing_cards/:id/move
   def move
-    if @card.zone_name == "Deck"
-      card_to_move =
-        @card.game_session.playing_cards
-             .in_zone("Deck")
-             .ordered
-             .first
-    else
-      card_to_move = @card
-    end
-
-    card_to_move.update!(zone_name: params[:zone_name])
-    redirect_back fallback_location: game_session_path(@card.game_session)
+    @card.update!(zone_name: params[:zone_name])
+    render_zone
   end
 
-  # PATCH /playing_cards/:id/rotate
-  def rotate
-    @card.orientation = case params[:direction]
-      when "cw" then @card.orientation_cw
-      when "ccw" then @card.orientation_ccw
-      else @card.orientation
-      end
-
-    @card.save!
-    redirect_back fallback_location: game_session_path(@card.game_session)
-  end
-
-  # PATCH /game_sessions/:game_session_id/playing_cards/shuffle
   def shuffle
     game_session = GameSession.find(params[:game_session_id])
     zone_name = params[:zone_name]
 
-    session_user = game_session.session_users.find_by(user: current_user)
-
-    unless session_user&.host? ||
-           (session_user.player? && session_user.zone_name == zone_name)
-      return redirect_back fallback_location: game_session_path(game_session),
-                           alert: "You cannot shuffle this zone."
-    end
-
     DeckService.new(game_session, template_source: StandardDeckTemplate.new)
                .shuffle!(zone_name: zone_name)
 
-    redirect_back fallback_location: game_session_path(game_session),
-                  notice: "Shuffled #{zone_name}."
+    @game_session = game_session
+    @zone_name = zone_name
+    @session_user = game_session.session_users.find_by(user: current_user)
+
+    render "playing_cards/zone_grid", formats: :turbo_stream
   end
 
   private
@@ -62,7 +37,27 @@ class PlayingCardsController < ApplicationController
     @card = PlayingCard.find(params[:id])
   end
 
-  def authorize_zone_action!
-    authorize_card_zone!(@card)
+  def render_card
+    render turbo_stream: turbo_stream.replace(
+      dom_id(@card),
+      partial: "playing_cards/playing_card",
+      locals: {
+        card: @card,
+        current_zone: @card.zone_name,
+        can_interact: true
+      }
+    )
+  end
+
+  def render_zone
+    render turbo_stream: turbo_stream.replace(
+      dom_id(@card.game_session, @card.zone_name.parameterize),
+      partial: "playing_cards/zone_grid",
+      locals: {
+        game_session: @card.game_session,
+        zone_name: @card.zone_name,
+        session_user: @card.game_session.session_users.find_by(user: current_user)
+      }
+    )
   end
 end
