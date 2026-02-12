@@ -38,6 +38,22 @@ export default class extends Controller {
     }
   }
 
+  // BUTTON → MOVE
+  move(event) {
+    event.preventDefault()
+    const zone = event.currentTarget.dataset.cardZoneValue
+
+    fetch(`/playing_cards/${this.idValue}/move`, {
+      method: "PATCH",
+      headers: {
+        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content,
+        "Accept": "text/vnd.turbo-stream.html",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ zone_name: zone })
+    })
+  }
+
   applyRotation() {
     this.element.style.transform = `rotate(${this.rotationValue}deg)`
   }
@@ -47,12 +63,8 @@ export default class extends Controller {
     if (!inner) return
 
     inner.classList.add("flipping")
-
-    if (this.faceUpValue) {
-      inner.classList.add("flipped")
-    } else {
-      inner.classList.remove("flipped")
-    }
+    if (this.faceUpValue) inner.classList.add("flipped")
+    else inner.classList.remove("flipped")
 
     setTimeout(() => inner.classList.remove("flipping"), 400)
   }

@@ -1,30 +1,36 @@
 <div id="<%= dom_id(top_card) %>"
      class="playing-card"
      data-controller="card"
+     data-card-id-value="<%= top_card.id %>"
      data-card-rotation-value="0"
+     data-card-face-up-value="false"
      data-action="click->card#rotate">
 
   <div class="card-inner">
     <div class="card-face card-back">
-      <%= image_tag top_card.back_image_url, class: "card-image" %>
+      <%= image_tag "ai-deck-01.png", class: "card-image" %>
+    </div>
+    <div class="card-face card-front">
+      <%= image_tag top_card.image_url, class: "card-image" %>
     </div>
   </div>
 
   <div class="card-controls">
+    <!-- DRAW -->
     <div class="dropdown">
       <button class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown">
         Draw
       </button>
-
       <ul class="dropdown-menu">
         <% PlayingCard::ZONES.each do |zone| %>
           <% next if zone == "Deck" %>
           <li>
-            <%= button_to zone,
-                  move_playing_card_path(top_card, zone_name: zone),
-                  method: :patch,
-                  form: { data: { turbo_stream: true } },
-                  class: "dropdown-item" %>
+            <button type="button"
+                    class="dropdown-item"
+                    data-action="card#move"
+                    data-card-zone-value="<%= zone %>">
+              <%= zone %>
+            </button>
           </li>
         <% end %>
       </ul>

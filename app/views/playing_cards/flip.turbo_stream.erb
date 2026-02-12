@@ -2,5 +2,5 @@
   <%= render "playing_cards/playing_card",
              card: @card,
              current_zone: @card.zone_name,
-             can_interact: true %>
+             can_interact: current_user_can_interact?(@card.zone_name) %>
 <% end %>

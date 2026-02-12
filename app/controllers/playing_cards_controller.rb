@@ -1,34 +1,46 @@
 class PlayingCardsController < ApplicationController
   before_action :set_card, only: [:flip, :move, :rotate]
-  before_action :authorize_zone_action!, only: [:flip, :move, :rotate]
+  before_action :authorize_card_zone!, only: [:flip, :move, :rotate]
 
-  def rotate
-    @card.rotate!(:cw)
-    render_card
-  end
-
+  # PATCH /playing_cards/:id/flip
   def flip
     @card.update!(face_up: params[:face_up])
-    render_card
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_back fallback_location: game_session_path(@card.game_session) }
+    end
   end
 
+  # PATCH /playing_cards/:id/move
   def move
-    @card.update!(zone_name: params[:zone_name])
-    render_zone
+    card_to_move =
+      if @card.zone_name == "Deck"
+        @card.game_session.playing_cards.in_zone("Deck").ordered.first
+      else
+        @card
+      end
+
+    card_to_move.update!(zone_name: params[:zone_name])
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_back fallback_location: game_session_path(@card.game_session) }
+    end
   end
 
-  def shuffle
-    game_session = GameSession.find(params[:game_session_id])
-    zone_name = params[:zone_name]
+  # PATCH /playing_cards/:id/rotate
+  def rotate
+    @card.orientation = case params[:direction]
+                        when "cw" then @card.orientation_cw
+                        when "ccw" then @card.orientation_ccw
+                        else @card.orientation
+                        end
+    @card.save!
 
-    DeckService.new(game_session, template_source: StandardDeckTemplate.new)
-               .shuffle!(zone_name: zone_name)
-
-    @game_session = game_session
-    @zone_name = zone_name
-    @session_user = game_session.session_users.find_by(user: current_user)
-
-    render "playing_cards/zone_grid", formats: :turbo_stream
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_back fallback_location: game_session_path(@card.game_session) }
+    end
   end
 
   private
@@ -37,27 +49,7 @@ class PlayingCardsController < ApplicationController
     @card = PlayingCard.find(params[:id])
   end
 
-  def render_card
-    render turbo_stream: turbo_stream.replace(
-      dom_id(@card),
-      partial: "playing_cards/playing_card",
-      locals: {
-        card: @card,
-        current_zone: @card.zone_name,
-        can_interact: true
-      }
-    )
-  end
-
-  def render_zone
-    render turbo_stream: turbo_stream.replace(
-      dom_id(@card.game_session, @card.zone_name.parameterize),
-      partial: "playing_cards/zone_grid",
-      locals: {
-        game_session: @card.game_session,
-        zone_name: @card.zone_name,
-        session_user: @card.game_session.session_users.find_by(user: current_user)
-      }
-    )
+  def authorize_card_zone!
+    authorize_card_zone!(@card) # assumes your existing Pundit / zone auth
   end
 end
