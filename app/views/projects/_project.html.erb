@@ -1,62 +1,118 @@
-<div id="<%= dom_id project %>">
-  <p>
-    <strong>Creator:</strong>
-    <%= project.creator.username %>
-  </p>
+<div class="container my-5">
 
-  <p>
-    <strong>Name:</strong>
-    <%= project.name %>
-  </p>
+  <div id="<%= dom_id project %>" class="row justify-content-center">
+    <div class="col-lg-10">
 
-  <p>
-    <strong>Summary:</strong>
-    <%= project.summary %>
-  </p>
+      <!-- Project Header -->
+      <div class="mb-5">
 
-  <p>
-    <strong>How to play:</strong>
-    <%= project.how_to_play %>
-  </p>
+        <!-- Image -->
+        <div class="mb-4 text-center">
+          <%= image_tag(
+                project.image? ? project.image_url : "placeholder.jpg",
+                class: "img-fluid rounded-4 shadow-sm w-75",
+                alt: project.name) %>
+        </div>
 
-  <p>
-    <strong>Max players:</strong>
-    <%= project.max_players %>
-  </p>
+        <!-- Title -->
+        <h1 class="fw-bold mb-3"><%= project.name %></h1>
 
-  <p>
-    <strong>Image:</strong>
-    <%= image_tag(
-      project.image? ? project.image_url : "placeholder.jpg"
-    ) %>
-  </p>
+        <!-- Creator -->
+        <div class="d-flex align-items-center mb-4">
+          <%= image_tag project.creator.profile_image,
+                class: "rounded-circle me-3",
+                width: 44,
+                height: 44,
+                alt: "#{project.creator.username}'s profile image" %>
 
-  <% if user_signed_in? %>
-    <div class="row">
-      <div class="col-12 col-md-8 col-lg-6">
-        <%= form_with(model: GameSession.new, url: game_sessions_path, local: true) do |f| %>
-          <%= f.hidden_field :project_id, value: project.id %>
-          <%= f.hidden_field :owner_id, value: current_user.id %>
-
-          <div class="mb-2">
-            <%= f.label :name, "Session Name" %>
-            <%= f.text_area :name,
-                    rows: 2,
-                    class: "form-control w-100",
-                    placeholder: "Enter session name" %>
+          <div>
+            <div class="fw-semibold">
+              <%= project.creator.username %>
+            </div>
+            <div class="text-muted small">
+              Project Creator
+            </div>
           </div>
+        </div>
 
-          <%= f.submit "Start Game Session", class: "btn btn-primary" %>
+        <!-- Summary -->
+        <p class="lead text-muted">
+          <%= project.summary %>
+        </p>
+
+      </div>
+
+      <hr class="my-5">
+
+      <!-- Project Details Section -->
+      <div class="row mb-5">
+
+        <div class="col-md-8">
+          <h5 class="fw-semibold mb-3">How to Play</h5>
+          <p><%= project.how_to_play %></p>
+        </div>
+
+        <div class="col-md-4">
+          <h6 class="text-uppercase text-muted small mb-2">Max Players</h6>
+          <div class="fs-4 fw-semibold">
+            <%= project.max_players %>
+          </div>
+        </div>
+
+      </div>
+
+      <hr class="my-5">
+
+      <!-- Session Creation -->
+      <div class="mb-5">
+
+        <h2 class="fw-semibold mb-3">Start a Game Session</h2>
+
+        <% if user_signed_in? %>
+
+          <%= form_with(model: GameSession.new,
+                        url: game_sessions_path,
+                        local: true,
+                        class: "row g-3 align-items-end") do |f| %>
+
+            <%= f.hidden_field :project_id, value: project.id %>
+            <%= f.hidden_field :owner_id, value: current_user.id %>
+
+            <div class="col-md-8">
+              <%#= f.label :name, "Session Name", class: "form-label" %>
+              <%= f.text_field :name,
+                    class: "form-control",
+                    placeholder: "Enter session name" %>
+            </div>
+
+            <div class="col-md-4">
+              <%= f.submit "Start Session",
+                    class: "btn btn-primary w-100" %>
+            </div>
+
+          <% end %>
+
+        <% else %>
+
+          <%= link_to "Sign in to start a session",
+                new_user_session_path,
+                class: "btn btn-outline-secondary" %>
+
         <% end %>
-      <% else %>
-        <%= link_to "Sign in to start a session",
-        new_user_session_path,
-        class: "btn btn-outline-secondary" %>
-      <% end %>
+
+      </div>
+
+      <hr class="my-5">
+
+      <!-- Active Sessions -->
+      <div>
+        <!--<h4 class="fw-semibold mb-4">Active Sessions</h4>-->
+
+        <%= render "game_sessions/list",
+              game_sessions: project.game_sessions.includes(:owner, :session_users) %>
+      </div>
+
     </div>
   </div>
-
-  <%= render "game_sessions/list",
-      game_sessions: project.game_sessions.includes(:owner, :session_users) %>
 
 </div>

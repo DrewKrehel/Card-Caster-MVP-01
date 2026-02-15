@@ -1,21 +1,42 @@
-<div class="row mb-4">
-  <div class="col-md-6 offset-md-3">
-    <div class="card">
-      <%= image_tag( project.image? ? project.image_url : "placeholder.jpg", class: "card-img-top" ) %>
-      <div class="card-body">
-        <div class="flex-shrink-0">
-          <%= image_tag project.creator.profile_image, class: "rounded-circle me-2", width: "36px", alt: "#{project.creator.username}'s profile image" %>
-        </div>
-        <h5 class="card-title"><%= project.creator.username %></h5>
-        <p class="card-text"><%= project.summary %></p>
+<div class="row justify-content-center mb-5">
+  <div class="col-lg-6 col-md-8">
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+
+      <!-- Project Image -->
+      <div class="project-image-wrapper">
+        <%= image_tag(
+              project.image? ? project.image_url : "placeholder.jpg",
+              class: "img-fluid w-100"
+            ) %>
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Comment</li>
-      </ul>
-      <div class="card-body">
-        <%= link_to "Show this project", project %>
-        <a href="#" class="card-link">Another link</a>
+
+      <div class="card-body p-4">
+
+        <!-- Creator Row -->
+        <div class="d-flex align-items-center mb-3">
+          <%= image_tag project.creator.profile_image,
+                class: "rounded-circle me-3",
+                width: 40,
+                height: 40,
+                alt: "#{project.creator.username}'s profile image" %>
+
+          <h6 class="mb-0 fw-semibold">
+            <%= project.creator.username %>
+          </h6>
+        </div>
+
+        <!-- Project Summary -->
+        <p class="card-text text-muted mb-4">
+          <%= project.summary %>
+        </p>
+
+        <!-- Action -->
+        <%= link_to "View Project",
+              project,
+              class: "btn btn-outline-primary" %>
+
       </div>
     </div>
   </div>
 </div>
+

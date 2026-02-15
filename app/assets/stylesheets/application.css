@@ -19,6 +19,28 @@ textarea {
   resize: both;
 }
 
+/* _preview partial */
+.project-image-wrapper {
+  max-height: 340px;          /* controls image height */
+  overflow: hidden;
+}
+
+.project-image-wrapper img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+/* project/show */
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #e9ecef;
+}
+
+
 /* Center navbar content and constrain width */
 .navbar .container-fluid {
   max-width: 960px;       /* same width as CTA and hero */
