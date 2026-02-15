@@ -30,11 +30,8 @@ class PlayingCard < ApplicationRecord
   belongs_to :game_session
 
   attribute :face_up, :boolean, default: false
-  attribute :orientation, :integer, default: 0
 
-  enum :orientation, { normal: 0, rotated90: 1, rotated180: 2, rotated270: 3 }
-
-  before_validation :ensure_valid_orientation
+  enum :orientation, { normal: 0, rotated90: 1, rotated180: 2, rotated270: 3 }, default: :normal
 
   validates :suit, presence: true, inclusion: { in: %w[hearts diamonds clubs spades] }
   validates :rank, presence: true, inclusion: { in: %w[A 2 3 4 5 6 7 8 9 10 J Q K] }
@@ -71,14 +68,5 @@ class PlayingCard < ApplicationRecord
     self.class.orientations.keys[
       (self.class.orientations[orientation] - 1) % 4
     ]
-  end
-
-  private
-
-  # Ensures orientation always maps to a valid enum value.
-  def ensure_valid_orientation
-    return if orientation.present? && self.class.orientations.value?(orientation)
-
-    self.orientation = "normal"
   end
 end

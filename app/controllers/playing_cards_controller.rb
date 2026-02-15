@@ -26,13 +26,14 @@ class PlayingCardsController < ApplicationController
 
   # PATCH /playing_cards/:id/rotate
   def rotate
+    Rails.logger.info "Rotating card #{params[:id]} direction=#{params[:direction]}"
     @card.orientation = case params[:direction]
       when "cw" then @card.orientation_cw
       when "ccw" then @card.orientation_ccw
       else @card.orientation
       end
-
     @card.save!
+    Rails.logger.info "New orientation: #{@card.orientation}"
     redirect_back fallback_location: game_session_path(@card.game_session)
   end
 
