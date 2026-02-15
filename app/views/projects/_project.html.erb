@@ -9,30 +9,35 @@
         <!-- Image -->
         <div class="mb-4 text-center">
           <%= image_tag(
-                project.image? ? project.image_url : "placeholder.jpg",
-                class: "img-fluid rounded-4 shadow-sm w-75",
-                alt: project.name) %>
+          project.image? ? project.image_url : "placeholder.jpg",
+          class: "img-fluid rounded-4 shadow-sm project-detail-image",
+          alt: project.name
+        ) %>
         </div>
 
         <!-- Title -->
         <h1 class="fw-bold mb-3"><%= project.name %></h1>
 
-        <!-- Creator -->
-        <div class="d-flex align-items-center mb-4">
-          <%= image_tag project.creator.profile_image,
-                class: "rounded-circle me-3",
-                width: 44,
-                height: 44,
-                alt: "#{project.creator.username}'s profile image" %>
+        <!-- Creator + Meta -->
+        <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
 
-          <div>
-            <div class="fw-semibold">
+          <!-- Creator -->
+          <div class="d-flex align-items-center">
+            <%= image_tag project.creator.profile_image,
+            class: "rounded-circle me-2",
+            width: 36,
+            height: 36 %>
+
+            <span class="fw-semibold">
               <%= project.creator.username %>
-            </div>
-            <div class="text-muted small">
-              Project Creator
-            </div>
+            </span>
           </div>
+
+          <!-- Max Players Badge -->
+          <span class="badge bg-light text-dark border px-3 py-2">
+            👥 Max Players: <%= project.max_players %>
+          </span>
+
         </div>
 
         <!-- Summary -->
@@ -48,15 +53,8 @@
       <div class="row mb-5">
 
         <div class="col-md-8">
-          <h5 class="fw-semibold mb-3">How to Play</h5>
+          <h4 class="fw-semibold mb-3">How to Play</h4>
           <p><%= project.how_to_play %></p>
-        </div>
-
-        <div class="col-md-4">
-          <h6 class="text-uppercase text-muted small mb-2">Max Players</h6>
-          <div class="fs-4 fw-semibold">
-            <%= project.max_players %>
-          </div>
         </div>
 
       </div>
