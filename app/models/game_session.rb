@@ -37,11 +37,13 @@ class GameSession < ApplicationRecord
 
   after_create :populate_standard_deck
 
-  MAX_PLAYER_ZONES = ["Player 1", "Player 2", "Player 3", "Player 4"]
+  def player_zones
+    (1..project.max_players).map { |n| "Player #{n}" }
+  end
 
   def next_available_player_zone
     taken = session_users.where.not(zone_name: nil).pluck(:zone_name)
-    MAX_PLAYER_ZONES.find { |zone| !taken.include?(zone) }
+    player_zones.find { |zone| !taken.include?(zone) }
   end
 
   # private

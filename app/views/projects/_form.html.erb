@@ -65,11 +65,11 @@
       <%= form.number_field :max_players, 
                             class: "form-control", 
                             min: 1, 
-                            max: 4,
+                            max: 8,
                             required: true,
                             aria_required: "true",
                             aria_describedby: "max-players-help #{'max-players-error' if project.errors[:max_players].any?}".strip %>
-      <small id="max-players-help" class="form-text text-muted">Between 1 and 4 players</small>
+      <small id="max-players-help" class="form-text text-muted">Between 1 and 8 players</small>
       <% if project.errors[:max_players].any? %>
         <div id="max-players-error" class="invalid-feedback d-block">
           <%= project.errors[:max_players].first %>

@@ -28,6 +28,7 @@ class SessionUser < ApplicationRecord
   validates :role, presence: true
   validates :user_id, uniqueness: { scope: :game_session_id, message: "already joined this session" }
   validate :player_like_users_must_have_zone
+  validate :zone_name_must_be_valid_for_session
 
   enum :role, { host: 0, player: 1, observer: 2 }
 
@@ -51,5 +52,13 @@ class SessionUser < ApplicationRecord
     if counts_as_player? && zone_name.blank?
       errors.add(:zone_name, "must be assigned for players")
     end
+  end
+
+  def zone_name_must_be_valid_for_session
+    return if zone_name.blank? # handled by other validation
+    return if zone_name.in?(["Deck", "Neutral"])
+    return if zone_name.in?(active_session.player_zones)
+
+    errors.add(:zone_name, "is not a valid zone for this session")
   end
 end

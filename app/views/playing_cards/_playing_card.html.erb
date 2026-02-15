@@ -16,7 +16,7 @@
     <nav class="card-controls" aria-label="Card actions for <%= card.card_name %>">
 
       <!-- Rotate -->
-      <%= button_to "↺",
+      <%#= button_to "↺",
                     rotate_playing_card_path(card, direction: :ccw),
                     method: :patch,
                     class: "btn btn-sm btn-dark",
@@ -32,20 +32,18 @@
 
       <!-- Move -->
       <div class="dropdown">
-        <button class="btn btn-sm btn-dark dropdown-toggle" 
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                aria-label="Move <%= card.card_name %> to another zone">
+        <button class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown">
           Move
         </button>
         <ul class="dropdown-menu">
-          <% PlayingCard::ZONES.each do |zone| %>
+          <% available_zones = ["Deck", "Neutral"] + card.game_session.player_zones %>
+          <% available_zones.each do |zone| %>
             <% next if zone == current_zone %>
             <li>
               <%= button_to zone,
-                            move_playing_card_path(card, zone_name: zone),
-                            method: :patch,
-                            class: "dropdown-item" %>
+                      move_playing_card_path(card, zone_name: zone),
+                      method: :patch,
+                      class: "dropdown-item" %>
             </li>
           <% end %>
         </ul>

@@ -25,7 +25,14 @@
 #  fk_rails_...  (game_session_id => game_sessions.id)
 #
 class PlayingCard < ApplicationRecord
-  ZONES = ["Deck", "Neutral", "Player 1", "Player 2", "Player 3", "Player 4"].freeze
+  # Base zones that always exist
+  BASE_ZONES = ["Deck", "Neutral"].freeze
+  
+  # Maximum possible player zones (for validation)
+  MAX_PLAYER_ZONES = (1..8).map { |n| "Player #{n}" }.freeze
+  
+  # All possible zones (base + all possible player zones)
+  ZONES = (BASE_ZONES + MAX_PLAYER_ZONES).freeze
 
   belongs_to :game_session
 

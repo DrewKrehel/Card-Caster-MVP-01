@@ -11,17 +11,23 @@
       <dt class="col-sm-2">Owner</dt>
       <dd class="col-sm-10"><%= game_session.owner.username %></dd>
 
+      <dt class="col-sm-2">Max Players</dt>
+      <dd class="col-sm-10"><%= game_session.project.max_players %></dd>
+
       <dt class="col-sm-2">Session ID</dt>
       <dd class="col-sm-10"><%= game_session.id %></dd>
     </dl>
   </header>
 
-  <hr>
+  <hr aria-hidden="true">
 
   <% session_user = game_session.session_users.find_by(user: current_user) %>
 
+  <!-- Build zones array: Base zones + player zones for this session -->
+  <% all_zones = ["Deck", "Neutral"] + game_session.player_zones %>
+
   <!-- Zones -->
-  <% PlayingCard::ZONES.each do |zone| %>
+  <% all_zones.each do |zone| %>
     <section class="mb-5" aria-labelledby="zone-<%= zone.parameterize %>">
 
       <!-- Zone Header -->
@@ -51,7 +57,7 @@
       </header>
 
       <!-- Zone Cards -->
-      <div class="zone-grid" role="list">
+      <div class="zone-grid" role="list" aria-label="Cards in <%= zone %>">
 
         <% if zone == "Deck" %>
           <% deck_cards = game_session.playing_cards.in_zone("Deck").ordered %>
@@ -62,16 +68,24 @@
                        game_session: game_session,
                        top_card: deck_cards.first %>
             </div>
+          <% else %>
+            <p class="text-muted fst-italic">Deck is empty</p>
           <% end %>
 
         <% else %>
-          <% game_session.playing_cards.in_zone(zone).ordered.each do |card| %>
-            <div class="card-slot" role="listitem">
-              <%= render "playing_cards/playing_card",
-                       card: card,
-                       current_zone: zone,
-                       can_interact: session_user&.can_interact_with_zone?(zone) %>
-            </div>
+          <% zone_cards = game_session.playing_cards.in_zone(zone).ordered %>
+          
+          <% if zone_cards.any? %>
+            <% zone_cards.each do |card| %>
+              <div class="card-slot" role="listitem">
+                <%= render "playing_cards/playing_card",
+                         card: card,
+                         current_zone: zone,
+                         can_interact: session_user&.can_interact_with_zone?(zone) %>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-muted fst-italic">No cards in this zone</p>
           <% end %>
         <% end %>
 
