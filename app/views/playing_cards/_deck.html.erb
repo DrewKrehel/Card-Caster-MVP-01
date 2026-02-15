@@ -1,15 +1,16 @@
-<div class="playing-card">
+<figure class="playing-card">
 
+  <!-- Card Image -->
   <div class="card-frame">
-    <%#= image_tag top_card.back_image_url,
-                  class: "card-image" %>
-    <%= image_tag "ai-deck-01.png", class: "card-image" %>
+    <%#= image_tag top_card.back_image_url, class: "card-image" %>
+    <%= image_tag "ai-deck-01.png", class: "card-image", alt: "Card back" %>
   </div>
 
-  <div class="card-controls">
-    <!-- Draw -->
-    <div class="dropdown">
-      <button class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown">
+  <figcaption class="card-controls">
+
+    <!-- Draw Dropdown -->
+    <nav class="dropdown d-inline me-2" aria-label="Draw actions">
+      <button class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Draw
       </button>
 
@@ -24,14 +25,18 @@
           </li>
         <% end %>
       </ul>
-    </div>
+    </nav>
 
-    <!-- Peek -->
-    <div class="peek-wrapper">
-      <button class="btn btn-sm btn-outline-warning">👁 Peek</button>
-      <div class="peek-popup">
-        <%= image_tag top_card.image_url, class: "peek-image" %>
+    <!-- Peek Action -->
+    <div class="peek-wrapper d-inline" aria-label="Peek at card">
+      <button class="btn btn-sm btn-outline-warning" aria-describedby="peek-popup-<%= top_card.id %>">
+        👁 Peek
+      </button>
+      <div id="peek-popup-<%= top_card.id %>" class="peek-popup">
+        <%= image_tag top_card.image_url, class: "peek-image", alt: "Card face" %>
       </div>
     </div>
-  </div>
-</div>
+
+  </figcaption>
+
+</figure>
