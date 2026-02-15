@@ -1,4 +1,4 @@
-<div class="container my-5">
+<main class="container my-5">
 
   <!-- Project Content -->
   <div class="row justify-content-center">
@@ -11,36 +11,42 @@
   <div class="row justify-content-center mt-4">
     <div class="col-lg-8">
 
-      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-4 bg-light rounded-4 shadow-sm">
+      <nav class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-4 bg-light rounded-4 shadow-sm" 
+           aria-label="Project actions">
 
         <!-- Left side: Back -->
         <div>
           <%= link_to "← Back to projects",
                 projects_path,
-                class: "btn btn-outline-secondary" %>
+                class: "btn btn-outline-secondary",
+                aria_label: "Return to projects list" %>
         </div>
 
         <!-- Right side: Owner Actions -->
         <% if user_signed_in? && current_user == @project.creator %>
-          <div class="d-flex align-items-center gap-2">
+          <div class="d-flex align-items-center gap-2" role="group" aria-label="Project management">
 
             <%= link_to "Edit",
                   edit_project_path(@project),
-                  class: "btn btn-outline-primary" %>
+                  class: "btn btn-outline-primary",
+                  aria_label: "Edit #{@project.name}" %>
 
             <%= button_to "Delete",
                   @project,
                   method: :delete,
-                  data: { confirm: "Are you sure?" },
-                  class: "btn btn-outline-danger" %>
+                  data: { 
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure you want to delete #{@project.name}? This action cannot be undone." 
+                  },
+                  class: "btn btn-outline-danger",
+                  aria_label: "Delete #{@project.name}" %>
 
           </div>
         <% end %>
 
-      </div>
+      </nav>
 
     </div>
   </div>
 
-</div>
-
+</main>

@@ -1,65 +1,86 @@
-<div class="container my-5">
+<main class="container my-5">
 
   <!-- Page Header -->
-  <div class="mb-5">
+  <header class="mb-5">
     <h1 class="fw-bold">Users</h1>
-    <p class="text-muted">Browse creators.</p>
-  </div>
+    <p class="text-muted">
+      Browse creators
+      <% if @users.any? %>
+        — <%= pluralize(@users.count, 'user') %> total
+      <% end %>
+    </p>
+  </header>
 
   <!-- Users List -->
-  <div class="list-group list-group-flush">
+  <% if @users.any? %>
+    <ul class="list-group list-group-flush">
 
-    <% @users.each do |user| %>
+      <% @users.each do |user| %>
 
-      <div class="list-group-item py-4">
+        <li class="list-group-item py-4">
 
-        <div class="row align-items-center">
+          <article class="row align-items-center">
 
-          <!-- Avatar + Name -->
-          <div class="col-md-5 d-flex align-items-center gap-3">
+            <!-- Avatar + Name -->
+            <div class="col-md-5 d-flex align-items-center gap-3">
 
-            <%= image_tag user.profile_image,
-                  class: "rounded-circle",
-                  width: 56,
-                  height: 56,
-                  alt: "#{user.username}'s profile image" %>
+              <%= link_to user_path(user.username), aria_label: "View #{user.username}'s profile" do %>
+                <%= image_tag user.profile_image,
+                      class: "rounded-circle",
+                      width: 56,
+                      height: 56,
+                      alt: "#{user.username}'s profile picture" %>
+              <% end %>
 
-            <div>
-              <h5 class="mb-1">
-                <%= link_to user.username,
-                      user_path(user.username),
-                      class: "text-decoration-none text-dark fw-semibold" %>
-              </h5>
-              <small class="text-muted">
-                Member
-              </small>
-            </div>
-
-          </div>
-
-          <!-- Stats -->
-          <div class="col-md-7 mt-3 mt-md-0">
-
-            <div class="d-flex flex-wrap gap-3">
-
-              <span class="badge bg-light text-dark border px-3 py-2">
-                📁 <%= user.projects.count %> Projects
-              </span>
-
-              <span class="badge bg-light text-dark border px-3 py-2">
-                🎮 <%= user.active_sessions.count %> Active Sessions
-              </span>
+              <div>
+                <h2 class="h5 mb-1">
+                  <%= link_to user.username,
+                        user_path(user.username),
+                        class: "text-decoration-none text-dark fw-semibold" %>
+                </h2>
+                <p class="small text-muted mb-0">
+                  Member since <%= user.created_at.year %>
+                </p>
+              </div>
 
             </div>
 
-          </div>
+            <!-- Stats -->
+            <div class="col-md-7 mt-3 mt-md-0">
 
-        </div>
+              <dl class="d-flex flex-wrap gap-3 mb-0">
 
-      </div>
+                <div class="badge bg-light text-dark border px-3 py-2">
+                  <dt class="visually-hidden">Projects</dt>
+                  <dd class="mb-0">
+                    <span aria-hidden="true">📁</span> 
+                    <%= pluralize(user.projects.count, 'Project') %>
+                  </dd>
+                </div>
 
-    <% end %>
+                <div class="badge bg-light text-dark border px-3 py-2">
+                  <dt class="visually-hidden">Active Sessions</dt>
+                  <dd class="mb-0">
+                    <span aria-hidden="true">🎮</span> 
+                    <%= pluralize(user.active_sessions.count, 'Active Session') %>
+                  </dd>
+                </div>
 
-  </div>
+              </dl>
 
-</div>
+            </div>
+
+          </article>
+
+        </li>
+
+      <% end %>
+
+    </ul>
+  <% else %>
+    <p class="text-muted text-center fst-italic py-5">
+      No users found.
+    </p>
+  <% end %>
+
+</main>
