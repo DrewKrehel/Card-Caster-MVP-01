@@ -1,19 +1,19 @@
-<div class="container my-5">
+<main class="container my-5">
 
-  <div id="<%= dom_id project %>" class="row justify-content-center">
+  <article id="<%= dom_id project %>" class="row justify-content-center">
     <div class="col-lg-10">
 
       <!-- Project Header -->
-      <div class="mb-5">
+      <header class="mb-5">
 
         <!-- Image -->
-        <div class="mb-4 text-center">
+        <figure class="mb-4 text-center">
           <%= image_tag(
-          project.image? ? project.image_url : "placeholder.jpg",
-          class: "img-fluid rounded-4 shadow-sm project-detail-image",
-          alt: project.name
-        ) %>
-        </div>
+            project.image? ? project.image_url : "placeholder.jpg",
+            class: "img-fluid rounded-4 shadow-sm project-detail-image",
+            alt: project.image? ? "#{project.name} project cover image" : "Placeholder image for #{project.name}"
+          ) %>
+        </figure>
 
         <!-- Title -->
         <h1 class="fw-bold mb-3"><%= project.name %></h1>
@@ -24,45 +24,56 @@
           <!-- Creator -->
           <div class="d-flex align-items-center">
             <%= image_tag project.creator.profile_image,
-            class: "rounded-circle me-2",
-            width: 36,
-            height: 36 %>
+              class: "rounded-circle me-2",
+              width: 36,
+              height: 36,
+              alt: "#{project.creator.username}'s profile picture" %>
 
             <span class="fw-semibold">
-              <%= project.creator.username %>
+              Created by <%= link_to project.creator.username,
+                                     user_path(project.creator.username),
+                                     class: "text-decoration-none" %>
             </span>
           </div>
 
           <!-- Max Players Badge -->
           <span class="badge bg-light text-dark border px-3 py-2">
-            👥 Max Players: <%= project.max_players %>
+            <span aria-hidden="true">👥</span> 
+            <span class="visually-hidden">Maximum</span> 
+            Max Players: <%= project.max_players %>
           </span>
 
         </div>
 
         <!-- Summary -->
-        <p class="lead text-muted">
-          <%= project.summary %>
-        </p>
+        <% if project.summary.present? %>
+          <p class="lead text-muted">
+            <%= project.summary %>
+          </p>
+        <% end %>
 
-      </div>
+      </header>
 
-      <hr class="my-5">
+      <hr class="my-5" aria-hidden="true">
 
       <!-- Project Details Section -->
-      <div class="row mb-5">
+      <section class="row mb-5">
 
         <div class="col-md-8">
-          <h4 class="fw-semibold mb-3">How to Play</h4>
-          <p><%= project.how_to_play %></p>
+          <h2 class="h4 fw-semibold mb-3">How to Play</h2>
+          <% if project.how_to_play.present? %>
+            <div><%= simple_format(project.how_to_play) %></div>
+          <% else %>
+            <p class="text-muted fst-italic">No instructions provided yet.</p>
+          <% end %>
         </div>
 
-      </div>
+      </section>
 
-      <hr class="my-5">
+      <hr class="my-5" aria-hidden="true">
 
       <!-- Session Creation -->
-      <div class="mb-5">
+      <section class="mb-5">
 
         <h2 class="fw-semibold mb-3">Start a Game Session</h2>
 
@@ -71,46 +82,54 @@
           <%= form_with(model: GameSession.new,
                         url: game_sessions_path,
                         local: true,
-                        class: "row g-3 align-items-end") do |f| %>
+                        class: "row g-3 align-items-end",
+                        aria_label: "Create new game session") do |f| %>
 
             <%= f.hidden_field :project_id, value: project.id %>
             <%= f.hidden_field :owner_id, value: current_user.id %>
 
             <div class="col-md-8">
-              <%#= f.label :name, "Session Name", class: "form-label" %>
+              <%= f.label :name, "Session Name", class: "form-label visually-hidden" %>
               <%= f.text_field :name,
                     class: "form-control",
-                    placeholder: "Enter session name" %>
+                    placeholder: "Enter session name",
+                    required: true,
+                    aria_required: "true",
+                    aria_label: "Session name" %>
             </div>
 
             <div class="col-md-4">
               <%= f.submit "Start Session",
-                    class: "btn btn-primary w-100" %>
+                    class: "btn btn-primary w-100",
+                    aria_label: "Start new game session for #{project.name}" %>
             </div>
 
           <% end %>
 
         <% else %>
 
+          <p class="mb-3">You must be signed in to start a game session.</p>
           <%= link_to "Sign in to start a session",
                 new_user_session_path,
                 class: "btn btn-outline-secondary" %>
 
         <% end %>
 
-      </div>
+      </section>
 
-      <hr class="my-5">
+      <hr class="my-5" aria-hidden="true">
 
       <!-- Active Sessions -->
-      <div>
-        <!--<h4 class="fw-semibold mb-4">Active Sessions</h4>-->
-
-        <%= render "game_sessions/list",
-              game_sessions: project.game_sessions.includes(:owner, :session_users) %>
-      </div>
+      <section>
+        <% if project.game_sessions.any? %>
+          <%= render "game_sessions/list",
+                game_sessions: project.game_sessions.includes(:owner, :session_users) %>
+        <% else %>
+          <p class="text-muted fst-italic">No active sessions yet. Be the first to start one!</p>
+        <% end %>
+      </section>
 
     </div>
-  </div>
+  </article>
 
-</div>
+</main>

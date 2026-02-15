@@ -12,7 +12,7 @@ class GameSessionsController < ApplicationController
                     alert: "This session already has the maximum number of players."
       return
     end
-    # Assigning player role & zone  
+    # Assigning player role & zone
     session_user.role = :player
     session_user.zone_name ||= @game_session.next_available_player_zone
 
@@ -101,8 +101,7 @@ class GameSessionsController < ApplicationController
     if @game_session.save
       zone = @game_session.next_available_player_zone
 
-      SessionUser.create!(
-        game_session: @game_session,
+      @game_session.session_users.create!(
         user: current_user,
         role: :host,
         zone_name: zone,
@@ -148,6 +147,6 @@ class GameSessionsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def game_session_params
-    params.expect(game_session: [:project_id, :name, :private])
+    params.require(:game_session).permit(:project_id, :name, :private)
   end
 end

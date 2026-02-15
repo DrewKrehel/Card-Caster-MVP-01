@@ -3,7 +3,11 @@
   <header class="mb-3">
     <h2 id="active-sessions-heading" class="h4">
       Active Game Sessions
+      <% if game_sessions.any? %>
+        <span class="badge bg-secondary ms-2"><%= game_sessions.count %></span>
+      <% end %>
     </h2>
+
   </header>
 
   <% if game_sessions.any? %>

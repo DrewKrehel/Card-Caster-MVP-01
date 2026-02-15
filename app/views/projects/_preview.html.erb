@@ -1,42 +1,54 @@
 <div class="row justify-content-center mb-5">
   <div class="col-lg-6 col-md-8">
-    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+    <article class="card shadow-sm border-0 rounded-4 overflow-hidden">
 
       <!-- Project Image -->
-      <div class="project-image-wrapper">
+      <figure class="project-image-wrapper mb-0">
         <%= image_tag(
               project.image? ? project.image_url : "placeholder.jpg",
-              class: "img-fluid w-100"
+              class: "img-fluid w-100",
+              alt: project.image? ? "#{project.name} project cover image" : "Placeholder image for #{project.name}"
             ) %>
-      </div>
+      </figure>
 
       <div class="card-body p-4">
 
         <!-- Creator Row -->
-        <div class="d-flex align-items-center mb-3">
+        <header class="d-flex align-items-center mb-3">
           <%= image_tag project.creator.profile_image,
                 class: "rounded-circle me-3",
                 width: 40,
                 height: 40,
-                alt: "#{project.creator.username}'s profile image" %>
+                alt: "#{project.creator.username}'s profile picture" %>
 
-          <h6 class="mb-0 fw-semibold">
-            <%= project.creator.username %>
-          </h6>
-        </div>
+          <p class="mb-0 fw-semibold">
+            Created by <%= link_to project.creator.username, 
+                                   user_path(project.creator.username),
+                                   class: "text-decoration-none" %>
+          </p>
+        </header>
+
+        <!-- Project Title (if you want to add it) -->
+        <h2 class="h5 card-title mb-3">
+          <%= project.name %>
+        </h2>
 
         <!-- Project Summary -->
-        <p class="card-text text-muted mb-4">
-          <%= project.summary %>
-        </p>
+        <% if project.summary.present? %>
+          <p class="card-text text-muted mb-4">
+            <%= project.summary %>
+          </p>
+        <% end %>
 
         <!-- Action -->
-        <%= link_to "View Project",
-              project,
-              class: "btn btn-outline-primary" %>
+        <footer>
+          <%= link_to "View Project",
+                project,
+                class: "btn btn-outline-primary",
+                aria_label: "View #{project.name} project details" %>
+        </footer>
 
       </div>
-    </div>
+    </article>
   </div>
 </div>
-
