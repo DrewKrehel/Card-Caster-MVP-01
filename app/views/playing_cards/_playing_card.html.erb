@@ -55,9 +55,9 @@
                       class: "btn btn-sm btn-dark",
                       title: card.face_up? ? "Flip face down" : "Flip face up",
                       aria_label: "#{card.face_up? ? 'Flip' : 'Reveal'} #{card.card_name}") %>
-      <% end %
+      <% end %>
 
-      
+      <!--Peek-->
       <% unless card.face_up? %>
         <div class="peek-wrapper">
           <button class="btn btn-sm btn-outline-warning peek-btn"

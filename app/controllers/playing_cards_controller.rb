@@ -27,8 +27,8 @@ class PlayingCardsController < ApplicationController
   end
 
   # PATCH /playing_cards/:id/rotate
-  authorize @card
   def rotate
+    authorize @card
     # Rails.logger.info "Rotating card #{params[:id]} direction=#{params[:direction]}"
     @card.orientation = case params[:direction]
       when "cw" then @card.orientation_cw
