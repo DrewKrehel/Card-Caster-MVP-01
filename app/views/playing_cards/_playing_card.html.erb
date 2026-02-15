@@ -1,7 +1,7 @@
 <article class="playing-card <%= 'disabled-card' unless can_interact %>">
 
   <% session_user = card.game_session.session_users.find_by(user: current_user) %>
-  <% can_control = session_user&.host? || (session_user&.player? && session_user.zone_name == card.zone_name) %>
+  <% can_control = policy(card).flip? %>
 
   <!-- Card Image -->
   <figure class="card-frame">
@@ -16,48 +16,48 @@
     <nav class="card-controls" aria-label="Card actions for <%= card.card_name %>">
 
       <!-- Rotate -->
-      <%#= button_to "↺",
-                    rotate_playing_card_path(card, direction: :ccw),
-                    method: :patch,
-                    class: "btn btn-sm btn-dark",
-                    title: "Rotate counter-clockwise",
-                    aria_label: "Rotate #{card.card_name} counter-clockwise" %>
+      <% if policy(card).rotate? %>
 
-      <%= button_to "↻",
-                    rotate_playing_card_path(card, direction: :cw),
-                    method: :patch,
-                    class: "btn btn-sm btn-dark",
-                    title: "Rotate clockwise",
-                    aria_label: "Rotate #{card.card_name} clockwise" %>
+        <%= button_to "↻",
+                      rotate_playing_card_path(card, direction: :cw),
+                      method: :patch,
+                      class: "btn btn-sm btn-dark",
+                      title: "Rotate clockwise",
+                      aria_label: "Rotate #{card.card_name} clockwise" %>
+      <% end %>
 
       <!-- Move -->
-      <div class="dropdown">
-        <button class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown">
-          Move
-        </button>
-        <ul class="dropdown-menu">
-          <% available_zones = ["Deck", "Neutral"] + card.game_session.player_zones %>
-          <% available_zones.each do |zone| %>
-            <% next if zone == current_zone %>
-            <li>
-              <%= button_to zone,
-                      move_playing_card_path(card, zone_name: zone),
-                      method: :patch,
-                      class: "dropdown-item" %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
+      <% if policy(card).move? %>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Move <%= card.card_name %> to another zone">
+            Move
+          </button>
+          <ul class="dropdown-menu">
+            <% available_zones = ["Deck", "Neutral"] + card.game_session.player_zones %>
+            <% available_zones.each do |zone| %>
+              <% next if zone == current_zone %>
+              <li>
+                <%= button_to zone,
+                              move_playing_card_path(card, zone_name: zone),
+                              method: :patch,
+                              class: "dropdown-item" %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
       <!-- Flip -->
-      <%= button_to(card.face_up? ? "↓" : "↑",
-                    flip_playing_card_path(card, face_up: !card.face_up),
-                    method: :patch,
-                    class: "btn btn-sm btn-dark",
-                    title: card.face_up? ? "Flip face down" : "Flip face up",
-                    aria_label: "#{card.face_up? ? 'Flip' : 'Reveal'} #{card.card_name}") %>
+      <% if policy(card).flip? %>
+        <%= button_to(card.face_up? ? "↓" : "↑",
+                      flip_playing_card_path(card, face_up: !card.face_up),
+                      method: :patch,
+                      class: "btn btn-sm btn-dark",
+                      title: card.face_up? ? "Flip face down" : "Flip face up",
+                      aria_label: "#{card.face_up? ? 'Flip' : 'Reveal'} #{card.card_name}") %>
+      <% end %
 
-      <!-- Peek -->
+      
       <% unless card.face_up? %>
         <div class="peek-wrapper">
           <button class="btn btn-sm btn-outline-warning peek-btn"

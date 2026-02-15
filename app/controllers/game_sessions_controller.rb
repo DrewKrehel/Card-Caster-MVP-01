@@ -5,6 +5,8 @@ class GameSessionsController < ApplicationController
 
   # POST /game_sessions/:id/join_as_player
   def join_as_player
+    authorize @game_session
+
     session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
 
     unless @game_session.player_slots_remaining?
@@ -22,7 +24,9 @@ class GameSessionsController < ApplicationController
 
   # POST /game_sessions/:id/join_as_observer
   def join_as_observer
-    session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
+    authorize @game_session
+
+    ession_user = @game_session.session_users.find_or_initialize_by(user: current_user)
     session_user.role = :observer
     session_user.zone_name = nil
     session_user.save!
@@ -31,6 +35,8 @@ class GameSessionsController < ApplicationController
 
   # PATCH /game_sessions/:id/toggle_role
   def toggle_role
+    authorize @game_session
+
     session_user = @game_session.session_users.find_by(user: current_user)
     return redirect_back(fallback_location: project_path(@game_session.project), alert: "Not part of this session.") unless session_user
 
@@ -55,6 +61,8 @@ class GameSessionsController < ApplicationController
 
   # DELETE /game_sessions/:id/leave
   def leave
+    authorize @game_session
+
     session_user = @game_session.session_users.find_by(user: current_user)
 
     if session_user.nil? || session_user.user == @game_session.owner
@@ -78,10 +86,7 @@ class GameSessionsController < ApplicationController
 
   # GET /game_sessions/1 or /game_sessions/1.json
   def show
-    unless @game_session.users.exists?(current_user.id) ||
-           @game_session.owner == current_user
-      redirect_to projects_path, alert: "You are not part of this session."
-    end
+    authorize @game_session
   end
 
   # GET /game_sessions/new
@@ -91,6 +96,7 @@ class GameSessionsController < ApplicationController
 
   # GET /game_sessions/1/edit
   def edit
+    authorize @game_session
   end
 
   # POST /game_sessions or /game_sessions.json
@@ -116,6 +122,8 @@ class GameSessionsController < ApplicationController
 
   # PATCH/PUT /game_sessions/1 or /game_sessions/1.json
   def update
+    authorize @game_session
+
     respond_to do |format|
       if @game_session.update(game_session_params)
         format.html { redirect_to @game_session, notice: "Game session was successfully updated." }
@@ -129,6 +137,8 @@ class GameSessionsController < ApplicationController
 
   # DELETE /game_sessions/1 or /game_sessions/1.json
   def destroy
+    authorize @game_session
+    
     project = @game_session.project
     @game_session.destroy!
 
