@@ -1,64 +1,82 @@
-<div id="<%= dom_id game_session %>">
-  <p><strong>Project:</strong> <%= game_session.project.name %></p>
-  <p><strong>Owner:</strong> <%= game_session.owner.username %></p>
-  <p><strong>Name:</strong> <%= game_session.name %></p>
-  <p><strong>Session ID:</strong> <%= game_session.id %></p>
+<article id="<%= dom_id game_session %>" class="container py-4">
+
+  <!-- Session Header / Metadata -->
+  <header class="mb-4">
+    <h2 class="h3 mb-3"><%= game_session.name %></h2>
+
+    <dl class="row mb-0">
+      <dt class="col-sm-2">Project</dt>
+      <dd class="col-sm-10"><%= game_session.project.name %></dd>
+
+      <dt class="col-sm-2">Owner</dt>
+      <dd class="col-sm-10"><%= game_session.owner.username %></dd>
+
+      <dt class="col-sm-2">Session ID</dt>
+      <dd class="col-sm-10"><%= game_session.id %></dd>
+    </dl>
+  </header>
 
   <hr>
 
-  <h5><%= game_session.name %></h5>
-
-  <!-- SessionUser represents the current user's role + zone inside this session -->
   <% session_user = game_session.session_users.find_by(user: current_user) %>
 
-  <!-- Iterate through all defined zones (Deck, Neutral, Player 1, etc.) -->
+  <!-- Zones -->
   <% PlayingCard::ZONES.each do |zone| %>
-    <h6 class="mt-4 d-flex align-items-center justify-content-between">
-      <span>
-        <%= zone %>
+    <section class="mb-5" aria-labelledby="zone-<%= zone.parameterize %>">
 
-        <!-- Show which user owns this zone, if any -->
-        <% if (zone_user = game_session.user_for_zone(zone)) %>
-          <span class="badge bg-secondary ms-2">
-            <%= zone_user.username %>
-          </span>
+      <!-- Zone Header -->
+      <header class="d-flex align-items-center justify-content-between mb-3">
+        <h3 id="zone-<%= zone.parameterize %>" class="h5 mb-0">
+
+          <%= zone %>
+
+          <% if (zone_user = game_session.user_for_zone(zone)) %>
+            <span class="badge bg-secondary ms-2">
+              <%= zone_user.username %>
+            </span>
+          <% end %>
+
+          <% if zone_user == current_user %>
+            <span class="badge bg-success ms-1">You</span>
+          <% end %>
+
+        </h3>
+
+        <nav aria-label="<%= zone %> actions">
+          <%= button_to "Shuffle",
+                shuffle_game_session_zone_path(game_session, zone_name: zone),
+                method: :patch,
+                class: "btn btn-sm btn-outline-primary" %>
+        </nav>
+      </header>
+
+      <!-- Zone Cards -->
+      <div class="zone-grid" role="list">
+
+        <% if zone == "Deck" %>
+          <% deck_cards = game_session.playing_cards.in_zone("Deck").ordered %>
+
+          <% if deck_cards.any? %>
+            <div class="card-slot" role="listitem">
+              <%= render "playing_cards/deck",
+                       game_session: game_session,
+                       top_card: deck_cards.first %>
+            </div>
+          <% end %>
+
+        <% else %>
+          <% game_session.playing_cards.in_zone(zone).ordered.each do |card| %>
+            <div class="card-slot" role="listitem">
+              <%= render "playing_cards/playing_card",
+                       card: card,
+                       current_zone: zone,
+                       can_interact: session_user&.can_interact_with_zone?(zone) %>
+            </div>
+          <% end %>
         <% end %>
 
-        <% if zone_user == current_user %>
-          <span class="badge bg-success ms-1">You</span>
-        <% end %>
-      </span>
-
-        <!--Shuffle affects all cards in this zone-->
-      <%= button_to "Shuffle",
-                  shuffle_game_session_zone_path(game_session, zone_name: zone),
-                  method: :patch,
-                  class: "btn btn-sm btn-outline-primary" %>
-    </h6>
-
-    <!-- Layouts for cards within a single zone -->
-    <div class="zone-grid">
-      <% if zone == "Deck" %>
-        <% deck_cards = game_session.playing_cards.in_zone("Deck").ordered %>
-
-        <% if deck_cards.any? %>
-          <div class="card-slot">
-            <%= render "playing_cards/deck",
-                     game_session: game_session,
-                     top_card: deck_cards.first %>
-          </div>
-        <% end %>
-
-      <% else %>
-        <% game_session.playing_cards.in_zone(zone).ordered.each do |card| %>
-          <div class="card-slot">
-            <%= render "playing_cards/playing_card",
-                     card: card,
-                     current_zone: zone,
-                     can_interact: session_user&.can_interact_with_zone?(zone) %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
+      </div>
+    </section>
   <% end %>
-</div>
+
+</article>

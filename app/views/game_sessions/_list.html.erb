@@ -1,64 +1,78 @@
-<h2 class="mt-4">Active Game Sessions</h2>
+<section class="mt-4" aria-labelledby="active-sessions-heading">
 
-<% if game_sessions.any? %>
-  <ul class="list-group">
-    <% game_sessions.each do |session| %>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <div>
-          <strong><%= session.name %></strong>
-          <span class="badge bg-info ms-2">
-            <%= session.available_player_slots %> slots available
-          </span>
-          <small class="text-muted">
-            — Host: <%= session.owner.username %>
-            — Project: <%= link_to session.project.name, project_path(session.project) %>
-          </small>
-        </div>
+  <header class="mb-3">
+    <h2 id="active-sessions-heading" class="h4">
+      Active Game Sessions
+    </h2>
+  </header>
 
-        <div class="d-flex gap-2">
-          <% session_user = session.session_users.find_by(user: current_user) %>
+  <% if game_sessions.any? %>
+    <ul class="list-group">
+      <% game_sessions.each do |session| %>
+        <li class="list-group-item">
 
-          <% if session_user.present? %>
-            <!-- Already joined (any role) -->
-            <%= link_to "Enter Session",
+          <article aria-labelledby="session-<%= session.id %>-title"
+                   class="d-flex justify-content-between align-items-center">
+
+            <!-- Session Info -->
+            <div>
+              <strong><%= session.name %></strong>
+              <span class="badge bg-info ms-2">
+                <%= session.available_player_slots %> slots available
+              </span>
+              <small class="text-muted">
+                — Host: <%= session.owner.username %>
+                — Project: <%= link_to session.project.name, project_path(session.project) %>
+              </small>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex gap-2">
+              <% session_user = session.session_users.find_by(user: current_user) %>
+
+              <% if session_user.present? %>
+                <!-- Already joined (any role) -->
+                <%= link_to "Enter Session",
                   game_session_path(session),
                   class: "btn btn-sm btn-success" %>
 
-            <span class="badge bg-secondary text-uppercase">
-              <%= session_user.role %>
-            </span>
-          <% else %>
-            <!-- Join as player -->
-            <% if session.player_slots_remaining? %>
-              <%= button_to "Join as Player",
+                <span class="badge bg-secondary text-uppercase">
+                  <%= session_user.role %>
+                </span>
+              <% else %>
+                <!-- Join as player -->
+                <% if session.player_slots_remaining? %>
+                  <%= button_to "Join as Player",
                     join_as_player_game_session_path(session),
                     method: :post,
                     class: "btn btn-sm btn-primary" %>
-            <% else %>
-              <button class="btn btn-sm btn-secondary" disabled>
-                Players Full
-              </button>
-            <% end %>
+                <% else %>
+                  <button class="btn btn-sm btn-secondary" disabled>
+                    Players Full
+                  </button>
+                <% end %>
 
-            <!-- Join as observer -->
-            <%= button_to "Join as Observer",
+                <!-- Join as observer -->
+                <%= button_to "Join as Observer",
                   join_as_observer_game_session_path(session),
                   method: :post,
                   class: "btn btn-sm btn-outline-secondary" %>
-          <% end %>
+              <% end %>
 
-          <!-- Delete button (owner only) -->
-          <% if session.owner == current_user %>
-            <%= button_to "Delete",
+              <!-- Delete button (owner only) -->
+              <% if session.owner == current_user %>
+                <%= button_to "Delete",
                   game_session_path(session),
                   method: :delete,
                   data: { confirm: "Delete this session?" },
                   class: "btn btn-sm btn-danger" %>
-          <% end %>
-        </div>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p class="text-muted">No active sessions.</p>
-<% end %>
+              <% end %>
+            </div>
+          </article>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-muted">No active sessions.</p>
+  <% end %>
+</section>

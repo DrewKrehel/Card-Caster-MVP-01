@@ -1,6 +1,6 @@
-<div class="landing-hero-teaser">
-    <div class="container d-flex flex-wrap align-items-center justify-content-center gap-5">
-    
+<header class="landing-hero-teaser" role="banner">
+  <div class="container d-flex flex-wrap align-items-center justify-content-center gap-5">
+
     <!-- Hero Text -->
     <div class="landing-hero-text">
       <h1 class="landing-title">Card Caster</h1>
@@ -26,92 +26,97 @@
     </div>
 
   </div>
-</div>
+</header>
 
-<!--Teaser Zone-->
-<div class="landing-teaser">
-  <div class="container text-center">
-    <div class="teaser-cards">
-      <% ["Easy to use", "Free to join", "Custom creations", "Play prototypes", "Give feedback"].each_with_index do |label, i| %>
-        <div class="teaser-card js-rotatable-card" data-rotation="0" >
-          <div class="card-inner">
-            <div class="card-face card-back"></div>
-            <div class="card-face card-front">
-              <span><%= label %></span>
+<main role="main">
+
+  <!-- Teaser Cards Section -->
+  <section class="landing-teaser" aria-labelledby="teaser-cards-heading">
+    <div class="container text-center">
+      <h2 id="teaser-cards-heading" class="visually-hidden">Card Caster Features</h2>
+
+      <div class="teaser-cards">
+        <% ["Easy to use", "Free to join", "Custom creations", "Play prototypes", "Give feedback"].each do |label| %>
+          <article class="teaser-card js-rotatable-card" data-rotation="0" role="group" aria-label="<%= label %>">
+            <div class="card-inner">
+              <div class="card-face card-back"></div>
+              <div class="card-face card-front">
+                <span><%= label %></span>
+              </div>
             </div>
-          </div>
-        </div>
-      <% end %>
+          </article>
+        <% end %>
+      </div>
+
+      <button class="btn btn-outline-secondary mt-4">
+        Shuffle cards
+      </button>
     </div>
+  </section>
 
-    <button class="btn btn-outline-secondary mt-4">
-      Shuffle cards
-    </button>
-  </div>
-</div>
+  <!-- How It Works Section -->
+  <section class="landing-how" id="how-it-works" aria-labelledby="how-it-works-heading">
+    <div class="container">
 
-<a id="how-it-works"></a>
+      <header class="text-center mb-5">
+        <h2 id="how-it-works-heading">How to use Card Caster</h2>
+        <p class="landing-how-subtitle">
+          Not a card game. A card game platform.
+        </p>
+      </header>
 
-<div class="landing-how">
-  <div class="container">
-    <div class="text-center mb-5">
-      <h2>How to use Card Caster</h2>
-      <p class="landing-how-subtitle">
-        Not a card game. A card game platform.
+      <div class="row g-5">
+
+        <article class="col-md-4 text-center">
+          <%= image_tag "landing_join_session.png",
+            alt: "Play together",
+            class: "img-fluid mb-3 landing-feature-image" %>
+          <h3>Play together</h3>
+          <p>
+            Sit down at the same table with friends and interact with cards naturally —
+            deal, draw, discard, and rearrange just like you would in person.
+          </p>
+        </article>
+
+        <article class="col-md-4 text-center">
+          <%= image_tag "landing_create_project.png",
+            alt: "Test and iterate",
+            class: "img-fluid mb-3 landing-feature-image" %>
+          <h3>Test and iterate</h3>
+          <p>
+            Try new game concepts, swap card designs on the fly, and see what works quickly.
+            Explore ideas freely before committing time or money to physical prototypes.
+          </p>
+        </article>
+
+        <article class="col-md-4 text-center">
+          <%= image_tag "landing_card_preview.png",
+            alt: "Discover and share",
+            class: "img-fluid mb-3 landing-feature-image" %>
+          <h3>Discover and share</h3>
+          <p>
+            Invite others to watch, join in, or give feedback on new card ideas before they
+            ever reach production. Get inspired by what other creators are building —
+            and let your ideas spark new ones.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA Section -->
+  <section class="landing-final-cta text-center" aria-labelledby="final-cta-heading">
+    <div class="container">
+      <h2 id="final-cta-heading">Ready to make the next card-game classic?</h2>
+      <p>
+        Join the Card Caster Community and start playtesting today!
       </p>
+
+      <%= link_to "Start playing now!",
+        new_user_registration_path,
+        class: "btn btn-light btn-lg" %>
     </div>
+  </section>
 
-    <div class="row g-5">
-      <div class="col-md-4 text-center">
-        <%= image_tag "landing_join_session.png",
-          alt: "Play together",
-          class: "img-fluid mb-3 landing-feature-image" %>
-
-        <h5>Play together</h5>
-        <p>
-          Sit down at the same table with friends and interact with cards naturally —
-          deal, draw, discard, and rearrange just like you would in person.
-        </p>
-      </div>
-
-      <div class="col-md-4 text-center">
-        <%= image_tag "landing_create_project.png",
-          alt: "Test and iterate",
-          class: "img-fluid mb-3 landing-feature-image" %>
-
-        <h5>Test and iterate</h5>
-        <p>
-          Try new game concepts, swap card designs on the fly, and see what works quickly.
-          Explore ideas freely before committing time or money to physical prototypes.
-        </p>
-      </div>
-
-      <div class="col-md-4 text-center">
-        <%= image_tag "landing_card_preview.png",
-          alt: "Discover and share",
-          class: "img-fluid mb-3 landing-feature-image" %>
-
-        <h5>Discover and share</h5>
-        <p>
-          Invite others to watch, join in, or give feedback on new card ideas before they
-          ever reach production. Get inspired by what other creators are building —
-          and let your ideas spark new ones.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--CTA-->
-<div class="landing-final-cta">
-  <div class="container text-center">
-    <h2>Ready to make the next card-game classic?</h2>
-    <p>
-      Join the Card Caster Community and start playtesting today!
-    </p>
-
-    <%= link_to "Start playing now!",
-      new_user_registration_path,
-      class: "btn btn-light btn-lg" %>
-  </div>
-</div>
+</main>

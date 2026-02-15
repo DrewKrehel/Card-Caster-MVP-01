@@ -1,11 +1,16 @@
-<% content_for :title, "Game sessions" %>
+<% content_for :title, "Game Sessions" %>
 
-<!--<h1>Game sessions</h1>-->
+<main class="container py-4" role="main">
 
-<div id="game_sessions">
-  <%= render partial: "list", locals: { game_sessions: @game_sessions } %>
-</div>
+  <section id="game_sessions" aria-labelledby="game-sessions-description">
 
-<!--<div class="mt-4">-->
-  <%#= link_to "New Game Session", new_game_session_path, class: "btn btn-primary btn-lg" %>
-<!--</div>-->
+    <p id="game-sessions-description" class="text-muted mb-0">
+      Browse and join active sessions.
+    </p>
+
+    <%= render partial: "list",
+          locals: { game_sessions: @game_sessions } %>
+
+  </section>
+
+</main>
