@@ -1,12 +1,17 @@
 <% content_for :title, "Editing project" %>
 
-<h1>Editing project</h1>
+<div class="container py-5">
+  <h1 class="display-5 mb-4 text-center">Edit Project</h1>
 
-<%= render "form", project: @project %>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <%= render "form", project: @project %>
 
-<br>
-
-<div>
-  <%= link_to "Show this project", @project %> |
-  <%= link_to "Back to projects", projects_path %>
+      <div class="mt-4 d-flex justify-content-between">
+        <%= link_to "Show this project", @project, class: "btn btn-outline-primary" %>
+        <%= link_to "Back to projects", projects_path, class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+  </div>
 </div>
+
