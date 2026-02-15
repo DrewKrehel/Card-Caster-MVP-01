@@ -1,9 +1,65 @@
-<h1>Users</h1>
+<div class="container my-5">
 
-<ul>
-  <% @users.each do |user| %>
-    <li>
-      <%= link_to user.username, user_path(user.username) %>
-    </li>
-  <% end %>
-</ul>
+  <!-- Page Header -->
+  <div class="mb-5">
+    <h1 class="fw-bold">Users</h1>
+    <p class="text-muted">Browse creators and active players.</p>
+  </div>
+
+  <!-- Users List -->
+  <div class="list-group list-group-flush">
+
+    <% @users.each do |user| %>
+
+      <div class="list-group-item py-4">
+
+        <div class="row align-items-center">
+
+          <!-- Avatar + Name -->
+          <div class="col-md-5 d-flex align-items-center gap-3">
+
+            <%= image_tag user.profile_image,
+                  class: "rounded-circle",
+                  width: 56,
+                  height: 56,
+                  alt: "#{user.username}'s profile image" %>
+
+            <div>
+              <h5 class="mb-1">
+                <%= link_to user.username,
+                      user_path(user.username),
+                      class: "text-decoration-none text-dark fw-semibold" %>
+              </h5>
+              <small class="text-muted">
+                Member
+              </small>
+            </div>
+
+          </div>
+
+          <!-- Stats -->
+          <div class="col-md-7 mt-3 mt-md-0">
+
+            <div class="d-flex flex-wrap gap-3">
+
+              <span class="badge bg-light text-dark border px-3 py-2">
+                📁 <%= user.projects.count %> Projects
+              </span>
+
+              <span class="badge bg-light text-dark border px-3 py-2">
+                🎮 <%= user.active_sessions.count %> Active Sessions
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
