@@ -1,14 +1,11 @@
 <% content_for :title, "Game sessions" %>
 
-<h1>Game sessions</h1>
+<!--<h1>Game sessions</h1>-->
 
 <div id="game_sessions">
-  <% @game_sessions.each do |game_session| %>
-    <%= render game_session %>
-    <p>
-      <%= link_to "Show this game session", game_session %>
-    </p>
-  <% end %>
+  <%= render partial: "list", locals: { game_sessions: @game_sessions } %>
 </div>
 
-<%= link_to "New game session", new_game_session_path %>
+<!--<div class="mt-4">-->
+  <%#= link_to "New Game Session", new_game_session_path, class: "btn btn-primary btn-lg" %>
+<!--</div>-->
