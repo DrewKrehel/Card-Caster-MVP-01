@@ -22,7 +22,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class SessionUser < ApplicationRecord
-  belongs_to :active_session, class_name: "GameSession", foreign_key: "game_sesison_id"
+  belongs_to :active_session, class_name: "GameSession", foreign_key: "game_session_id"
   belongs_to :user
 
   validates :role, presence: true
