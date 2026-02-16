@@ -62,29 +62,27 @@
       <!-- Zone Cards -->
       <div class="zone-grid" role="list" aria-label="Cards in <%= zone %>">
 
-        <% if zone == "Deck" %>
-          <% deck_cards = game_session.playing_cards.in_zone("Deck").ordered %>
+        <% zone_cards = @cards_by_zone[zone] || [] %>
 
-          <% if deck_cards.any? %>
+        <% if zone == "Deck" %>
+          <% if zone_cards.any? %>
             <div class="card-slot" role="listitem">
               <%= render "playing_cards/deck",
                           game_session: game_session,
-                          top_card: deck_cards.first %>
+                          top_card: zone_cards.first %>
             </div>
           <% else %>
             <p class="text-muted fst-italic">Deck is empty</p>
           <% end %>
 
         <% else %>
-          <% zone_cards = game_session.playing_cards.in_zone(zone).ordered %>
-
           <% if zone_cards.any? %>
             <% zone_cards.each do |card| %>
               <div class="card-slot" role="listitem">
                 <%= render "playing_cards/playing_card",
                             card: card,
                             current_zone: zone,
-                            can_interact: session_user&.can_interact_with_zone?(zone) %>
+                            can_interact: @current_session_user&.can_interact_with_zone?(zone) %>
               </div>
             <% end %>
           <% else %>

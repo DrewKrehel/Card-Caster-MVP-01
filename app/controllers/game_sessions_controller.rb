@@ -88,6 +88,19 @@ class GameSessionsController < ApplicationController
   # GET /game_sessions/1 or /game_sessions/1.json
   def show
     authorize @game_session
+
+    # Preload session_users with their users, indexed by zone
+    @session_users_by_zone = @game_session.session_users
+                                          .includes(:user)
+                                          .index_by(&:zone_name)
+
+    # Preload all cards, grouped by zone
+    @cards_by_zone = @game_session.playing_cards
+      .order(:position)
+      .group_by(&:zone_name)
+
+    # Get current user's session_user once
+    @current_session_user = @game_session.session_users.find_by(user: current_user)
   end
 
   # GET /game_sessions/new
@@ -139,7 +152,7 @@ class GameSessionsController < ApplicationController
   # DELETE /game_sessions/1 or /game_sessions/1.json
   def destroy
     authorize @game_session
-    
+
     project = @game_session.project
     @game_session.destroy!
 
@@ -164,7 +177,7 @@ class GameSessionsController < ApplicationController
   def set_breadcrumbs
     @breadcrumbs = [
       { name: "Projects", url: projects_path },
-      { name: @game_session.project.name, url: project_path(@game_session.project) }
+      { name: @game_session.project.name, url: project_path(@game_session.project) },
     ]
 
     if action_name == "show"

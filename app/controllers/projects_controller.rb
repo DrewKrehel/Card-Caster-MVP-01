@@ -7,12 +7,14 @@ class ProjectsController < ApplicationController
 
   # GET /projects or /projects.json
   def index
-    @projects = Project.order(created_at: :desc)
+    @projects = Project.includes(:creator).order(created_at: :desc)
   end
 
   # GET /projects/1 or /projects/1.json
   def show
-    @game_sessions = @project.game_sessions.includes(:owner)
+    @game_sessions = @project.game_sessions
+                             .includes(:owner, session_users: :user)
+                             .order(created_at: :desc)
   end
 
   # GET /projects/new
@@ -66,7 +68,7 @@ class ProjectsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_project
-    @project = Project.find(params.require(:id))
+    @project = Project.includes(:creator).find(params.require(:id))
   end
 
   # Only allow a list of trusted parameters through.

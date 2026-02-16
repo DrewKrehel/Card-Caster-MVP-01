@@ -86,7 +86,7 @@
                         aria_label: "Create new game session") do |f| %>
 
             <%= f.hidden_field :project_id, value: project.id %>
-            <%= f.hidden_field :owner_id, value: current_user.id %>
+            <%#= f.hidden_field :owner_id, value: current_user.id %>
 
             <div class="col-md-8">
               <%= f.label :name, "Session Name", class: "form-label visually-hidden" %>
