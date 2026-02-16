@@ -24,33 +24,56 @@ class PlayingCardsController < ApplicationController
     authorize @card
 
     old_zone = @card.zone_name
+    new_zone = params[:zone_name]
 
-    if @card.zone_name == "Deck"
-      card_to_move = @card.game_session.playing_cards.in_zone("Deck").ordered.first
+    # If moving from deck, ALWAYS get the actual current top card
+    if old_zone == "Deck"
+      card_to_move = @card.game_session.playing_cards
+                          .in_zone("Deck")
+                          .ordered
+                          .first
+
+      # If deck is empty, show error
+      unless card_to_move
+        respond_to do |format|
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.update(
+              "zone-deck-cards",
+              "<p class='text-muted fst-italic'>Deck is empty</p>"
+            )
+          end
+          format.html do
+            redirect_back fallback_location: game_session_path(@card.game_session),
+                          alert: "The deck is empty."
+          end
+        end
+        return
+      end
     else
       card_to_move = @card
     end
 
-    new_zone = params[:zone_name]
     card_to_move.update!(zone_name: new_zone)
 
     respond_to do |format|
       format.turbo_stream do
         streams = []
 
-        # If drawing from deck, update the deck display
+        # If drawing from deck, update the entire deck zone
         if old_zone == "Deck"
           remaining_cards = @card.game_session.playing_cards.in_zone("Deck").ordered
+          current_session_user = @card.game_session.session_users.find_by(user: current_user)
+          can_interact = current_session_user&.can_interact_with_zone?("Deck")
 
-          # Always use the zone_cards partial to maintain consistent structure
-          streams << turbo_stream.replace(
+          # Update entire deck zone with new top card or empty message
+          streams << turbo_stream.update(
             "zone-deck-cards",
             partial: "game_sessions/zone_cards",
             locals: {
               zone: "Deck",
               zone_cards: remaining_cards,
               game_session: @card.game_session,
-              can_interact: can_interact_with_card?(@card),
+              can_interact: can_interact,
             },
           )
         else
@@ -58,14 +81,19 @@ class PlayingCardsController < ApplicationController
           streams << turbo_stream.remove("card-#{card_to_move.id}")
         end
 
-        # Add to new zone
-        streams << turbo_stream.append(
+        # Update the NEW zone completely (replaces "No cards" message if present)
+        new_zone_cards = @card.game_session.playing_cards.in_zone(new_zone).ordered
+        current_session_user = @card.game_session.session_users.find_by(user: current_user)
+        can_interact_new = current_session_user&.can_interact_with_zone?(new_zone)
+
+        streams << turbo_stream.update(
           "zone-#{new_zone.parameterize}-cards",
-          partial: "playing_cards/playing_card",
+          partial: "game_sessions/zone_cards",
           locals: {
-            card: card_to_move,
-            current_zone: new_zone,
-            can_interact: can_interact_with_card?(card_to_move),
+            zone: new_zone,
+            zone_cards: new_zone_cards,
+            game_session: @card.game_session,
+            can_interact: can_interact_new,
           },
         )
 
@@ -104,7 +132,7 @@ class PlayingCardsController < ApplicationController
     game_session = GameSession.find(params[:game_session_id])
     zone_name = params[:zone_name]
 
-    authorize game_session, :shuffle_zone?
+    authorize game_session
 
     unless policy(game_session).shuffle_zone?(zone_name)
       return redirect_back fallback_location: game_session_path(game_session),
@@ -114,19 +142,18 @@ class PlayingCardsController < ApplicationController
     DeckService.new(game_session, template_source: StandardDeckTemplate.new)
                .shuffle!(zone_name: zone_name)
 
+    zone_cards = game_session.playing_cards.in_zone(zone_name).ordered
+    current_session_user = game_session.session_users.find_by(user: current_user)
+    can_interact = current_session_user&.can_interact_with_zone?(zone_name)
+
     respond_to do |format|
       format.turbo_stream do
-        # Reload all cards in the shuffled zone
-        cards = game_session.playing_cards.in_zone(zone_name).ordered
-        current_session_user = game_session.session_users.find_by(user: current_user)
-        can_interact = current_session_user&.can_interact_with_zone?(zone_name)
-
-        render turbo_stream: turbo_stream.replace(
+        render turbo_stream: turbo_stream.update(
           "zone-#{zone_name.parameterize}-cards",
           partial: "game_sessions/zone_cards",
-          locals: {
+          locals: { # ← Explicitly passing locals
             zone: zone_name,
-            zone_cards: cards,
+            zone_cards: zone_cards,
             game_session: game_session,
             can_interact: can_interact,
           },

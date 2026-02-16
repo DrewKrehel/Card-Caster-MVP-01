@@ -49,11 +49,16 @@
 
         <nav aria-label="<%= zone %> actions">
           <% if policy(game_session).shuffle_zone?(zone) %>
-            <%= button_to "Shuffle",
-                          shuffle_game_session_zone_path(game_session, zone_name: zone),
-                          method: :patch,
-                          class: "btn btn-sm btn-outline-primary",
-                          aria_label: "Shuffle #{zone}" %>
+            <%= form_with url: shuffle_game_session_zone_path(game_session, zone_name: zone),
+                  method: :patch,
+                  local: false,
+                  data: { turbo: true, turbo_stream: true },
+                  class: "d-inline" do %>
+              <%= button_tag "Shuffle",
+                     type: "submit",
+                     class: "btn btn-sm btn-outline-primary",
+                     aria_label: "Shuffle #{zone}" %>
+            <% end %>
           <% end %>
         </nav>
       </header>

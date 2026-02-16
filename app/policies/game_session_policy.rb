@@ -44,6 +44,10 @@ class GameSessionPolicy < ApplicationPolicy
     @session_user.present? && !owner?
   end
 
+  def shuffle?
+    @session_user.present?
+  end
+
   def shuffle_zone?(zone_name)
     return false unless @session_user
 
