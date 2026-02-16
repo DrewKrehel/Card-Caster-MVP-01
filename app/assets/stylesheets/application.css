@@ -11,6 +11,7 @@
 
  /*
  *= require landing
+ *= require game_cards
  */
 
 
@@ -177,5 +178,7 @@ textarea {
 .peek-btn:active + .peek-popup {
   display: block;
 }
+
+
 
 @import "custom-image.css";

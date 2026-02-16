@@ -67,7 +67,8 @@
       <div id="zone-<%= zone.parameterize %>-cards" 
             class="zone-grid" 
             role="list" 
-            aria-label="Cards in <%= zone %>">
+            aria-label="Cards in <%= zone %>"
+            data-controller="zone">
 
         <%= render "game_sessions/zone_cards",
              zone: zone,

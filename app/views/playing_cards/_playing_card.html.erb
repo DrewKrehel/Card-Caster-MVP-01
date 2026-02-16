@@ -1,4 +1,7 @@
-<turbo-frame id="card-<%= card.id %>">
+<turbo-frame id="card-<%= card.id %>" 
+             data-controller="game-card"
+             data-game-card-face-up-value="<%= card.face_up? %>"
+             data-game-card-orientation-value="<%= PlayingCard.orientations[card.orientation] %>">
   <article class="playing-card <%= 'disabled-card' unless can_interact %>">
 
     <% session_user = card.game_session.session_users.find_by(user: current_user) %>
@@ -7,9 +10,9 @@
     <!-- Card Image -->
     <figure class="card-frame">
       <%= image_tag card.display_image,
-                  class: "card-image",
-                  style: "transform: rotate(#{card.orientation_degrees}deg);",
-                  alt: "#{card.card_name}#{' (face down)' unless card.face_up?}" %>
+                    class: "card-image",
+                    style: "transform: rotate(#{card.orientation_degrees}deg);",
+                    alt: "#{card.card_name}#{' (face down)' unless card.face_up?}" %>
     </figure>
 
     <!-- Controls -->
@@ -18,19 +21,22 @@
 
         <!-- Rotate -->
         <% if policy(card).rotate? %>
-
           <%= button_to "↻",
-                      rotate_playing_card_path(card, direction: :cw),
-                      method: :patch,
-                      class: "btn btn-sm btn-dark",
-                      title: "Rotate clockwise",
-                      aria_label: "Rotate #{card.card_name} clockwise" %>
+                        rotate_playing_card_path(card, direction: :cw),
+                        method: :patch,
+                        class: "btn btn-sm btn-dark",
+                        title: "Rotate clockwise",
+                        aria_label: "Rotate #{card.card_name} clockwise",
+                        data: { action: "game-card#rotate" } %>
         <% end %>
 
         <!-- Move -->
         <% if policy(card).move? %>
           <div class="dropdown">
-            <button class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Move <%= card.card_name %> to another zone">
+            <button class="btn btn-sm btn-dark dropdown-toggle" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false" 
+                    aria-label="Move <%= card.card_name %> to another zone">
               Move
             </button>
             <ul class="dropdown-menu">
@@ -39,9 +45,10 @@
                 <% next if zone == current_zone %>
                 <li>
                   <%= button_to zone,
-                              move_playing_card_path(card, zone_name: zone),
-                              method: :patch,
-                              class: "dropdown-item" %>
+                                move_playing_card_path(card, zone_name: zone),
+                                method: :patch,
+                                class: "dropdown-item",
+                                data: { action: "game-card#move" } %>
                 </li>
               <% end %>
             </ul>
@@ -51,25 +58,26 @@
         <!-- Flip -->
         <% if policy(card).flip? %>
           <%= button_to(card.face_up? ? "↓" : "↑",
-                      flip_playing_card_path(card, face_up: !card.face_up),
-                      method: :patch,
-                      class: "btn btn-sm btn-dark",
-                      title: card.face_up? ? "Flip face down" : "Flip face up",
-                      aria_label: "#{card.face_up? ? 'Flip' : 'Reveal'} #{card.card_name}") %>
+                        flip_playing_card_path(card, face_up: !card.face_up),
+                        method: :patch,
+                        class: "btn btn-sm btn-dark",
+                        title: card.face_up? ? "Flip face down" : "Flip face up",
+                        aria_label: "#{card.face_up? ? 'Flip' : 'Reveal'} #{card.card_name}",
+                        data: { action: "game-card#flip" }) %>
         <% end %>
 
-        <!--Peek-->
+        <!-- Peek -->
         <% unless card.face_up? %>
           <div class="peek-wrapper">
             <button class="btn btn-sm btn-outline-warning peek-btn"
-                  type="button"
-                  aria_label="Peek at <%= card.card_name %>">
+                    type="button"
+                    aria_label="Peek at <%= card.card_name %>">
               <span aria-hidden="true">👁</span> Peek
             </button>
             <div class="peek-popup" role="tooltip" aria-live="polite">
               <%= image_tag card.image_url, 
-                          class: "peek-image",
-                          alt: card.card_name %>
+                            class: "peek-image",
+                            alt: card.card_name %>
             </div>
           </div>
         <% end %>

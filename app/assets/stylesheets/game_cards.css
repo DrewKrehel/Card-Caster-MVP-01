@@ -1,0 +1,77 @@
+/* Game Session Card Animations */
+
+/* Flip Animation - Pure CSS like landing page */
+@keyframes card-flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+
+@keyframes card-unflip {
+  0% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+/* Move Animation */
+@keyframes card-move-out {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-30px);
+  }
+}
+
+@keyframes card-move-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Animation Classes */
+.playing-card.animating-flip {
+  animation: card-flip 0.6s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.playing-card.animating-unflip {
+  animation: card-unflip 0.6s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.playing-card.animating-move-out {
+  animation: card-move-out 0.4s ease-in-out forwards;
+}
+
+.playing-card.animating-move-in {
+  animation: card-move-in 0.4s ease-in-out;
+}
+
+/* Preserve 3D transformations for flip */
+.playing-card {
+  transform-style: preserve-3d;
+}
+
+.card-frame {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Smooth control fade */
+.card-controls {
+  transition: opacity 0.2s ease;
+}
