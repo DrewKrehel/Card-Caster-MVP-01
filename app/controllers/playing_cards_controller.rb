@@ -42,23 +42,17 @@ class PlayingCardsController < ApplicationController
         if old_zone == "Deck"
           remaining_cards = @card.game_session.playing_cards.in_zone("Deck").ordered
 
-          if remaining_cards.any?
-            # Update deck with new top card
-            streams << turbo_stream.replace(
-              "deck-#{@card.game_session.id}",
-              partial: "playing_cards/deck",
-              locals: {
-                game_session: @card.game_session,
-                top_card: remaining_cards.first,
-              },
-            )
-          else
-            # Deck is empty, show empty message
-            streams << turbo_stream.replace(
-              "deck-#{@card.game_session.id}",
-              "<p class='text-muted fst-italic'>Deck is empty</p>"
-            )
-          end
+          # Always use the zone_cards partial to maintain consistent structure
+          streams << turbo_stream.replace(
+            "zone-deck-cards",
+            partial: "game_sessions/zone_cards",
+            locals: {
+              zone: "Deck",
+              zone_cards: remaining_cards,
+              game_session: @card.game_session,
+              can_interact: can_interact_with_card?(@card),
+            },
+          )
         else
           # Remove from old zone (non-deck)
           streams << turbo_stream.remove("card-#{card_to_move.id}")
