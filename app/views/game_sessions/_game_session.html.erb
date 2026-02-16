@@ -33,7 +33,6 @@
       <!-- Zone Header -->
       <header class="d-flex align-items-center justify-content-between mb-3">
         <h3 id="zone-<%= zone.parameterize %>" class="h5 mb-0">
-
           <%= zone %>
 
           <% if (zone_user = game_session.user_for_zone(zone)) %>
@@ -60,35 +59,16 @@
       </header>
 
       <!-- Zone Cards -->
-      <div class="zone-grid" role="list" aria-label="Cards in <%= zone %>">
+      <div id="zone-<%= zone.parameterize %>-cards" 
+            class="zone-grid" 
+            role="list" 
+            aria-label="Cards in <%= zone %>">
 
-        <% zone_cards = @cards_by_zone[zone] || [] %>
-
-        <% if zone == "Deck" %>
-          <% if zone_cards.any? %>
-            <div class="card-slot" role="listitem">
-              <%= render "playing_cards/deck",
-                          game_session: game_session,
-                          top_card: zone_cards.first %>
-            </div>
-          <% else %>
-            <p class="text-muted fst-italic">Deck is empty</p>
-          <% end %>
-
-        <% else %>
-          <% if zone_cards.any? %>
-            <% zone_cards.each do |card| %>
-              <div class="card-slot" role="listitem">
-                <%= render "playing_cards/playing_card",
-                            card: card,
-                            current_zone: zone,
-                            can_interact: @current_session_user&.can_interact_with_zone?(zone) %>
-              </div>
-            <% end %>
-          <% else %>
-            <p class="text-muted fst-italic">No cards in this zone</p>
-          <% end %>
-        <% end %>
+        <%= render "game_sessions/zone_cards",
+             zone: zone,
+             zone_cards: @cards_by_zone[zone] || [],
+             game_session: game_session,
+             can_interact: @current_session_user&.can_interact_with_zone?(zone) %>
 
       </div>
     </section>

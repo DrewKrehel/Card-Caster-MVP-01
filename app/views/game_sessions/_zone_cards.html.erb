@@ -1,0 +1,26 @@
+<% if zone == "Deck" %>
+  <turbo-frame id="deck-<%= game_session.id %>">
+    <% if zone_cards.any? %>
+      <div class="card-slot" role="listitem">
+        <%= render "playing_cards/deck",
+                    game_session: game_session,
+                    top_card: zone_cards.first %>
+      </div>
+    <% else %>
+      <p class="text-muted fst-italic">Deck is empty</p>
+    <% end %>
+  </turbo-frame>
+<% else %>
+  <% if zone_cards.any? %>
+    <% zone_cards.each do |card| %>
+      <div class="card-slot" role="listitem">
+        <%= render "playing_cards/playing_card",
+                    card: card,
+                    current_zone: zone,
+                    can_interact: can_interact %>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="text-muted fst-italic">No cards in this zone</p>
+  <% end %>
+<% end %>
