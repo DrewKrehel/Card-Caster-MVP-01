@@ -82,23 +82,30 @@ textarea {
 .zone-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1.75rem;
+  gap: 3.5rem 1.75rem; /* vertical gap larger to accommodate controls */
+  margin-bottom: 3rem; /* extra space at bottom of zones */
 }
 
-/* Grid item — NEVER clips */
+/* Grid item — contains card + controls space */
 .card-slot {
   position: relative;
   width: 120px;
-  height: 180px;
+  min-height: 220px; /* INCREASED to make room for controls (180px card + 40px controls) */
   overflow: visible;
-  /* important! */
 }
 
-/* Visual card — allowed to overflow */
-.card-surface {
-  position: absolute;
-  inset: 0;
-  overflow: visible;
+/* The actual card visual */
+.playing-card {
+  position: relative;
+  width: 120px;
+  height: 180px;
+}
+
+/* Card frame container */
+.card-frame {
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 
 /* Image rotates freely */
@@ -110,10 +117,10 @@ textarea {
   transition: transform 0.2s ease;
 }
 
-/* Controls float OUTSIDE the card */
+/* Controls positioned BELOW the card */
 .card-controls {
   position: absolute;
-  bottom: -2.2rem;
+  top: 185px; /* Just below the 180px card */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -121,47 +128,21 @@ textarea {
   opacity: 0;
   transition: opacity 0.15s ease;
   z-index: 10;
+  white-space: nowrap; /* prevent wrapping */
 }
 
-/* Ensure grid wraps properly even with absolute card controls */
-.zone-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 3.5rem;
-  /* adjust spacing as needed */
-}
-
-.card-slot {
-  position: relative;
-  width: 120px;
-  height: 180px;
-  overflow: visible;
-  /* allows peek and controls to float outside */
-}
-
-/* Optional: visually indicate disabled cards */
-.disabled-card {
-  opacity: 0.5;
-  pointer-events: none;
-  /* prevents clicks */
-}
-
-
-/* Hover Over */
+/* Show controls on hover */
 .playing-card:hover .card-controls {
   opacity: 1;
 }
 
-/* Button styling */
-.card-btn {
-  font-size: 0.75rem;
-  padding: 0.2rem 0.35rem;
-  background: #222;
-  color: #fff;
-  border: none;
-  border-radius: 0.25rem;
+/* Disabled cards */
+.disabled-card {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
+/* Peek popup */
 .peek-wrapper {
   position: relative;
   display: inline-block;
@@ -174,8 +155,9 @@ textarea {
   left: 110%;
   z-index: 999;
   width: 120px;
-  /* adjust as needed */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: white;
+  border-radius: 0.25rem;
 }
 
 .peek-image {
@@ -186,9 +168,13 @@ textarea {
   border: 1px solid #ccc;
 }
 
-/* Show on hover or click-and-hold */
-.peek-wrapper:hover .peek-popup,
-.peek-wrapper:active .peek-popup {
+/* Show peek on hover */
+.peek-wrapper:hover .peek-popup {
+  display: block;
+}
+
+/* For touch devices */
+.peek-btn:active + .peek-popup {
   display: block;
 }
 
