@@ -137,6 +137,47 @@ textarea {
   opacity: 1;
 }
 
+/* Dropdown fix - ensure dropdowns appear above cards */
+.card-controls .dropdown {
+  position: relative;
+  z-index: 1000;
+}
+
+.card-controls .dropdown-menu {
+  z-index: 1050;
+}
+
+/* Ensure card slots don't create stacking context issues */
+.card-slot {
+  position: relative;
+  width: 120px;
+  min-height: 220px;
+  overflow: visible;
+  z-index: 1; /* Base z-index for cards */
+}
+
+/* When hovering a card, raise its z-index */
+.card-slot:hover {
+  z-index: 100;
+}
+
+/* Active dropdown gets even higher z-index */
+.card-controls .dropdown.show {
+  z-index: 1100;
+}
+
+.card-controls .dropdown-menu.show {
+  z-index: 1150;
+}
+
+/* Playing card stacking */
+.playing-card {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: inherit;
+}
+
 /* Disabled cards */
 .disabled-card {
   opacity: 0.5;
