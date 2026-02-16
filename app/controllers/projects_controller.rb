@@ -2,6 +2,7 @@ class ProjectsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_project, only: %i[ show edit update destroy ]
   before_action :authorize_creator!, only: %i[ edit update destroy ]
+  before_action :set_breadcrumbs, only: %i[show edit]
   
 
   # GET /projects or /projects.json
@@ -77,5 +78,16 @@ class ProjectsController < ApplicationController
     return if @project.creator == current_user
 
     redirect_to @project, alert: "You are not authorized to modify this project."
+  end
+
+  def set_breadcrumbs
+    @breadcrumbs = [{ name: "Projects", url: projects_path }]
+
+    if action_name == "show"
+      @breadcrumbs << { name: @project.name, url: nil }
+    elsif action_name == "edit"
+      @breadcrumbs << { name: @project.name, url: project_path(@project) }
+      @breadcrumbs << { name: "Edit", url: nil }
+    end
   end
 end

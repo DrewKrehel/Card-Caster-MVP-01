@@ -2,6 +2,7 @@ class GameSessionsController < ApplicationController
   before_action :authenticate_user!, only: %i[ new create edit update destroy ]
   before_action :set_game_session, only: %i[ show edit update destroy
                                              join_as_player join_as_observer toggle_role leave ]
+  before_action :set_breadcrumbs, only: %i[show edit]
 
   # POST /game_sessions/:id/join_as_player
   def join_as_player
@@ -158,5 +159,19 @@ class GameSessionsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def game_session_params
     params.require(:game_session).permit(:project_id, :name, :private)
+  end
+
+  def set_breadcrumbs
+    @breadcrumbs = [
+      { name: "Projects", url: projects_path },
+      { name: @game_session.project.name, url: project_path(@game_session.project) }
+    ]
+
+    if action_name == "show"
+      @breadcrumbs << { name: @game_session.name, url: nil }
+    elsif action_name == "edit"
+      @breadcrumbs << { name: @game_session.name, url: game_session_path(@game_session) }
+      @breadcrumbs << { name: "Edit", url: nil }
+    end
   end
 end
