@@ -10,17 +10,16 @@ export default class extends Controller {
     this.isAnimating = false
   }
 
-  // Intercept flip action
+  // Flip just toggles the class - CSS handles animation
   async flip(event) {
     if (this.isAnimating) {
       event.preventDefault()
       return
     }
 
-    event.preventDefault() // Stop the form submission
+    event.preventDefault()
     this.isAnimating = true
 
-    // Find the form - button_to creates a form around the button
     const button = event.target
     const form = button.closest('form')
     
@@ -30,46 +29,35 @@ export default class extends Controller {
       return
     }
 
+    const card = this.element.querySelector('.playing-card')
     const willBeFaceUp = form.action.includes('face_up=true')
-    const currentlyFaceUp = this.faceUpValue
 
-    if (currentlyFaceUp === willBeFaceUp) {
-      this.isAnimating = false
-      form.requestSubmit()
-      return
-    }
-
-    // Animate the card-frame, not the whole card
-    const cardFrame = this.element.querySelector('.card-frame')
-    
-    // Add animation class
+    // Toggle flip class - CSS animation happens automatically
     if (willBeFaceUp) {
-      cardFrame.classList.add('animating-flip')
+      card.classList.remove('face-down')
+      card.classList.add('face-up')
     } else {
-      cardFrame.classList.add('animating-unflip')
+      card.classList.remove('face-up')
+      card.classList.add('face-down')
     }
 
-    // Wait for animation to complete BEFORE submitting
+    // Wait for CSS animation to complete
     await this.delay(600)
 
-    // Now submit the form
+    // Submit form
     form.requestSubmit()
     
-    // Clean up
-    setTimeout(() => {
-      cardFrame.classList.remove('animating-flip', 'animating-unflip')
-      this.isAnimating = false
-    }, 100)
+    this.isAnimating = false
   }
 
-  // Intercept rotate action
+  // Rotate updates data attribute - CSS handles animation
   async rotate(event) {
     if (this.isAnimating) {
       event.preventDefault()
       return
     }
 
-    event.preventDefault() // Stop the form submission
+    event.preventDefault()
     this.isAnimating = true
 
     const button = event.target
@@ -81,47 +69,44 @@ export default class extends Controller {
       return
     }
 
-    const direction = form.action.includes('direction=cw') ? 'cw' : 'ccw'
     const card = this.element.querySelector('.playing-card')
-    const cardImage = card.querySelector('.card-image')
-    const currentRotation = this.orientationValue * 90
+    const direction = form.action.includes('direction=cw') ? 'cw' : 'ccw'
+    const currentRotation = this.orientationValue
 
-    let toRotation
+    let newRotation
     if (direction === 'cw') {
-      toRotation = ((this.orientationValue + 1) % 4) * 90
+      newRotation = (currentRotation + 1) % 4
     } else {
-      toRotation = ((this.orientationValue - 1 + 4) % 4) * 90
+      newRotation = (currentRotation - 1 + 4) % 4
     }
 
-    // Hide controls during animation to prevent visual glitch
+    // Hide controls during rotation
     const controls = card.querySelector('.card-controls')
     if (controls) {
       controls.style.opacity = '0'
       controls.style.pointerEvents = 'none'
     }
 
-    // Animate the IMAGE only, not the controls
-    cardImage.style.transition = 'transform 0.4s ease-in-out'
-    cardImage.style.transform = `rotate(${toRotation}deg)`
+    // Update data attribute - CSS transition handles the rotation
+    card.dataset.rotation = newRotation.toString()
 
-    // Wait for animation to complete
-    await this.delay(400)
+    // Wait for transition
+    await this.delay(600)
 
-    // Now submit the form
+    // Submit form
     form.requestSubmit()
     
-    // Clean up
+    // Restore controls after Turbo updates
     setTimeout(() => {
       if (controls) {
         controls.style.opacity = ''
         controls.style.pointerEvents = ''
       }
-      cardImage.style.transition = ''
       this.isAnimating = false
     }, 100)
   }
 
-  // Intercept move action
+  // Move animation
   async move(event) {
     if (this.isAnimating) {
       event.preventDefault()
@@ -141,13 +126,10 @@ export default class extends Controller {
     }
 
     const card = this.element.querySelector('.playing-card')
-    
     card.classList.add('animating-move-out')
 
-    // Wait for animation
     await this.delay(400)
 
-    // Now submit
     form.requestSubmit()
   }
 

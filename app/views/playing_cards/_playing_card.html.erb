@@ -2,18 +2,25 @@
              data-controller="game-card"
              data-game-card-face-up-value="<%= card.face_up? %>"
              data-game-card-orientation-value="<%= PlayingCard.orientations[card.orientation] %>">
-  <article class="playing-card <%= 'disabled-card' unless can_interact %>">
+  <article class="playing-card <%= card.face_up? ? 'face-up' : 'face-down' %> <%= 'disabled-card' unless can_interact %>"
+           data-rotation="<%= PlayingCard.orientations[card.orientation] %>">
 
-    <% session_user = card.game_session.session_users.find_by(user: current_user) %>
-    <% can_control = policy(card).flip? %>
+    <!-- 3D Flip Container -->
+    <div class="card-inner">
+      
+      <!-- Back Face (card back) -->
+      <figure class="card-face card-face-back">
+        <%= image_tag card.back_image_url,
+                      alt: "Card back" %>
+      </figure>
 
-    <!-- Card Image -->
-    <figure class="card-frame">
-      <%= image_tag card.display_image,
-                    class: "card-image",
-                    style: "transform: rotate(#{card.orientation_degrees}deg);",
-                    alt: "#{card.card_name}#{' (face down)' unless card.face_up?}" %>
-    </figure>
+      <!-- Front Face (card front) -->
+      <figure class="card-face card-face-front">
+        <%= image_tag card.image_url,
+                      alt: card.card_name %>
+      </figure>
+
+    </div>
 
     <!-- Controls -->
     <% if can_interact %>

@@ -95,29 +95,6 @@ textarea {
   overflow: visible;
 }
 
-/* The actual card visual */
-.playing-card {
-  position: relative;
-  width: 120px;
-  height: 180px;
-}
-
-/* Card frame container */
-.card-frame {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-
-/* Image rotates freely */
-.card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none;
-  transition: transform 0.2s ease;
-}
-
 /* Controls positioned BELOW the card */
 .card-controls {
   position: absolute;
@@ -133,7 +110,7 @@ textarea {
 }
 
 /* Show controls on hover */
-.playing-card:hover .card-controls {
+.card-slot:hover .card-controls {
   opacity: 1;
 }
 
@@ -168,14 +145,6 @@ textarea {
 
 .card-controls .dropdown-menu.show {
   z-index: 1150;
-}
-
-/* Playing card stacking */
-.playing-card {
-  transform-style: preserve-3d;
-  transition: transform 0.3s ease;
-  position: relative;
-  z-index: inherit;
 }
 
 /* Disabled cards */
