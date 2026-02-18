@@ -6,7 +6,7 @@
 - Are there detailed setup and installation instructions, ensuring a new developer can get the project running locally without external help?
   
 ## Configuration: 
-- Are configuration instructions provided, such as environment variables or configuration files that need to be set up?
+- run 'bin/dev' in the terminal to start the test server for the website. 
   
 ## Contribution: 
 1. Fork the repository.
