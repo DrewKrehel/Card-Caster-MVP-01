@@ -1,4 +1,4 @@
-<header class="landing-hero-teaser" role="banner">
+``<header class="landing-hero-teaser" role="banner">
   <div class="container d-flex flex-wrap align-items-center justify-content-center gap-5">
 
     <!-- Hero Text -->
@@ -13,7 +13,7 @@
       </p>
       <div class="landing-ctas mt-3">
         <%= link_to "Explore as Guest", projects_path, class: "btn btn-primary btn-lg me-2" %>
-        <%= link_to "Join to play", new_user_registration_path, class: "btn btn-outline-primary btn-lg me-2" %>
+        <%= link_to "Join to play", new_user_registration_path, class: "btn btn-outline-primary btn-lg me-2 join-btn" %>
         <a href="#how-it-works" class="btn btn-link btn-lg">How it works</a>
       </div>
     </div>
@@ -48,7 +48,7 @@
         <% end %>
       </div>
 
-      <button class="btn btn-outline-secondary mt-4">
+      <button id="teaserShuffle" class="btn btn-outline-secondary mt-4">
         Shuffle cards
       </button>
     </div>
@@ -118,5 +118,7 @@
         class: "btn btn-light btn-lg" %>
     </div>
   </section>
+
+  <a href="https://storyset.com/leisure">Leisure illustrations by Storyset</a>
 
 </main>

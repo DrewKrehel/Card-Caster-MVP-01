@@ -1,6 +1,6 @@
 /* Base palette: teal / indigo */
 :root {
-  --cc-primary: #294deb;
+  --cc-primary: #d45454;
   --cc-primary-dark: #174f55;
   --cc-accent: #4f46e5;
   --cc-bg-soft: #f4fafa;
@@ -95,6 +95,16 @@
   height: auto;
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.join-btn:hover {
+  background-color: #dc3545;   /* Bootstrap red */
+  border-color: #dc3545;
+  color: #fff;
+}
+
+.join-btn {
+  transition: all 0.2s ease;
 }
 
 /* On small screens, stack vertically */
