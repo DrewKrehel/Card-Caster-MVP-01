@@ -5,15 +5,24 @@ document.addEventListener("turbo:load", () => {
 
   if (!cards.length || !shuffleBtn) return;
 
-  // ROTATE on click
+  // Initialize rotation map
+  const rotationMap = new Map();
+
   cards.forEach(card => {
+    rotationMap.set(card, 0);
+
+    // ROTATE on click
     card.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
 
-      const current = parseInt(card.dataset.rotation || "0", 10);
-      const next = (current + 90) % 360;
-      card.dataset.rotation = next.toString();
+      // Increment cumulative rotation
+      let currentRotation = rotationMap.get(card) || 0;
+      currentRotation += 90; // always clockwise
+      rotationMap.set(card, currentRotation);
+
+      // Apply CSS transform using cumulative rotation
+      card.style.transform = `rotate(${currentRotation}deg)`;
     });
 
     // Flip toggle on hover
