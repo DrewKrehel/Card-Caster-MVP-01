@@ -208,3 +208,19 @@
 .card-front span {
   pointer-events: none;
 }
+
+/* Footer Link */
+.landing-footer {
+  font-size: 0.75rem;
+  color: #999;           /* muted gray */
+}
+
+.landing-footer a.footer-attribution {
+  color: #999;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.landing-footer a.footer-attribution:hover {
+  color: #666;           /* slightly darker on hover */
+}
