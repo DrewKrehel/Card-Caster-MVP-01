@@ -7,25 +7,12 @@
       <!-- Brand -->
       <%= link_to "Card Caster",
                   root_path,
-                  class: "navbar-brand me-6",
+                  class: "navbar-brand",
                   aria: { label: "Card Caster Home" } %>
 
-      <!-- Mobile toggle -->
-      <button class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation menu">
-        <span class="navbar-toggler-icon" aria-hidden="true"></span>
-      </button>
-
-      <div class="collapse navbar-collapse"
-           id="navbarSupportedContent">
-
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Left navigation -->
-        <ul class="navbar-nav d-flex align-items-center"
+        <ul class="navbar-nav left"
             role="menubar">
 
           <li class="nav-item dropdown" role="none">
@@ -64,9 +51,24 @@
             </ul>
           </li>
         </ul>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation menu">
+        <span class="navbar-toggler-icon" aria-hidden="true"></span>
+      </button>
+
+      <div class="collapse navbar-collapse"
+           id="navbarSupportedContent">
 
         <!-- Right navigation -->
-        <ul class="navbar-nav d-flex align-items-center"
+        <ul class="navbar-nav right d-flex align-items-center"
             role="menubar">
 
           <% if user_signed_in? %>

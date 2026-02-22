@@ -61,14 +61,24 @@ textarea {
 
 /* Center navbar content and constrain width */
 .navbar .container-fluid {
-  max-width: 960px;       /* same width as CTA and hero */
+  max-width: 800px;       /* same width as CTA and hero */
   margin: 0 auto;         /* center the navbar container */
   justify-content: center; /* center contents */
 }
 
-.navbar-nav {
-  justify-content: center;  /* center nav links */
-  width: 100%;              /* full width for spacing */
+.navbar .container {
+  padding-left: 1.1in;   /* shift everything right by ~1 inch */
+}
+
+.navbar-nav.left {
+  justify-content: left;
+  width: auto;              /* full width for spacing */
+}
+
+.navbar-nav.right {
+  justify-content: left;
+  width: auto;              /* full width for spacing */
+  padding-left: 4.2in;
 }
 
 .navbar-nav .nav-item {
