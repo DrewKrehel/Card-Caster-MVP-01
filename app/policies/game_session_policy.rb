@@ -50,9 +50,17 @@ class GameSessionPolicy < ApplicationPolicy
 
   def shuffle_zone?(zone_name)
     return false unless @session_user
+    return true if @session_user.host?
 
-    @session_user.host? || 
-      (@session_user.player? && @session_user.zone_name == zone_name)
+    return false unless @session_user.player?
+
+    # Players can shuffle:
+    # - Their own zone
+    # - Deck
+    # - Neutral
+    zone_name == @session_user.zone_name ||
+      zone_name == "Deck" ||
+      zone_name == "Neutral"
   end
 
   private
