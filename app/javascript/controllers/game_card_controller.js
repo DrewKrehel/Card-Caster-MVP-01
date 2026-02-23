@@ -8,31 +8,28 @@ export default class extends Controller {
 
   connect() {
     this.isAnimating = false
-    // Track cumulative rotation to avoid backwards animation
+    
+    // Track state
+    this.isFaceUp = this.faceUpValue
     this.cumulativeRotation = this.orientationValue * 90
     
-    // Apply initial rotation on connect
-    this.applyRotation()
+    // Apply initial transform on connect
+    this.applyTransform()
   }
 
-  applyRotation() {
-    const card = this.element.querySelector('.playing-card')
-    if (!card) return
-    
-    const cardInner = card.querySelector('.card-inner')
+  applyTransform() {
+    const cardInner = this.element.querySelector('.card-inner')
     if (!cardInner) return
     
-    const isFaceUp = card.classList.contains('face-up')
+    // CRITICAL: Apply rotation FIRST, then flip
+    // This makes the flip axis rotate with the card
+    const flipY = this.isFaceUp ? 180 : 0
     
-    // Apply rotation with flip
-    if (isFaceUp) {
-      cardInner.style.transform = `rotateY(180deg) rotateZ(${-this.cumulativeRotation}deg)`
-    } else {
-      cardInner.style.transform = `rotateY(0deg) rotateZ(${this.cumulativeRotation}deg)`
-    }
+    // When face-up, we DON'T invert rotation anymore
+    // because rotation is applied before flip
+    cardInner.style.transform = `rotateZ(${this.cumulativeRotation}deg) rotateY(${flipY}deg)`
   }
 
-  // Flip just toggles the class and reapplies rotation
   async flip(event) {
     if (this.isAnimating) {
       event.preventDefault()
@@ -51,22 +48,13 @@ export default class extends Controller {
       return
     }
 
-    const card = this.element.querySelector('.playing-card')
-    const willBeFaceUp = form.action.includes('face_up=true')
-
-    // Toggle flip class
-    if (willBeFaceUp) {
-      card.classList.remove('face-down')
-      card.classList.add('face-up')
-    } else {
-      card.classList.remove('face-up')
-      card.classList.add('face-down')
-    }
+    // Toggle face up state
+    this.isFaceUp = form.action.includes('face_up=true')
     
-    // Reapply rotation with new flip state
-    this.applyRotation()
+    // Apply the transform (CSS transition will animate it)
+    this.applyTransform()
 
-    // Wait for CSS animation to complete
+    // Wait for animation
     await this.delay(600)
 
     // Submit form
@@ -75,7 +63,6 @@ export default class extends Controller {
     this.isAnimating = false
   }
 
-  // Rotate with cumulative tracking
   async rotate(event) {
     if (this.isAnimating) {
       event.preventDefault()
@@ -111,8 +98,8 @@ export default class extends Controller {
       this.cumulativeRotation -= 90
     }
 
-    // Apply the rotation
-    this.applyRotation()
+    // Apply the transform (CSS transition will animate it)
+    this.applyTransform()
 
     // Wait for transition
     await this.delay(600)
@@ -120,7 +107,7 @@ export default class extends Controller {
     // Submit form
     form.requestSubmit()
     
-    // Restore controls after Turbo updates
+    // Restore controls
     setTimeout(() => {
       if (controls) {
         controls.style.opacity = ''
@@ -130,7 +117,6 @@ export default class extends Controller {
     }, 100)
   }
 
-  // Move animation
   async move(event) {
     if (this.isAnimating) {
       event.preventDefault()

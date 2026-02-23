@@ -43,15 +43,6 @@
   pointer-events: none;
 }
 
-/* Flip states - ONLY flip, no rotation here */
-.playing-card.face-down .card-inner {
-  transform: rotateY(0deg);
-}
-
-.playing-card.face-up .card-inner {
-  transform: rotateY(180deg);
-}
-
 /* Deck-specific styles (deck doesn't flip) */
 .deck-card {
   width: 120px;
@@ -106,10 +97,6 @@
   animation: card-move-in 0.4s ease-in-out;
 }
 
-/* Smooth transitions */
-.card-inner {
-  transition: transform 0.6s ease-in-out;
-}
 
 /* Control positioning */
 .card-controls {
