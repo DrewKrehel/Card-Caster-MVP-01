@@ -38,11 +38,21 @@ class User < ApplicationRecord
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 30 }
   validates :bio, length: { maximum: 500 }, allow_blank: true
+  validate :username_cannot_be_email
 
   scope :public_users, -> { where(private: false) }
-  scope :with_username, ->(name) { where('LOWER(username) = ?', name.downcase) }
+  scope :with_username, ->(name) { where("LOWER(username) = ?", name.downcase) }
 
   def profile_image
     avatar_image? ? avatar_image_url : DEFAULT_AVATAR
+  end
+
+  def username_cannot_be_email
+    return if username.blank?
+
+    # Simple email pattern check
+    if username.match?(URI::MailTo::EMAIL_REGEXP)
+      errors.add(:username, "cannot be an email address")
+    end
   end
 end

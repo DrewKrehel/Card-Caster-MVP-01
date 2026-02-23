@@ -3,8 +3,8 @@
 /* 3D Flip Container - matches landing page structure */
 .playing-card {
   position: relative;
-  width: 120px;
-  height: 180px;
+  width: 105px;
+  height: 169px;
   transform-style: preserve-3d;
   perspective: 1000px;
 }
@@ -22,7 +22,7 @@
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -39,7 +39,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 0px;
   pointer-events: none;
 }
 
@@ -96,7 +96,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
