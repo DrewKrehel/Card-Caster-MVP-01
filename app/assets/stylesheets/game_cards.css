@@ -43,38 +43,13 @@
   pointer-events: none;
 }
 
-/* Base rotations - face down (0deg Y rotation) */
-.playing-card.face-down[data-rotation="0"] .card-inner {
-  transform: rotateY(0deg) rotateZ(0deg);
+/* Flip states - ONLY flip, no rotation here */
+.playing-card.face-down .card-inner {
+  transform: rotateY(0deg);
 }
 
-.playing-card.face-down[data-rotation="1"] .card-inner {
-  transform: rotateY(0deg) rotateZ(90deg);
-}
-
-.playing-card.face-down[data-rotation="2"] .card-inner {
-  transform: rotateY(0deg) rotateZ(180deg);
-}
-
-.playing-card.face-down[data-rotation="3"] .card-inner {
-  transform: rotateY(0deg) rotateZ(270deg);
-}
-
-/* Face up rotations (180deg Y rotation + Z rotation) */
-.playing-card.face-up[data-rotation="0"] .card-inner {
-  transform: rotateY(180deg) rotateZ(0deg);
-}
-
-.playing-card.face-up[data-rotation="1"] .card-inner {
-  transform: rotateY(180deg) rotateZ(90deg);
-}
-
-.playing-card.face-up[data-rotation="2"] .card-inner {
-  transform: rotateY(180deg) rotateZ(180deg);
-}
-
-.playing-card.face-up[data-rotation="3"] .card-inner {
-  transform: rotateY(180deg) rotateZ(270deg);
+.playing-card.face-up .card-inner {
+  transform: rotateY(180deg);
 }
 
 /* Deck-specific styles (deck doesn't flip) */

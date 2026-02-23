@@ -124,6 +124,46 @@ textarea {
   opacity: 1;
 }
 
+/* Peek wrapper positioned absolutely above other controls */
+.peek-wrapper {
+  position: absolute;
+  top: -35px; /* Position above the other buttons */
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+}
+
+.peek-popup {
+  display: none;
+  position: absolute;
+  bottom: 40px; /* Position above the peek button */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 120px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: white;
+  border-radius: 0.25rem;
+}
+
+.peek-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+}
+
+/* Show peek on hover */
+.peek-wrapper:hover .peek-popup {
+  display: block;
+}
+
+/* For touch devices */
+.peek-btn:active + .peek-popup {
+  display: block;
+}
+
 /* Dropdown fix - ensure dropdowns appear above cards */
 .card-controls .dropdown {
   position: relative;
@@ -161,42 +201,6 @@ textarea {
 .disabled-card {
   opacity: 0.5;
   pointer-events: none;
-}
-
-/* Peek popup */
-.peek-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.peek-popup {
-  display: none;
-  position: absolute;
-  top: -10px;
-  left: 110%;
-  z-index: 999;
-  width: 120px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  background: white;
-  border-radius: 0.25rem;
-}
-
-.peek-image {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 0.25rem;
-  border: 1px solid #ccc;
-}
-
-/* Show peek on hover */
-.peek-wrapper:hover .peek-popup {
-  display: block;
-}
-
-/* For touch devices */
-.peek-btn:active + .peek-popup {
-  display: block;
 }
 
 

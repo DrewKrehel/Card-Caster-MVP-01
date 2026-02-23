@@ -8,9 +8,31 @@ export default class extends Controller {
 
   connect() {
     this.isAnimating = false
+    // Track cumulative rotation to avoid backwards animation
+    this.cumulativeRotation = this.orientationValue * 90
+    
+    // Apply initial rotation on connect
+    this.applyRotation()
   }
 
-  // Flip just toggles the class - CSS handles animation
+  applyRotation() {
+    const card = this.element.querySelector('.playing-card')
+    if (!card) return
+    
+    const cardInner = card.querySelector('.card-inner')
+    if (!cardInner) return
+    
+    const isFaceUp = card.classList.contains('face-up')
+    
+    // Apply rotation with flip
+    if (isFaceUp) {
+      cardInner.style.transform = `rotateY(180deg) rotateZ(${-this.cumulativeRotation}deg)`
+    } else {
+      cardInner.style.transform = `rotateY(0deg) rotateZ(${this.cumulativeRotation}deg)`
+    }
+  }
+
+  // Flip just toggles the class and reapplies rotation
   async flip(event) {
     if (this.isAnimating) {
       event.preventDefault()
@@ -32,7 +54,7 @@ export default class extends Controller {
     const card = this.element.querySelector('.playing-card')
     const willBeFaceUp = form.action.includes('face_up=true')
 
-    // Toggle flip class - CSS animation happens automatically
+    // Toggle flip class
     if (willBeFaceUp) {
       card.classList.remove('face-down')
       card.classList.add('face-up')
@@ -40,6 +62,9 @@ export default class extends Controller {
       card.classList.remove('face-up')
       card.classList.add('face-down')
     }
+    
+    // Reapply rotation with new flip state
+    this.applyRotation()
 
     // Wait for CSS animation to complete
     await this.delay(600)
@@ -50,7 +75,7 @@ export default class extends Controller {
     this.isAnimating = false
   }
 
-  // Rotate updates data attribute - CSS handles animation
+  // Rotate with cumulative tracking
   async rotate(event) {
     if (this.isAnimating) {
       event.preventDefault()
@@ -71,14 +96,6 @@ export default class extends Controller {
 
     const card = this.element.querySelector('.playing-card')
     const direction = form.action.includes('direction=cw') ? 'cw' : 'ccw'
-    const currentRotation = this.orientationValue
-
-    let newRotation
-    if (direction === 'cw') {
-      newRotation = (currentRotation + 1) % 4
-    } else {
-      newRotation = (currentRotation - 1 + 4) % 4
-    }
 
     // Hide controls during rotation
     const controls = card.querySelector('.card-controls')
@@ -87,8 +104,15 @@ export default class extends Controller {
       controls.style.pointerEvents = 'none'
     }
 
-    // Update data attribute - CSS transition handles the rotation
-    card.dataset.rotation = newRotation.toString()
+    // Update cumulative rotation
+    if (direction === 'cw') {
+      this.cumulativeRotation += 90
+    } else {
+      this.cumulativeRotation -= 90
+    }
+
+    // Apply the rotation
+    this.applyRotation()
 
     // Wait for transition
     await this.delay(600)
