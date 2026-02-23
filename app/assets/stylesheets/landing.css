@@ -145,18 +145,8 @@
   width: 140px;
   height: 207px;
   position: relative;
-  --rotation: 0deg;
-  transform:
-    translateY(calc(var(--i, 0) * 2px))
-    rotateZ(calc(var(--i, 0) * -2deg))
-    rotate(var(--rotation));
   transition: transform 0.4s ease;
 }
-
-.teaser-card[data-rotation="0"]   { --rotation: 0deg; }
-.teaser-card[data-rotation="90"]  { --rotation: 90deg; }
-.teaser-card[data-rotation="180"] { --rotation: 180deg; }
-.teaser-card[data-rotation="270"] { --rotation: 270deg; }
 
 .teaser-card:hover {
   transform:
