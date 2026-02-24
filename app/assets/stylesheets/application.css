@@ -159,6 +159,21 @@ textarea {
   display: block;
 }
 
+/* Peek button: solid default, transparent on hover */
+.peek-btn {
+  color: #212529;             /* text color */
+  background-color: #ffc107;  /* solid yellow by default */
+  border-color: #ffc107;
+  transition: all 0.2s ease;
+}
+
+.peek-btn:hover,
+.peek-btn:focus {
+  color: #ffc107;             /* yellow text */
+  background-color: transparent;
+  border-color: #ffc107;      /* keep border visible */
+}
+
 /* For touch devices */
 .peek-btn:active + .peek-popup {
   display: block;
