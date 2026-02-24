@@ -94,23 +94,21 @@ textarea {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 3.5rem 1.75rem;
-
-  align-items: start;          /* Prevent grid stretch */
-  grid-auto-rows: 220px;       /* LOCK row height */
+  align-items: start;
 }
 
-/* Grid item — contains card + controls space */
+/* Grid item — container matches card dimensions */
 .card-slot {
   position: relative;
   width: 120px;
-  height: 220px;               /* FIXED height (NOT min-height) */
+  min-height: 220px;
   overflow: visible;
 }
 
 /* Controls positioned BELOW the card */
 .card-controls {
   position: absolute;
-  top: 185px; /* Just below the 180px card */
+  top: 175px; /* Adjusted for new card height */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -118,7 +116,7 @@ textarea {
   opacity: 0;
   transition: opacity 0.15s ease;
   z-index: 10;
-  white-space: nowrap; /* prevent wrapping */
+  white-space: nowrap;
 }
 
 /* Show controls on hover */
@@ -126,54 +124,47 @@ textarea {
   opacity: 1;
 }
 
-/* Peek wrapper positioned absolutely above other controls */
-.peek-wrapper {
-  position: absolute;
-  top: -35px; /* Position above the other buttons */
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-block;
-}
-
-.peek-popup {
-  display: none;
-  position: absolute;
-  bottom: 40px; /* Position above the peek button */
-  left: 50%;
-  transform: translateX(-50%);
+/* Dropdown fix */
+.card-controls .dropdown {
+  position: relative;
   z-index: 1000;
-  width: 120px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  background: white;
-  border-radius: 0.25rem;
 }
 
-.peek-image {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 0.25rem;
-  border: 1px solid #ccc;
+.card-controls .dropdown-menu {
+  z-index: 1050;
 }
 
-/* Show peek on hover */
-.peek-wrapper:hover .peek-popup {
-  display: block;
+.card-slot:hover {
+  z-index: 100;
 }
 
-/* Peek button: solid default, transparent on hover */
+.card-controls .dropdown.show {
+  z-index: 1100;
+}
+
+.card-controls .dropdown-menu.show {
+  z-index: 1150;
+}
+
+/* Disabled cards */
+.disabled-card {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Peek button */
 .peek-btn {
-  color: #212529;             /* text color */
-  background-color: #ffc107;  /* solid yellow by default */
+  color: #212529;
+  background-color: #ffc107;
   border-color: #ffc107;
   transition: all 0.2s ease;
 }
 
 .peek-btn:hover,
 .peek-btn:focus {
-  color: #ffc107;             /* yellow text */
+  color: #ffc107;
   background-color: transparent;
-  border-color: #ffc107;      /* keep border visible */
+  border-color: #ffc107;
 }
 
 /* For touch devices */
