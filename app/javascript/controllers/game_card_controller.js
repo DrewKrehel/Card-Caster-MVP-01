@@ -10,17 +10,18 @@ export default class extends Controller {
     // Track state
     this.isFaceUp = this.faceUpValue
     this.cumulativeRotation = this.orientationValue * 90
-    
+
     // Apply initial transform
     this.applyTransform()
   }
 
   applyTransform() {
-    const cardInner = this.element.querySelector('.card-inner')
-    if (!cardInner) return
-    
-    const flipY = this.isFaceUp ? 180 : 0
-    cardInner.style.transform = `rotateZ(${this.cumulativeRotation}deg) rotateY(${flipY}deg)`
+    const inner = this.element.querySelector('.card-inner');
+    if (!inner) return;
+
+    const flipY = this.isFaceUp ? 180 : 0;
+    // rotateZ for orientation; rotateY for flip
+    inner.style.transform = `rotateZ(${this.cumulativeRotation}deg) rotateY(${flipY}deg)`;
   }
 
   async flip(event) {
@@ -53,7 +54,7 @@ export default class extends Controller {
     } else {
       this.cumulativeRotation -= 90
     }
-    
+
     this.applyTransform()
 
     // Submit in background

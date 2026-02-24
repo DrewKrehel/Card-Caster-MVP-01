@@ -2,8 +2,7 @@
              data-controller="game-card"
              data-game-card-face-up-value="<%= card.face_up? %>"
              data-game-card-orientation-value="<%= PlayingCard.orientations[card.orientation] %>">
-  <article class="playing-card <%= card.face_up? ? 'face-up' : 'face-down' %> <%= 'disabled-card' unless can_interact %>"
-           data-rotation="<%= PlayingCard.orientations[card.orientation] %>">
+  <article class="playing-card <%= card.face_up? ? 'face-up' : 'face-down' %> <%= 'disabled-card' unless can_interact %>">
 
     <!-- 3D Flip Container -->
     <div class="card-inner">
