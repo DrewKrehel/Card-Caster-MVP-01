@@ -13,7 +13,10 @@ class GameSessionPolicy < ApplicationPolicy
   end
 
   def show?
-    @game_session.users.exists?(@user.id) || @game_session.owner == @user
+    return !@game_session.private? unless @user
+
+    @game_session.users.exists?(@user.id) ||
+      @game_session.owner == @user
   end
 
   def edit?
@@ -33,7 +36,9 @@ class GameSessionPolicy < ApplicationPolicy
   end
 
   def join_as_observer?
-    @user.present? && !already_in_session?
+    return true unless @user # allow guests
+
+    !already_in_session?
   end
 
   def toggle_role?

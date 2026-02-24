@@ -27,10 +27,15 @@ class GameSessionsController < ApplicationController
   def join_as_observer
     authorize @game_session
 
-    ession_user = @game_session.session_users.find_or_initialize_by(user: current_user)
-    session_user.role = :observer
-    session_user.zone_name = nil
-    session_user.save!
+    # Guests do not create session records
+    if current_user.nil?
+      redirect_to @game_session, notice: "You are viewing as an observer."
+      return
+    end
+
+    session_user = @game_session.session_users.find_or_initialize_by(user: current_user)
+    session_user.update!(role: :observer, zone_name: nil)
+
     redirect_to @game_session, notice: "You joined the session."
   end
 
