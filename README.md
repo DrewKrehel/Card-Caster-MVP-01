@@ -1,12 +1,11 @@
 # Card-Caster-MVP
 
 ## 1-liner: Card Caster is a collaborative web app for creating, sharing, and playing custom card-based games. 
-
-## Instructions: 
-- Are there detailed setup and installation instructions, ensuring a new developer can get the project running locally without external help?
   
-## Configuration: 
-- run 'bin/dev' in the terminal to start the test server for the website. 
+## Setup Configuration: 
+- run 'bin/setup' in the terminal to start the test server for the website.
+- run bundle install
+- run rails s 
   
 ## Contribution: 
 1. Fork the repository.
@@ -36,8 +35,6 @@ Thanks for your interest in contributing! Card Caster is intentionally simple an
  
 ## ERD:
  <img width="1368" height="804" alt="Screenshot 2026-02-09 164308" src="https://github.com/user-attachments/assets/d90b4257-da7f-4db1-b692-f79f5b511688" />
-
-## Troubleshooting: Is there an FAQs or Troubleshooting section that addresses common issues, questions, or obstacles users or new contributors might face?
 
 ## Visual Aids:
 ### System Overview Diagram
@@ -72,8 +69,3 @@ Thanks for your interest in contributing! Card Caster is intentionally simple an
 
 ### Permission Model Cheat Sheet: 
 <img width="775" height="154" alt="Screenshot 2026-02-09 171131" src="https://github.com/user-attachments/assets/f41a2c70-bbd4-4573-b90a-4d28e9753c45" />
-
-## API Documentation (for projects providing their own API endpoints): 
-Is there clear and detailed documentation for the project's API? This should include descriptions of all endpoints, request/response formats, and authentication methods.
-
-All files are covered by the MIT license, see [LICENSE.txt](LICENSE.txt).
