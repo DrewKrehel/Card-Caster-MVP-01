@@ -29,7 +29,7 @@ class User < ApplicationRecord
 
   mount_uploader :avatar_image, ImageUploader
 
-  DEFAULT_AVATAR = "default-avatar.jpg"
+  DEFAULT_AVATAR = "default-avatar.png"
 
   has_many :projects, class_name: "Project", foreign_key: "creator_id", dependent: :destroy
   has_many :owned_sessions, class_name: "GameSession", foreign_key: "owner_id", dependent: :destroy

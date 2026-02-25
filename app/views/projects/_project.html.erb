@@ -9,7 +9,7 @@
         <!-- Image -->
         <figure class="mb-4 text-center">
           <%= image_tag(
-            project.image? ? project.image_url : "placeholder.jpg",
+            project.image? ? project.image_url : "placeholder.png",
             class: "img-fluid rounded-4 shadow-sm project-detail-image",
             alt: project.image? ? "#{project.name} project cover image" : "Placeholder image for #{project.name}"
           ) %>
