@@ -83,4 +83,20 @@ Rails.application.configure do
 
   # Allow POST authenticity on Codespaces in dev
   config.action_controller.forgery_protection_origin_check = false
+
+  # Bullet configuration
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = false           # JavaScript alert in browser
+    Bullet.bullet_logger = true   # Log to log/bullet.log
+    Bullet.console = true         # Log to browser console
+    Bullet.rails_logger = true    # Log to Rails log
+    Bullet.add_footer = true      # Add footer to page with warnings
+    
+    # Optional: uncomment if you want these
+    # Bullet.growl = true         # Growl notifications (requires growl)
+    # Bullet.xmpp = { ... }       # XMPP/Jabber notifications
+    # Bullet.airbrake = true      # Send to Airbrake
+    # Bullet.rollbar = true       # Send to Rollbar
+  end
 end

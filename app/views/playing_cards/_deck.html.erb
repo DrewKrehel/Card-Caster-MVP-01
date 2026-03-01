@@ -1,0 +1,44 @@
+<figure class="playing-card deck-card">
+
+  <!-- Card Image (no flip structure needed) -->
+  <div class="card-frame">
+    <%= image_tag "ai-deck-01.png", class: "deck-image", alt: "Deck of cards" %>
+  </div>
+
+  <figcaption class="card-controls">
+
+    <!-- Draw Dropdown -->
+    <nav class="dropdown d-inline me-2" aria-label="Draw actions">
+      <button class="btn btn-sm btn-dark dropdown-toggle" 
+              data-bs-toggle="dropdown" 
+              aria-haspopup="true" 
+              aria-expanded="false">
+        Draw
+      </button>
+      <ul class="dropdown-menu">
+        <% available_zones = ["Neutral"] + game_session.player_zones %>
+        <% available_zones.each do |zone| %>
+          <li>
+            <%= button_to zone,
+                          move_playing_card_path(top_card, zone_name: zone),
+                          method: :patch,
+                          class: "dropdown-item" %>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+
+    <!-- Peek Action -->
+    <div class="peek-wrapper d-inline" aria-label="Peek at card">
+      <button class="btn btn-sm btn-outline-warning peek-btn" 
+              aria-describedby="peek-popup-<%= top_card.id %>">
+        <span aria-hidden="true">👁</span> Peek
+      </button>
+      <div id="peek-popup-<%= top_card.id %>" class="peek-popup" role="tooltip">
+        <%= image_tag top_card.image_url, class: "peek-image", alt: "#{top_card.card_name}" %>
+      </div>
+    </div>
+
+  </figcaption>
+
+</figure>

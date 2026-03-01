@@ -1,0 +1,105 @@
+<main class="container mt-5">
+  <!-- User Profile Header -->
+  <header class="mb-5">
+    <div class="d-flex align-items-center gap-3 mb-3">
+
+      <%= image_tag @user.profile_image,
+                class: "rounded-circle",
+                width: "128",
+                height: "128",
+                alt: "#{@user.username}'s profile picture" %>
+
+      <h1 class="display-4 mb-0"><%= @user.username %></h1>
+    </div>
+
+    <!-- Bio -->
+    <% if @user.bio.present? %>
+      <div class="row">
+        <div class="col-lg-8">
+          <p class="lead mb-0"><%= @user.bio %></p>
+        </div>
+      </div>
+    <% end %>
+  </header>
+
+  <!-- User Content Tabs -->
+  <nav aria-label="User profile sections">
+    <ul class="nav nav-tabs mb-4" id="userTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active"
+                id="projects-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#projects"
+                type="button"
+                role="tab"
+                aria-controls="projects"
+                aria-selected="true">
+          Projects
+          <% if @owned_projects.any? %>
+            <span class="badge bg-secondary ms-2"><%= @owned_projects.count %></span>
+          <% end %>
+        </button>
+      </li>
+
+      <li class="nav-item" role="presentation">
+        <button class="nav-link"
+                id="sessions-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#sessions"
+                type="button"
+                role="tab"
+                aria-controls="sessions"
+                aria-selected="false">
+          Active Game Sessions
+          <% if @active_game_sessions.any? %>
+            <span class="badge bg-secondary ms-2"><%= @active_game_sessions.count %></span>
+          <% end %>
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="tab-content">
+    <!-- Projects tab -->
+    <section class="tab-pane fade show active"
+             id="projects"
+             role="tabpanel"
+             aria-labelledby="projects-tab"
+             tabindex="0">
+
+      <h2 class="visually-hidden">User's Projects</h2>
+
+      <% if @owned_projects.any? %>
+        <div>
+          <% @owned_projects.each do |project| %>
+            <%= render "projects/preview", project: project %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-muted fst-italic text-center py-5">
+          <%= @user.username %> hasn't created any projects yet.
+        </p>
+      <% end %>
+    </section>
+
+    <!-- Sessions tab -->
+    <section class="tab-pane fade"
+             id="sessions"
+             role="tabpanel"
+             aria-labelledby="sessions-tab"
+             tabindex="0">
+
+      <h2 class="visually-hidden">User's Active Game Sessions</h2>
+
+      <% if @active_game_sessions.any? %>
+        <%= render "game_sessions/list",
+              game_sessions: @active_game_sessions %>
+      <% else %>
+        <p class="text-muted fst-italic text-center py-5">
+          <%= @user.username %> is not in any active game sessions.
+        </p>
+      <% end %>
+    </section>
+  </div>
+
+</main>

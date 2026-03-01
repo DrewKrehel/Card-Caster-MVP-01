@@ -76,6 +76,7 @@ gem "rollbar"
 gem "simple_form"
 gem "strip_attributes"
 gem "validate_url"
+gem "loaf"
 
 group :development do
   gem "annotaterb"
@@ -88,6 +89,7 @@ group :development do
   gem "rails_db", "~> 2.5.0"
   gem "rails-erd"
   gem "rufo"
+  gem "bullet"
 end
 
 group :development, :test do

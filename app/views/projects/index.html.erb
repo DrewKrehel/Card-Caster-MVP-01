@@ -1,0 +1,39 @@
+<% content_for :title, "Projects" %>
+
+<main class="container py-5">
+  <header class="mb-4">
+    <h1>Projects</h1>
+    <% if @projects.any? %>
+      <p class="text-muted">
+        Showing <%= pluralize(@projects.count, 'project') %>
+      </p>
+    <% end %>
+  </header>
+
+  <section id="projects" aria-labelledby="projects-heading">
+    <h2 id="projects-heading" class="visually-hidden">Available Projects</h2>
+    
+    <% if @projects.any? %>
+      <% @projects.each do |project| %>
+        <%= render "projects/preview", project: project %>
+      <% end %>
+    <% else %>
+      <p class="text-muted text-center fst-italic py-5">
+        No projects yet. Be the first to create one!
+      </p>
+    <% end %>
+  </section>
+
+  <footer class="mt-5 text-center">
+    <% if user_signed_in? %>
+      <%= link_to "New project", 
+            new_project_path, 
+            class: "btn btn-primary",
+            aria_label: "Create a new project" %>
+    <% else %>
+      <%= link_to "Sign in to create a project", 
+            new_user_session_path, 
+            class: "btn btn-outline-secondary" %>
+    <% end %>
+  </footer>
+</main>

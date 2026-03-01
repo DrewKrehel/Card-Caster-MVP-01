@@ -1,0 +1,33 @@
+<h3>Test Deck Display</h3>
+
+<div class="row row-cols-6 g-2">
+  <% # Dynamically load all standard deck cards %>
+  <% suits = %w[hearts diamonds clubs spades] %>
+  <% ranks = %w[A 2 3 4 5 6 7 8 9 10 J Q K] %>
+
+  <% ranks.each do |rank| %>
+    <% suits.each do |suit| %>
+      <% # Simulate a PlayingCard instance %>
+      <% card = OpenStruct.new(
+            face_up: [true, false].sample,
+            image_url: "standard_deck_cards/#{rank}_of_#{suit}.png",
+            back_image_url: "standard_deck_cards/card_back.png",
+            card_name: "#{rank} of #{suit.capitalize}"
+          ) %>
+
+      <% def card.display_image
+           face_up? ? image_url : back_image_url
+         end %>
+
+      <div class="col">
+        <div class="card text-center" style="width: 8rem;">
+          <%= image_tag asset_path(card.display_image), class: "card-img-top img-fluid" %>
+          <div class="card-body p-1">
+            <p class="card-text mb-1"><%= card.card_name %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+

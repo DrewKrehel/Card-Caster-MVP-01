@@ -1,0 +1,26 @@
+<% content_for :title, "Editing project" %>
+
+<main class="container py-5">
+  <header class="mb-4 text-center">
+    <h1 class="display-5">Edit Project</h1>
+  </header>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <section aria-labelledby="edit-project-form">
+        <h2 id="edit-project-form" class="visually-hidden">Project Edit Form</h2>
+        <%= render "form", project: @project %>
+      </section>
+
+      <nav class="mt-4 d-flex justify-content-between" aria-label="Project navigation">
+        <%= link_to "Show this project", 
+              @project, 
+              class: "btn btn-outline-primary",
+              aria_label: "View #{@project.name} project details" %>
+        <%= link_to "Back to projects", 
+              projects_path, 
+              class: "btn btn-outline-secondary" %>
+      </nav>
+    </div>
+  </div>
+</main>

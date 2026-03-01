@@ -1,0 +1,145 @@
+<main class="container py-5">
+  <header class="mb-4 text-center">
+    <h1 class="display-5">Edit Profile</h1>
+    <p class="text-muted">Update your account information</p>
+  </header>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "needs-validation" }) do |f| %>
+        
+        <%= f.error_notification class: "alert alert-danger", role: "alert", aria_live: "assertive" %>
+
+        <fieldset>
+          <legend class="visually-hidden">Profile Information</legend>
+
+          <div class="mb-3">
+            <%= f.input :email, 
+                        required: true, 
+                        autofocus: true, 
+                        input_html: { 
+                          class: "form-control",
+                          aria_required: "true",
+                          aria_describedby: "email-help"
+                        } %>
+            <small id="email-help" class="form-text text-muted">
+              We'll never share your email with anyone else.
+            </small>
+          </div>
+
+          <div class="mb-3">
+            <%= f.input :username, 
+                        required: true, 
+                        input_html: { 
+                          class: "form-control",
+                          aria_required: "true",
+                          maxlength: 30
+                        } %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.input :bio,
+                        as: :text,
+                        required: false,
+                        input_html: { 
+                          class: "form-control",
+                          rows: 3,
+                          maxlength: 500,
+                          aria_describedby: "bio-help"
+                        },
+                        hint: false %>
+            <small id="bio-help" class="form-text text-muted">
+              Maximum 500 characters. Tell others about yourself.
+            </small>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :avatar_image, "Profile Image", class: "form-label" %>
+            <%= f.file_field :avatar_image, 
+                            class: "form-control",
+                            accept: "image/*",
+                            aria_describedby: "avatar-help" %>
+            <small id="avatar-help" class="form-text text-muted">
+              Upload a profile picture (optional)
+            </small>
+          </div>
+
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <aside class="alert alert-warning mb-3" role="alert">
+              Currently waiting confirmation for: <%= resource.unconfirmed_email %>
+            </aside>
+          <% end %>
+        </fieldset>
+
+        <fieldset class="mt-4">
+          <legend class="h6 mb-3">Change Password (Optional)</legend>
+
+          <div class="mb-3">
+            <%= f.input :password,
+                        hint: "Leave it blank if you don't want to change it",
+                        required: false,
+                        input_html: { 
+                          class: "form-control", 
+                          autocomplete: "new-password",
+                          aria_describedby: "password-help"
+                        } %>
+            <small id="password-help" class="form-text text-muted">
+              Minimum <%= @minimum_password_length || 6 %> characters
+            </small>
+          </div>
+
+          <div class="mb-3">
+            <%= f.input :password_confirmation,
+                        label: "Confirm New Password",
+                        required: false,
+                        input_html: { 
+                          class: "form-control", 
+                          autocomplete: "new-password"
+                        } %>
+          </div>
+        </fieldset>
+
+        <fieldset class="mt-4">
+          <legend class="visually-hidden">Confirm Changes</legend>
+
+          <div class="mb-3">
+            <%= f.input :current_password,
+                        hint: "We need your current password to confirm your changes",
+                        required: true,
+                        input_html: { 
+                          class: "form-control", 
+                          autocomplete: "current-password",
+                          aria_required: "true"
+                        } %>
+          </div>
+
+          <div class="d-grid mb-4">
+            <%= f.button :submit, "Update Profile", class: "btn btn-primary btn-lg" %>
+          </div>
+        </fieldset>
+      <% end %>
+
+      <hr aria-hidden="true">
+
+      <section class="mt-4">
+        <h2 class="h5 text-danger mb-3">Delete Account</h2>
+        <p>If you delete your account, all of your data will be permanently removed.</p>
+        <div class="d-grid">
+          <%= button_to "Delete my account",
+                        registration_path(resource_name),
+                        data: { 
+                          turbo_method: :delete,
+                          turbo_confirm: "Are you sure you want to delete your account? This action cannot be undone and all your projects and data will be permanently deleted."
+                        },
+                        method: :delete,
+                        class: "btn btn-outline-danger btn-lg",
+                        aria_label: "Delete account permanently" %>
+        </div>
+      </section>
+
+      <nav class="mt-4 text-center" aria-label="Account navigation">
+        <%= link_to "Back", :back, class: "btn btn-outline-secondary btn-lg" %>
+      </nav>
+    </div>
+  </div>
+</main>

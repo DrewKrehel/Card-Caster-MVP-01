@@ -1,0 +1,147 @@
+<header>
+  <nav class="navbar navbar-expand-lg"
+       role="navigation"
+       aria-label="Main navigation">
+    <div class="container">
+
+      <!-- Brand -->
+      <%= link_to "Card Caster",
+                  root_path,
+                  class: "navbar-brand",
+                  aria: { label: "Card Caster Home" } %>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Left navigation -->
+        <ul class="navbar-nav left"
+            role="menubar">
+
+          <li class="nav-item dropdown" role="none">
+            <button class="nav-link dropdown-toggle btn btn-link"
+                    id="resourcesDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    aria-haspopup="true">
+              Resources
+            </button>
+
+            <ul class="dropdown-menu"
+                aria-labelledby="resourcesDropdown"
+                role="menu">
+
+              <li role="none">
+                <%= link_to "Projects",
+                            projects_path,
+                            class: "dropdown-item",
+                            role: "menuitem" %>
+              </li>
+
+              <li role="none">
+                <%= link_to "Users",
+                            users_path,
+                            class: "dropdown-item",
+                            role: "menuitem" %>
+              </li>
+
+              <li role="none">
+                <%= link_to "Game Sessions",
+                            game_sessions_path,
+                            class: "dropdown-item",
+                            role: "menuitem" %>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation menu">
+        <span class="navbar-toggler-icon" aria-hidden="true"></span>
+      </button>
+
+      <div class="collapse navbar-collapse"
+           id="navbarSupportedContent">
+
+        <!-- Right navigation -->
+        <ul class="navbar-nav right d-flex align-items-center"
+            role="menubar">
+
+          <% if user_signed_in? %>
+
+            <li class="nav-item" role="none">
+              <%= link_to "Create Project",
+                          new_project_path,
+                          class: "btn btn-primary me-2",
+                          role: "menuitem" %>
+            </li>
+
+            <li class="nav-item dropdown" role="none">
+              <button class="nav-link dropdown-toggle btn btn-link"
+                      id="userDropdown"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      aria-haspopup="true">
+                <%= current_user.username %>
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="userDropdown"
+                  role="menu">
+
+                <li role="none">
+                  <%= link_to "Profile",
+                              user_path(current_user.username),
+                              class: "dropdown-item",
+                              role: "menuitem" %>
+                </li>
+
+                <li role="none">
+                  <%= link_to "Edit Profile",
+                              edit_user_registration_path,
+                              class: "dropdown-item",
+                              role: "menuitem" %>
+                </li>
+
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+
+                <li role="none">
+                  <%= link_to "Sign Out",
+                              destroy_user_session_path,
+                              method: :delete,
+                              class: "dropdown-item",
+                              role: "menuitem" %>
+                </li>
+
+              </ul>
+            </li>
+
+          <% else %>
+
+            <li class="nav-item" role="none">
+              <%= link_to "Sign In",
+                          new_user_session_path,
+                          class: "nav-link me-2",
+                          role: "menuitem" %>
+            </li>
+
+            <li class="nav-item" role="none">
+              <%= link_to "Sign Up",
+                          new_user_registration_path,
+                          class: "nav-link",
+                          role: "menuitem" %>
+            </li>
+
+          <% end %>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,99 @@
+<%= form_with(model: project, local: true, html: { class: "needs-validation" }) do |form| %>
+  <% if project.errors.any? %>
+    <aside class="alert alert-danger" role="alert" aria-live="assertive">
+      <h2 class="alert-heading h4">
+        <%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:
+      </h2>
+      <ul class="mb-0">
+        <% project.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </aside>
+  <% end %>
+
+  <fieldset>
+    <legend class="visually-hidden">Project Information</legend>
+
+    <div class="mb-3">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, 
+                          class: "form-control", 
+                          placeholder: "Enter project name",
+                          required: true,
+                          aria_required: "true",
+                          aria_describedby: project.errors[:name].any? ? "name-error" : nil %>
+      <% if project.errors[:name].any? %>
+        <div id="name-error" class="invalid-feedback d-block">
+          <%= project.errors[:name].first %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :summary, class: "form-label" %>
+      <%= form.text_area :summary, 
+                         class: "form-control", 
+                         rows: 3, 
+                         placeholder: "Brief description of your project",
+                         maxlength: 500,
+                         aria_describedby: "summary-help #{'summary-error' if project.errors[:summary].any?}".strip %>
+      <small id="summary-help" class="form-text text-muted">Maximum 500 characters</small>
+      <% if project.errors[:summary].any? %>
+        <div id="summary-error" class="invalid-feedback d-block">
+          <%= project.errors[:summary].first %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :how_to_play, "How to Play", class: "form-label" %>
+      <%= form.text_area :how_to_play, 
+                         class: "form-control", 
+                         rows: 3, 
+                         placeholder: "Instructions for playing this game",
+                         aria_describedby: project.errors[:how_to_play].any? ? "how-to-play-error" : nil %>
+      <% if project.errors[:how_to_play].any? %>
+        <div id="how-to-play-error" class="invalid-feedback d-block">
+          <%= project.errors[:how_to_play].first %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :max_players, "Maximum Players", class: "form-label" %>
+      <%= form.number_field :max_players, 
+                            class: "form-control", 
+                            min: 1, 
+                            max: 8,
+                            required: true,
+                            aria_required: "true",
+                            aria_describedby: "max-players-help #{'max-players-error' if project.errors[:max_players].any?}".strip %>
+      <small id="max-players-help" class="form-text text-muted">Between 1 and 8 players</small>
+      <% if project.errors[:max_players].any? %>
+        <div id="max-players-error" class="invalid-feedback d-block">
+          <%= project.errors[:max_players].first %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :image, "Project Image", class: "form-label" %>
+      <%= form.file_field :image, 
+                          class: "form-control",
+                          accept: "image/*",
+                          aria_describedby: "image-help #{'image-error' if project.errors[:image].any?}".strip %>
+      <small id="image-help" class="form-text text-muted">Optional: Upload a representative image for your project</small>
+      <% if project.errors[:image].any? %>
+        <div id="image-error" class="invalid-feedback d-block">
+          <%= project.errors[:image].first %>
+        </div>
+      <% end %>
+    </div>
+  </fieldset>
+
+  <footer class="d-flex justify-content-center">
+    <%= form.submit project.persisted? ? "Update Project" : "Create Project", 
+                    class: "btn btn-primary btn-lg" %>
+  </footer>
+<% end %>

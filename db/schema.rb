@@ -10,9 +10,62 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_13_202311) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_25_011606) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "game_sessions", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "owner_id", null: false
+    t.string "name"
+    t.boolean "private"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_game_sessions_on_owner_id"
+    t.index ["project_id"], name: "index_game_sessions_on_project_id"
+  end
+
+  create_table "playing_cards", force: :cascade do |t|
+    t.bigint "game_session_id", null: false
+    t.string "suit", null: false
+    t.string "rank", null: false
+    t.string "zone_name", null: false
+    t.boolean "face_up", default: false
+    t.integer "orientation", default: 0
+    t.integer "position"
+    t.string "image_url"
+    t.string "back_image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_session_id", "zone_name", "position"], name: "idx_on_game_session_id_zone_name_position_682e3c4900"
+    t.index ["game_session_id"], name: "index_playing_cards_on_game_session_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.bigint "creator_id", null: false
+    t.string "name"
+    t.text "summary"
+    t.text "how_to_play"
+    t.integer "max_players", default: 4, null: false
+    t.string "image"
+    t.boolean "private", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_projects_on_creator_id"
+  end
+
+  create_table "session_users", force: :cascade do |t|
+    t.bigint "game_session_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "role", default: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "zone_name"
+    t.index ["game_session_id", "user_id"], name: "index_session_users_on_game_session_id_and_user_id", unique: true
+    t.index ["game_session_id"], name: "index_session_users_on_game_session_id"
+    t.index ["user_id"], name: "index_session_users_on_user_id"
+  end
 
   create_table "solid_cable_messages", force: :cascade do |t|
     t.binary "channel", null: false
@@ -156,6 +209,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_13_202311) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.citext "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.citext "username", null: false
+    t.string "avatar_image", limit: 255
+    t.text "bio"
+    t.boolean "private", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  add_foreign_key "game_sessions", "projects"
+  add_foreign_key "game_sessions", "users", column: "owner_id"
+  add_foreign_key "playing_cards", "game_sessions"
+  add_foreign_key "projects", "users", column: "creator_id"
+  add_foreign_key "session_users", "game_sessions"
+  add_foreign_key "session_users", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

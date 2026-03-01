@@ -9,4 +9,199 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
+ /*
+ *= require landing
+ *= require game_cards
+ */
+
+
+/* Basic Styling */
+textarea {
+  resize: both;
+}
+
+/* breadcrumbs */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  list-style: none;
+  background-color: #e9ecef;
+  border-radius: 0.25rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "/";
+  padding: 0 0.5rem;
+  color: #6c757d;
+}
+
+/* _preview partial */
+.project-image-wrapper {
+  max-height: 340px;          /* controls image height */
+  overflow: hidden;
+}
+
+.project-image-wrapper img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+/* project/show */
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #e9ecef;
+}
+
+
+/* Center navbar content and constrain width */
+.navbar .container-fluid {
+  max-width: 800px;       /* same width as CTA and hero */
+  margin: 0 auto;         /* center the navbar container */
+  justify-content: center; /* center contents */
+}
+
+.navbar .container {
+  padding-left: 1.1in;   /* shift everything right by ~1 inch */
+}
+
+.navbar-nav.left {
+  justify-content: left;
+  width: auto;              /* full width for spacing */
+}
+
+.navbar-nav.right {
+  justify-content: left;
+  width: auto;              /* full width for spacing */
+  padding-left: 4.2in;
+}
+
+.navbar-nav .nav-item {
+  margin: 0 0.5rem;        /* spacing between items */
+}
+
+.navbar-brand {
+  font-weight: 600;
+}
+
+/* Grid layout */
+.zone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 3.5rem 1.75rem;
+  align-items: start;
+}
+
+/* Grid item — container matches card dimensions */
+.card-slot {
+  position: relative;
+  width: 120px;
+  min-height: 220px;
+  overflow: visible;
+}
+
+/* Controls positioned BELOW the card */
+.card-controls {
+  position: absolute;
+  top: 175px; /* Adjusted for new card height */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+/* Show controls on hover */
+.card-slot:hover .card-controls {
+  opacity: 1;
+}
+
+/* Dropdown fix */
+.card-controls .dropdown {
+  position: relative;
+  z-index: 1000;
+}
+
+.card-controls .dropdown-menu {
+  z-index: 1050;
+}
+
+.card-slot:hover {
+  z-index: 100;
+}
+
+.card-controls .dropdown.show {
+  z-index: 1100;
+}
+
+.card-controls .dropdown-menu.show {
+  z-index: 1150;
+}
+
+/* Disabled cards */
+.disabled-card {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Peek button */
+.peek-btn {
+  color: #212529;
+  background-color: #ffc107;
+  border-color: #ffc107;
+  transition: all 0.2s ease;
+}
+
+.peek-btn:hover,
+.peek-btn:focus {
+  color: #ffc107;
+  background-color: transparent;
+  border-color: #ffc107;
+}
+
+/* For touch devices */
+.peek-btn:active + .peek-popup {
+  display: block;
+}
+
+/* Dropdown fix - ensure dropdowns appear above cards */
+.card-controls .dropdown {
+  position: relative;
+  z-index: 1000;
+}
+
+.card-controls .dropdown-menu {
+  z-index: 1050;
+}
+
+/* When hovering a card, raise its z-index */
+.card-slot:hover {
+  z-index: 100;
+}
+
+/* Active dropdown gets even higher z-index */
+.card-controls .dropdown.show {
+  z-index: 1100;
+}
+
+.card-controls .dropdown-menu.show {
+  z-index: 1150;
+}
+
+/* Disabled cards */
+.disabled-card {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+
+
 @import "custom-image.css";

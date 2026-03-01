@@ -1,0 +1,83 @@
+<article id="<%= dom_id game_session %>" class="container py-4">
+
+  <!-- Session Header / Metadata -->
+  <header class="mb-4">
+    <h2 class="h3 mb-3"><%= game_session.name %></h2>
+
+    <dl class="row mb-0">
+      <dt class="col-sm-2">Project</dt>
+      <dd class="col-sm-10"><%= game_session.project.name %></dd>
+
+      <dt class="col-sm-2">Owner</dt>
+      <dd class="col-sm-10"><%= game_session.owner.username %></dd>
+
+      <dt class="col-sm-2">Max Players</dt>
+      <dd class="col-sm-10"><%= game_session.project.max_players %></dd>
+
+      <!--<dt class="col-sm-2">Session ID</dt>
+      <dd class="col-sm-10"><%#= game_session.id %></dd>-->
+    </dl>
+  </header>
+
+  <hr aria-hidden="true">
+
+  <% session_user = game_session.session_users.find_by(user: current_user) %>
+
+  <!-- Build zones array: Base zones + player zones for this session -->
+  <% all_zones = ["Deck", "Neutral"] + game_session.player_zones %>
+
+  <!-- Zones -->
+  <% all_zones.each do |zone| %>
+    <section class="mb-5" aria-labelledby="zone-<%= zone.parameterize %>">
+
+      <!-- Zone Header -->
+      <header class="d-flex align-items-center justify-content-between mb-3">
+        <h3 id="zone-<%= zone.parameterize %>" class="h5 mb-0">
+          <%= zone %>
+
+          <% if (zone_user = game_session.user_for_zone(zone)) %>
+            <span class="badge bg-secondary ms-2">
+              <%= zone_user.username %>
+            </span>
+          <% end %>
+
+          <% if zone_user == current_user %>
+            <span class="badge bg-success ms-1">You</span>
+          <% end %>
+
+        </h3>
+
+        <nav aria-label="<%= zone %> actions">
+          <% if policy(game_session).shuffle_zone?(zone) %>
+            <%= form_with url: shuffle_game_session_zone_path(game_session, zone_name: zone),
+                  method: :patch,
+                  local: false,
+                  data: { turbo: true, turbo_stream: true },
+                  class: "d-inline" do %>
+              <%= button_tag "Shuffle",
+                     type: "submit",
+                     class: "btn btn-sm btn-outline-primary",
+                     aria_label: "Shuffle #{zone}" %>
+            <% end %>
+          <% end %>
+        </nav>
+      </header>
+
+      <!-- Zone Cards -->
+      <div id="zone-<%= zone.parameterize %>-cards" 
+            class="zone-grid" 
+            role="list" 
+            aria-label="Cards in <%= zone %>"
+            data-controller="zone">
+
+        <%= render "game_sessions/zone_cards",
+             zone: zone,
+             zone_cards: @cards_by_zone[zone] || [],
+             game_session: game_session,
+             can_interact: @current_session_user&.can_interact_with_zone?(zone) %>
+
+      </div>
+    </section>
+  <% end %>
+
+</article>

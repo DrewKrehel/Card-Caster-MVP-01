@@ -1,0 +1,115 @@
+/* Game Session Card Animations */
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease;
+  transform-origin: 50% 50%; /* CRITICAL: Center origin */
+}
+
+.playing-card {
+  width: 105px;
+  height: 169px;
+  margin: 0 auto;
+  perspective: 1000px;
+  position: relative;
+  transform-origin: 50% 50%; /* Also set on parent */
+}
+
+.card-face {
+  position: absolute; 
+  inset: 0;
+  backface-visibility: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-face-back { transform: rotateY(0deg); }
+.card-face-front { transform: rotateY(180deg); }
+
+.card-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Deck */
+.deck-card {
+  width: 120px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.deck-card .card-frame {
+  width: 100%;
+  height: 100%;
+}
+
+.deck-card .deck-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Peek positioning */
+.peek-wrapper {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+}
+
+.peek-popup {
+  display: none;
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 120px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: white;
+  border-radius: 0.25rem;
+}
+
+.peek-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+}
+
+.peek-wrapper:hover .peek-popup {
+  display: block;
+}
+
+/* Move Animation */
+@keyframes card-move-out {
+  to {
+    opacity: 0;
+    transform: scale(0.8) translateY(-30px);
+  }
+}
+
+@keyframes card-move-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-30px);
+  }
+}
+
+.playing-card.animating-move-out {
+  animation: card-move-out 0.4s ease-in-out forwards;
+}
+
+.playing-card.animating-move-in {
+  animation: card-move-in 0.4s ease-in-out;
+}
+
+.card-controls {
+  transition: opacity 0.2s ease;
+}

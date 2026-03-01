@@ -1,0 +1,23 @@
+<% content_for :title, "New project" %>
+
+<main class="container py-5">
+  <header class="mb-4 text-center">
+    <h1>New Project</h1>
+    <p class="text-muted">Create a new card game project</p>
+  </header>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <section aria-labelledby="new-project-form">
+        <h2 id="new-project-form" class="visually-hidden">Project Creation Form</h2>
+        <%= render "form", project: @project %>
+      </section>
+
+      <nav class="mt-4" aria-label="Project navigation">
+        <%= link_to "Back to projects", 
+              projects_path, 
+              class: "btn btn-outline-secondary" %>
+      </nav>
+    </div>
+  </div>
+</main>

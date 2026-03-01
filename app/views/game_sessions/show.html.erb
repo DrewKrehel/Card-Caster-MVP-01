@@ -1,0 +1,79 @@
+<main class="container py-4" role="main">
+
+  <!-- Page Header / Navigation -->
+  <header class="mb-4">
+
+    <nav aria-label="Game session navigation" class="d-flex flex-wrap gap-2">
+
+      <%= link_to "Back to #{@game_session.project.name}",
+                  project_path(@game_session.project),
+                  class: "btn btn-secondary" %>
+
+      <% session_user = @game_session.session_users.find_by(user: current_user) %>
+
+      <% if @game_session.owner == current_user %>
+        <%= link_to "Edit Session",
+                    edit_game_session_path(@game_session),
+                    class: "btn btn-outline-primary" %>
+      <% end %>
+
+      <% if session_user&.host? %>
+        <%= button_to "Destroy Session",
+                      @game_session,
+                      method: :delete,
+                      data: { confirm: "Are you sure?" },
+                      class: "btn btn-danger" %>
+      <% end %>
+
+    </nav>
+
+  </header>
+
+
+  <!-- Participation Actions (Non-Host Users) -->
+  <% if session_user && !session_user.host? %>
+    <section class="mb-4" aria-labelledby="participation-actions-heading">
+
+      <h2 id="participation-actions-heading" class="visually-hidden">
+        Participation Actions
+      </h2>
+
+      <nav aria-label="Session participation actions"
+           class="d-flex flex-wrap gap-2">
+
+        <% if session_user.player? %>
+          <%= button_to "Switch to Observer",
+                        toggle_role_game_session_path(@game_session),
+                        method: :patch,
+                        class: "btn btn-outline-secondary" %>
+        <% elsif session_user.observer? %>
+          <%= button_to "Switch to Player",
+                        toggle_role_game_session_path(@game_session),
+                        method: :patch,
+                        class: "btn btn-outline-primary" %>
+        <% end %>
+
+        <%= button_to "Leave Session",
+                      leave_game_session_path(@game_session),
+                      method: :delete,
+                      data: { confirm: "Are you sure you want to leave this session?" },
+                      class: "btn btn-outline-warning" %>
+
+      </nav>
+
+    </section>
+  <% end %>
+
+
+  <!-- Session Content -->
+  <section aria-labelledby="session-content-heading">
+
+    <h2 id="session-content-heading" class="visually-hidden">
+      Game Session Details
+    </h2>
+
+    <%= render @game_session %>
+
+  </section>
+
+</main>

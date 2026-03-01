@@ -1,0 +1,95 @@
+<turbo-frame id="card-<%= card.id %>" 
+             data-controller="game-card"
+             data-game-card-face-up-value="<%= card.face_up? %>"
+             data-game-card-orientation-value="<%= PlayingCard.orientations[card.orientation] %>">
+  <article class="playing-card <%= card.face_up? ? 'face-up' : 'face-down' %> <%= 'disabled-card' unless can_interact %>">
+
+    <!-- 3D Flip Container -->
+    <div class="card-inner">
+      
+      <!-- Back Face (card back) -->
+      <figure class="card-face card-face-back">
+        <%= image_tag card.back_image_url,
+                      alt: "Card back" %>
+      </figure>
+
+      <!-- Front Face (card front) -->
+      <figure class="card-face card-face-front">
+        <%= image_tag card.image_url,
+                      alt: card.card_name %>
+      </figure>
+
+    </div>
+
+    <!-- Controls -->
+    <% if can_interact %>
+      <nav class="card-controls" aria-label="Card actions for <%= card.card_name %>">
+
+        <!-- Rotate -->
+        <% if policy(card).rotate? %>
+          <%= button_to "↻",
+                        rotate_playing_card_path(card, direction: :cw),
+                        method: :patch,
+                        class: "btn btn-sm btn-dark",
+                        title: "Rotate clockwise",
+                        aria_label: "Rotate #{card.card_name} clockwise",
+                        data: { action: "game-card#rotate" } %>
+        <% end %>
+
+        <!-- Move -->
+        <% if policy(card).move? %>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-dark dropdown-toggle" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false" 
+                    aria-label="Move <%= card.card_name %> to another zone">
+              Move
+            </button>
+            <ul class="dropdown-menu">
+              <% available_zones = ["Deck", "Neutral"] + card.game_session.player_zones %>
+              <% available_zones.each do |zone| %>
+                <% next if zone == current_zone %>
+                <li>
+                  <%= button_to zone,
+                                move_playing_card_path(card, zone_name: zone),
+                                method: :patch,
+                                class: "dropdown-item",
+                                data: { action: "game-card#move" } %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <!-- Flip -->
+        <% if policy(card).flip? %>
+          <%= button_to(card.face_up? ? "↓" : "↑",
+                        flip_playing_card_path(card, face_up: !card.face_up),
+                        method: :patch,
+                        class: "btn btn-sm btn-dark",
+                        title: card.face_up? ? "Flip face down" : "Flip face up",
+                        aria_label: "#{card.face_up? ? 'Flip' : 'Reveal'} #{card.card_name}",
+                        data: { action: "game-card#flip" }) %>
+        <% end %>
+
+        <!-- Peek -->
+        <% unless card.face_up? %>
+          <div class="peek-wrapper">
+            <button class="btn btn-sm btn-warning peek-btn"
+                    type="button"
+                    aria_label="Peek at <%= card.card_name %>">
+              <span aria-hidden="true">👁</span> Peek
+            </button>
+            <div class="peek-popup" role="tooltip" aria-live="polite">
+              <%= image_tag card.image_url, 
+                            class: "peek-image",
+                            alt: card.card_name %>
+            </div>
+          </div>
+        <% end %>
+
+      </nav>
+    <% end %>
+
+  </article>
+</turbo-frame>

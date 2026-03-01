@@ -1,0 +1,16 @@
+<% content_for :title, "Game Sessions" %>
+
+<main class="container py-4" role="main">
+
+  <section id="game_sessions" aria-labelledby="game-sessions-description">
+
+    <p id="game-sessions-description" class="text-muted mb-0">
+      Browse and join active sessions.
+    </p>
+
+    <%= render partial: "list",
+          locals: { game_sessions: @game_sessions } %>
+
+  </section>
+
+</main>

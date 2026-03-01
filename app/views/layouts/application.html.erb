@@ -8,6 +8,8 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= render partial: "shared/cdn_assets" %>
+
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
@@ -23,6 +25,21 @@
   </head>
 
   <body>
-    <%= yield %>
+    
+    <%= render partial: "shared/navbar" %>
+
+    <%= render_breadcrumbs %>
+
+    <div class="container">
+      <% if notice.present? %>
+        <%= render partial: "shared/flash", locals: { message: notice, css_class: "success" } %>
+      <% end %>
+      
+      <% if alert.present? %>
+        <%= render partial: "shared/flash", locals: { message: alert, css_class: "danger" } %>
+      <% end %>
+
+      <%= yield %>
+    </div>
   </body>
 </html>

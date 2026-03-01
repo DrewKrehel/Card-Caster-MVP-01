@@ -1,0 +1,31 @@
+<% content_for :title, "Edit Game Session" %>
+
+<main class="container py-4" role="main">
+
+  <header class="mb-4">
+    <h1 class="h2">Edit Game Session</h1>
+    <p class="text-muted mb-0">
+      Update the details of this session below.
+    </p>
+  </header>
+
+  <section class="card shadow-sm mb-4">
+    <div class="card-body">
+      <%= render "form", game_session: @game_session %>
+    </div>
+  </section>
+
+  <nav aria-label="Game session actions">
+    <div class="d-flex gap-2">
+      <%= link_to "View Session",
+            @game_session,
+            class: "btn btn-outline-secondary" %>
+
+      <%= link_to "Back to Sessions",
+            game_sessions_path,
+            class: "btn btn-link" %>
+    </div>
+  </nav>
+
+</main>
+

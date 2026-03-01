@@ -1,0 +1,48 @@
+<section aria-labelledby="game-session-form-heading">
+
+  <!--<header class="mb-4">
+    <h2 id="game-session-form-heading" class="h4">
+      <%#= game_session.new_record? ? "New Game Session" : "Edit Game Session" %>-->
+<!--    </h2>
+  </header>-->
+
+  <%= form_with(model: game_session, local: true) do |form| %>
+
+    <% if game_session.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <h3 class="h6">
+          <%= pluralize(game_session.errors.count, "error") %> prohibited this game session from being saved:
+        </h3>
+        <ul class="mb-0">
+          <% game_session.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <fieldset class="mb-4">
+      <!-- Hidden Project -->
+      <%= form.hidden_field :project_id %>
+
+      <!-- Name -->
+      <div class="mb-3">
+        <%= form.label :name, class: "form-label" %>
+        <%= form.text_field :name, class: "form-control", placeholder: "Enter session name" %>
+      </div>
+
+      <!-- Privacy -->
+      <!--<div class="form-check mb-3">-->
+        <%#= form.check_box :private, class: "form-check-input" %>
+        <%#= form.label :private, class: "form-check-label" %>
+<!--      </div>-->
+
+    </fieldset>
+
+    <footer class="mt-4">
+      <%= form.submit "Save Session", class: "btn btn-primary" %>
+    </footer>
+
+  <% end %>
+
+</section>
