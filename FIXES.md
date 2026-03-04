@@ -1,10 +1,5 @@
 # Prioritized Improvement Plan — Card Caster
 
-Generated: 2026-03-04
-Reviewer: Claude Code (DPI Tech Apprenticeship)
-
----
-
 ## P0 — Critical (Security / Architecture / Broken Patterns)
 
 These must be resolved before any production deployment or peer review sign-off.
