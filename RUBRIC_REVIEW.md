@@ -5,7 +5,7 @@
 - Project Name: Card Caster
 - Reviewer Name: Claude Code, Ian Heraty, Adolfo Nava
 - Repository URL: <https://github.com/DrewKrehel/Card-Caster-MVP-01>
-- Feedback Pull Request URL: Needs verification
+- Feedback Pull Request URL: <https://github.com/DrewKrehel/Card-Caster-MVP-01/pull/13>
 
 ---
 
