@@ -27,6 +27,16 @@ Use short, descriptive branch names:
 - Include a short description of what the change does and why.
 - Ensure the app runs and migrations succeed before submitting.
 
+## Troubleshooting
+**`PG::ConnectionBad` on setup**
+Ensure PostgreSQL is running: `brew services start postgresql@15`
+**`ActiveRecord::NoDatabaseError`**
+Run `rails db:create db:migrate` before starting the server.
+**Devise mailer errors in development**
+Set `config.action_mailer.delivery_method = :letter_opener` in `config/environments/development.rb` and add `gem "letter_opener", group: :development`
+**Asset precompilation fails**
+Run `bundle exec rails assets:precompile` and check for JavaScript errors in `app/javascript/`.
+
 ## Questions or Ideas for Contribution?
 Thanks for your interest in contributing! Card Caster is intentionally simple and beginner-friendly. Please keep the following guidelines in mind when working on the project. 
 - Open an issue to discuss bugs, improvements, or new features. One feature or fix per pull request. Avoid bundling refactors with new behavior and client-only state or hidden UI logic.
