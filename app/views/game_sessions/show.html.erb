@@ -45,12 +45,14 @@
           <%= button_to "Switch to Observer",
                         toggle_role_game_session_path(@game_session),
                         method: :patch,
-                        class: "btn btn-outline-secondary" %>
+                        class: "btn btn-outline-secondary"
+                        data: { turbo_submits_with: "Switching..." }  %>
         <% elsif session_user.observer? %>
           <%= button_to "Switch to Player",
                         toggle_role_game_session_path(@game_session),
                         method: :patch,
-                        class: "btn btn-outline-primary" %>
+                        class: "btn btn-outline-primary"
+                        data: { turbo_submits_with: "Switching..." } %>
         <% end %>
 
         <%= button_to "Leave Session",
