@@ -79,3 +79,39 @@ Thanks for your interest in contributing! Card Caster is intentionally simple an
 
 ### Permission Model Cheat Sheet: 
 <img width="775" height="154" alt="Screenshot 2026-02-09 171131" src="https://github.com/user-attachments/assets/f41a2c70-bbd4-4573-b90a-4d28e9753c45" />
+
+
+# Card Caster — End-to-End Test Plan
+
+## Authentication
+- [ ] New user can register with valid credentials
+- [ ] Registration fails with duplicate email/username
+- [ ] User can log in with correct credentials
+- [ ] User cannot log in with incorrect password
+- [ ] User can log out
+
+## Projects
+- [ ] Authenticated user can create a project
+- [ ] Project requires a name (validation error shown)
+- [ ] User can edit their own project
+- [ ] User cannot edit another user's project
+- [ ] User can delete their own project
+
+## Game Sessions
+- [ ] User can create a session from a project
+- [ ] Another user can join a public session
+- [ ] Session owner can toggle another player's role
+- [ ] Player can leave a session
+- [ ] Owner can delete a session
+
+## Playing Cards
+- [ ] Cards are dealt to the table on session creation
+- [ ] Player can flip a card (face-up/face-down toggles)
+- [ ] Player can rotate a card CW and CCW
+- [ ] Player can move a card between zones
+- [ ] Non-player cannot interact with cards
+
+## Responsiveness
+- [ ] All pages render correctly on mobile (375px)
+- [ ] All pages render correctly on tablet (768px)
+- [ ] All pages render correctly on desktop (1440px)
