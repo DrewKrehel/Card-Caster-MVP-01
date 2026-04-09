@@ -101,6 +101,7 @@
             <div class="col-md-4">
               <%= f.submit "Start Session",
                     class: "btn btn-primary w-100",
+                    data: { turbo_submits_with: "Starting..." }
                     aria_label: "Start new game session for #{project.name}" %>
             </div>
 

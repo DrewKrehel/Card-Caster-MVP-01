@@ -1,61 +1,80 @@
 name: CI
 
 on:
-  pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  # All jobs are currently disabled. Uncomment a job below to enable it.
   placeholder:
       runs-on: ubuntu-latest
       steps:
         - run: 'echo "CI jobs disabled"'
 
-  # scan_ruby:
-  #   runs-on: ubuntu-latest
+  scan_ruby:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - name: Scan for Rails security vulnerabilities
+        run: bin/brakeman --no-pager
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
+  scan_js:
+    runs-on: ubuntu-latest
 
-  #     - name: Set up Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: .ruby-version
-  #         bundler-cache: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  #     - name: Scan for common Rails security vulnerabilities using static analysis
-  #       run: bin/brakeman --no-pager
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
 
-  # scan_js:
-  #   runs-on: ubuntu-latest
+      - name: Scan for security vulnerabilities in JavaScript dependencies
+        run: bin/importmap audit
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - name: Run Rubocop
+        run: bin/rubocop -f github
 
-  #     - name: Set up Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: .ruby-version
-  #         bundler-cache: true
-
-  #     - name: Scan for security vulnerabilities in JavaScript dependencies
-  #       run: bin/importmap audit
-
-  # lint:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-
-  #     - name: Set up Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: .ruby-version
-  #         bundler-cache: true
-
-  #     - name: Lint code for consistent style
-  #       run: bin/rubocop -f github
-
+# test:
+#     runs-on: ubuntu-latest
+#     services:
+#       postgres:
+#         image: postgres:15
+#         env:
+#           POSTGRES_USER: postgres
+#           POSTGRES_PASSWORD: postgres
+#         options: >-
+#           --health-cmd pg_isready
+#           --health-interval 10s
+#           --health-timeout 5s
+#           --health-retries 5
+#         ports:
+#           - 5432:5432
+#     env:
+#       DATABASE_URL: postgres://postgres:postgres@localhost:5432/card_caster_test
+#       RAILS_ENV: test
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: ruby/setup-ruby@v1
+#         with:
+#           ruby-version: .ruby-version
+#           bundler-cache: true
+#       - name: Prepare test database
+#         run: bundle exec rails db:test:prepare
+#       - name: Run tests
+#         run: bundle exec rspec

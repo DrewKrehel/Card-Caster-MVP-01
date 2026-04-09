@@ -26,6 +26,17 @@
 
 Rails.application.configure do
   config.content_security_policy do |policy|
+    policy.default_src :self
+    policy.font_src    :self, :https, :data
+    policy.img_src     :self, :https, :data, "blob:"
+    policy.object_src  :none
+    policy.script_src  :self, :https
+    policy.style_src   :self, :https, :unsafe_inline  # required for Bootstrap inline styles
+    policy.connect_src :self, :https, "wss:"          # required for ActionCable/Turbo
     policy.frame_ancestors :self, "https://envoy.fyi"
   end
+
+  # Nonce-based script/style allowance (required for inline Turbo scripts)
+  config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
+  config.content_security_policy_nonce_directives = %w[script-src]
 end

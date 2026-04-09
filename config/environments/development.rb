@@ -87,7 +87,7 @@ Rails.application.configure do
   # Bullet configuration
   config.after_initialize do
     Bullet.enable = true
-    Bullet.alert = false           # JavaScript alert in browser
+    Bullet.alert = true           # JavaScript alert in browser
     Bullet.bullet_logger = true   # Log to log/bullet.log
     Bullet.console = true         # Log to browser console
     Bullet.rails_logger = true    # Log to Rails log

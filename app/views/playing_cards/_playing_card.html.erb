@@ -33,7 +33,10 @@
                         class: "btn btn-sm btn-dark",
                         title: "Rotate clockwise",
                         aria_label: "Rotate #{card.card_name} clockwise",
-                        data: { action: "game-card#rotate" } %>
+                        data: { 
+                          action: "game-card#rotate",
+                          turbo_submits_with: "⟳"
+                        } %>
         <% end %>
 
         <!-- Move -->
@@ -54,7 +57,10 @@
                                 move_playing_card_path(card, zone_name: zone),
                                 method: :patch,
                                 class: "dropdown-item",
-                                data: { action: "game-card#move" } %>
+                                data: { 
+                                  action: "game-card#move",
+                                  turbo_submits_with: "Moving..."
+                                } %>
                 </li>
               <% end %>
             </ul>
@@ -69,7 +75,10 @@
                         class: "btn btn-sm btn-dark",
                         title: card.face_up? ? "Flip face down" : "Flip face up",
                         aria_label: "#{card.face_up? ? 'Flip' : 'Reveal'} #{card.card_name}",
-                        data: { action: "game-card#flip" }) %>
+                        data: { 
+                          action: "game-card#flip",
+                          turbo_submits_with: "⇅"
+                        }) %>
         <% end %>
 
         <!-- Peek -->
